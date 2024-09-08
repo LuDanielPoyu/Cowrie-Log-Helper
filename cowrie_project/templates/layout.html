@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        nav {
+            background-color: #444;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .dropdown {
+            display: inline-block;
+            position: relative;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #444;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: #fff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .dropdown-content a:hover {
+            background-color: #555;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Website</h1>
+    </header>
+    
+    <nav>
+        <a href="{% url 'homepage_view' %}">Home</a>
+        <a href="{% url 'about_view' %}">About</a>
+        <a href="{% url 'users:login' %}">Login</a>
+        <a href="{% url 'users:register' %}">Register</a>
+        
+        <!-- Dropdown Menu for "Ask Me" -->
+        <div class="dropdown">
+            <a href="#">Ask Me</a>
+            <div class="dropdown-content">
+                <a href="{% url 'ask_me:classification' %}">Classification</a>
+                <a href="{% url 'ask_me:qa' %}">QA</a>
+                <a href="{% url 'ask_me:summary' %}">Summary</a>
+            </div>
+        </div>
+
+        <!-- Dropdown Menu for "Your Help Coach" -->
+        <div class="dropdown">
+            <a href="#">Help Coach</a>
+            <div class="dropdown-content">
+                <a href="{% url 'your_help_coach:classify_log' %}">Classify Log</a>
+                <a href="{% url 'your_help_coach:attack_suggestion' %}">Attack Suggestion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        <!-- Content from child templates will be injected here -->
+        {% endblock content %}
+    </div>
+
+    <footer>
+        <p>&copy; 2024 My Website</p>
+    </footer>
+</body>
+</html>
