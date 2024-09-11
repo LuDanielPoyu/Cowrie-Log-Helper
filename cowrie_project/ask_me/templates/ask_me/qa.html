@@ -6,17 +6,10 @@
     <div class="container">
         <h1>Question and Answer</h1>
 
-        <!-- Small comment below the heading -->
-        <p class="comment">Please enter an attack scenario and question first</p>
-
         <form method="POST" action="{% url 'ask_me:qa' %}">
             {% csrf_token %}
             <div class="form-group">
-                <div class="input-block">
-                    <label for="scenario">Enter Scenario:</label>
-                    <textarea id="scenario" name="scenario" rows="6" class="form-control" placeholder="Type or paste the scenario here..." required></textarea>
-                </div>
-                <div class="input-block">
+                <div class="question-block">
                     <label for="question">Enter Question:</label>
                     <textarea id="question" name="question" rows="6" class="form-control" placeholder="Type or paste your question here..." required></textarea>
                 </div>
@@ -29,6 +22,11 @@
             <h3>Answer:</h3>
             <div class="answer-block">
                 <p>{{ answer }}</p>
+                <form method="POST" action="{% url 'ask_me:qa' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="question" value="{{ question }}">
+                    <button type="submit" class="btn btn-secondary">Get Answer Again</button>
+                </form>
             </div>
         {% endif %}
     </div>

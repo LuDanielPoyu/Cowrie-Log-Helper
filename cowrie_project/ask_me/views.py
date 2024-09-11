@@ -40,20 +40,23 @@ def classification_view(request):
 
 def qa_view(request):
     answer = None
+    question = None
+    
     if request.method == 'POST':
-        scenario = request.POST.get('scenario')
         question = request.POST.get('question')
 
         backend_url = "https://cfd5-34-74-82-165.ngrok-free.app"  # Replace with your Flask backend URL
-        response = requests.post(backend_url, json={'scenario': scenario, 'question': question})
+        response = requests.post(backend_url, json={'question': question})
 
         if response.status_code == 200:
             answer = response.json().get('answer')
 
-    return render(request, 'ask_me/qa.html', {'answer': answer})
+    return render(request, 'ask_me/qa.html', {'answer': answer, 'question': question})
 
 def summary_view(request):
     summary = None
+    paragraph = None
+
     if request.method == 'POST':
         paragraph = request.POST.get('paragraph')
 
@@ -61,9 +64,9 @@ def summary_view(request):
         
         try:
             response = requests.post(backend_url, json={'paragraph': paragraph})
-            response.raise_for_status() 
+            response.raise_for_status()
             summary = response.json().get('summary')
         except requests.RequestException as e:
             print(f"Request failed: {e}")
 
-    return render(request, 'ask_me/summary.html', {'summary': summary})
+    return render(request, 'ask_me/summary.html', {'summary': summary, 'paragraph': paragraph})

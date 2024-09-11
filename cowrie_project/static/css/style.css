@@ -35,12 +35,29 @@ h1 {
 }
 
 /* Layout for QA page */
+.question-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%; /* Adjust width as needed */
+    max-width: 600px; /* Set a maximum width */
+    margin: 0 auto; /* Center horizontally */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
 .input-block {
     width: 48%;
     display: inline-block;
     vertical-align: top;
     margin-right: 2%;
 }
+
 
 .input-block:last-child {
     margin-right: 0;
