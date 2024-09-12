@@ -8,9 +8,26 @@
     <title>Register</title>
     <link rel="stylesheet" href={% static 'css/style.css' %}>
 </head>
+
+<!-- <body>
+    <div class="container">
+        <h1>Register as our new user</h1>
+        <form class="form-with-validation" action="users/register" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button class="form-submit">Submit</button>
+        </form>>
+    </div>
+</body> -->
+
 <body>
     <div class="container">
-        <h1>Please Register Here</h1>
+        <h1>Register</h1>
+        <form method="post" action="{% url 'users:register' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
     </div>
 </body>
 </html>
