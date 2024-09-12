@@ -8,9 +8,15 @@
     <title>Register</title>
     <link rel="stylesheet" href={% static 'css/style.css' %}>
 </head>
-<body>
+
+<body></body>
     <div class="container">
-        <h1>Please Login Here</h1>
+        <h1>User Login</h1>
+        <form method="post" action="{% url 'users:login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
     </div>
 </body>
 </html>
