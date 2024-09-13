@@ -1,4 +1,6 @@
 /* Reset default browser styling */
+
+
 * {
     margin: 0;
     padding: 0;
@@ -9,9 +11,11 @@
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background-color: #e9ecef;
-    color: #333;
+    color: #de7676;
     line-height: 1.6;
+    text-align: center;
     padding: 20px;
+
 }
 
 /* Container styling */
@@ -100,13 +104,13 @@ textarea:focus {
 
 /* Button styling */
 button {
-    display: block;
-    width: 100%;
+    display: inline-block;
+    width: 50%;
     font-size: 18px;
     padding: 12px;
     border: none;
     border-radius: 8px;
-    background-color: #007bff;
+    background-color: #ddd;
     color: #fff;
     cursor: pointer;
     margin-bottom: 20px;
@@ -116,6 +120,12 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+/* Ensure button link styles are correct */
+button-link {
+    text-decoration: none; /* Remove underline */
+}
+
 
 /* Flexbox layout for form fields */
 .form-flex {
