@@ -8,6 +8,15 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
 
+#
+from django.shortcuts import render
+
+def classify_log(request):
+    return render(request, 'your_help_coach/classify_log.html')
+
+
+#
+
 def register_view(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)

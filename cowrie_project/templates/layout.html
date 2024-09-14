@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Website{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,18 +27,30 @@
         nav {
             background-color: #444;
             padding: 10px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Space between logo and menu items */
         }
-        nav a {
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 40px; /* Adjust size as needed */
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        .nav-links a {
             color: #fff;
             text-decoration: none;
             margin: 0 15px;
         }
-        nav a:hover {
+        .nav-links a:hover {
             text-decoration: underline;
         }
         .dropdown {
-            display: inline-block;
             position: relative;
         }
         .dropdown-content {
@@ -85,27 +98,41 @@
     </header>
     
     <nav>
-        <a href="{% url 'homepage_view' %}">Home</a>
-        <a href="{% url 'about_view' %}">About</a>
-        <a href="{% url 'users:login' %}">Login</a>
-        <a href="{% url 'users:register' %}">Register</a>
-        
-        <!-- Dropdown Menu for "Ask Me" -->
-        <div class="dropdown">
-            <a href="#">Ask Me</a>
-            <div class="dropdown-content">
-                <a href="{% url 'ask_me:classification' %}">Classification</a>
-                <a href="{% url 'ask_me:qa' %}">QA</a>
-                <a href="{% url 'ask_me:summary' %}">Summary</a>
-            </div>
+        <div class="logo">
+            <img src="{% static 'images/temporary_logo.png' %}" alt="Logo">
         </div>
+        <div class="nav-links">
+            <a href="{% url 'homepage_view' %}">Home</a>
+            <a href="{% url 'about_view' %}">About</a>
+            
+            <!-- Dropdown Menu for "Ask Me" -->
+            <div class="dropdown">
+                <a href="#">Ask Me</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'ask_me:classification' %}">Classification</a>
+                    <a href="{% url 'ask_me:qa' %}">QA</a>
+                    <a href="{% url 'ask_me:summary' %}">Summary</a>
+                </div>
+            </div>
 
-        <!-- Dropdown Menu for "Your Help Coach" -->
-        <div class="dropdown">
-            <a href="#">Help Coach</a>
-            <div class="dropdown-content">
-                <a href="{% url 'your_help_coach:classify_log' %}">Classify Log</a>
-                <a href="{% url 'your_help_coach:attack_suggestion' %}">Attack Suggestion</a>
+            <!-- Dropdown Menu for "Your Help Coach" -->
+            <div class="dropdown">
+                <a href="#">Help Coach</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'your_help_coach:classify_log' %}">Classify Log</a>
+                    <a href="{% url 'your_help_coach:attack_suggestion' %}">Attack Suggestion</a>
+                </div>
+            </div>
+
+            <!-- Dropdown Menu for "Login/Register" -->
+            <div class="dropdown">
+                <a href="#">
+                    <img src="{% static 'images/login.png' %}" alt="Login" style="height: 30px; vertical-align: middle;">
+                </a>
+                <div class="dropdown-content">
+                    <a href="{% url 'users:login' %}">Login</a>
+                    <a href="{% url 'users:register' %}">Register</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -117,7 +144,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 My Website</p>
+        <p>&copy; 2024 GroupXX</p>
     </footer>
 </body>
 </html>
