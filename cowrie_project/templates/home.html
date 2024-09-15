@@ -1,7 +1,5 @@
 {% extends 'layout.html' %}
-
 {% load static %}
-
 {% block content %}
     <h1>Brandname</h1>
 
@@ -9,13 +7,15 @@
     <img src="{% static 'images/temporary_logo.png' %}" alt="logo pic" width="200" height="200">
 
     <!-- Custom body content -->
-    <p>Hello, world! We are GroupXX from NCCU</p>
+    <p>Hello, world! 
+        <br>
+         We are GroupXX from NCCU</p>
     
     <br> 
     
     <!-- Link to Classify Log page with button -->
     <a href="{% url 'your_help_coach:classify_log' %}">
-        <button class="btn btn-primary">START!</button>
+        <button>START!</button>
     </a>
 {% endblock content %}
 
