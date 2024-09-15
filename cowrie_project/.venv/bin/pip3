@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/Users/danielpoyu6/Desktop/Group13 Project/cowrie_project/.venv/bin/python" "$0" "$@"
-' '''
+#!/Users/claudiahuang/Cowrie_Log_Helper/cowrie_project/.venv/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys
