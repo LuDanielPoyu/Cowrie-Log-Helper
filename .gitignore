@@ -8,6 +8,7 @@ db.sqlite3
 
 # Environment
 .env
+.venv/
 venv/
 
 # VSCode settings
