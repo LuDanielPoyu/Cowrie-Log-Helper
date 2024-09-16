@@ -22,7 +22,7 @@ def classification_view(request):
             'kexAlgs': request.POST.get('kexAlgs')
         }
 
-        backend_url = "https://your-flask-backend-url"  # Replace with your Flask backend URL
+        backend_url = "https://cfd5-34-74-82-165.ngrok-free.app"  # Replace with your Flask backend URL
         response = requests.post(backend_url, json=data)
 
         if response.status_code == 200:
