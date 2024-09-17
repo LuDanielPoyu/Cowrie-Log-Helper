@@ -19,7 +19,7 @@ body {
 
 /* Container styling */
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 30px;
     background-color: #ffffff;
@@ -44,7 +44,7 @@ h1 {
     align-items: center;
     justify-content: center;
     width: 80%; /* Adjust width as needed */
-    max-width: 600px; /* Set a maximum width */
+    max-width: 1200px; /* Set a maximum width */
     margin: 0 auto; /* Center horizontally */
     padding: 20px;
     border: 1px solid #ddd;
