@@ -6,12 +6,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href={% static 'css/style.css' %}>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    {% block content %}
     <div class="container">
-        <h1>Do attack suggestion here</h1>
+        <h1>Personal Attack Diagnosis Coach</h1>
+        <p class="comment">Please check your Cowrie log data and enter</p>
+
+        <!-- Form to input parameters -->
+        <form method="POST" action="{% url 'ask_me:classification' %}">
+            {% csrf_token %}
+            <div class="form-flex">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="input">Input:</label>
+                    <input type="text" id="input" name="input" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="protocol">Protocol:</label>
+                    <input type="text" id="protocol" name="protocol" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Duration:</label>
+                    <input type="text" id="duration" name="duration" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="data">Data:</label>
+                    <input type="text" id="data" name="data" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="keyAlgs">Key Algorithms:</label>
+                    <input type="text" id="keyAlgs" name="keyAlgs" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <input type="text" id="message" name="message" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventid">Event ID:</label>
+                    <input type="text" id="eventid" name="eventid" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="kexAlgs">Key Exchange Algorithms:</label>
+                    <input type="text" id="kexAlgs" name="kexAlgs" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Get Cowrie Log Attack Type</button>
+            </div>
+        </form>
+        
+        <!-- Display result -->
+        <div class="form-group result-display">
+            <label for="encounteredAttack">The attack you encountered:</label>
+            <input type="text" id="encounteredAttack" name="encounteredAttack" value="newCowrie.client.kex" class="form-control" readonly>
+        </div>
+
+     
+        
     </div>
+    {% endblock %}
 </body>
 </html>
