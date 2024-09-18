@@ -35,7 +35,7 @@
             color: #000000;
             display: flex;
             flex-direction: column;
-            width: 250px; /* Width of the sidebar */
+            width: 200px; /* Width of the sidebar */
             position: fixed; /* Fixed position for sidebar */
             height: 100%; /* Full height */
             top: 0;
@@ -120,11 +120,13 @@
 
         .container {
             /* margin-left: 270px; /* Offset for the sidebar */
-            position: center;
+            position: relative;
             padding: 20px;
-            max-width: calc( 600px); /* Full width minus sidebar width */
+            max-width: 1200px; /* Full width minus sidebar width */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: calc(80% - 200px);
+            left: 150px;
         }
         footer {
             background-color: #333;
@@ -132,15 +134,15 @@
             text-align: center;
             padding: 10px 0;
             position: fixed;
-            width: calc(100% - 250px); /* Adjust width considering the sidebar */
+            width: calc(100% - 200px); /* Adjust width considering the sidebar */
             bottom: 0;
-            left: 250px; /* Adjust position considering the sidebar */
+            left: 200px; /* Adjust position considering the sidebar */
         }
 
         /* Button styling */
         button {
-            display: inline-block;
-            position: inline-block;
+            /*display: inline-block;*/
+            position: center;
             width: 30%;
             font-size: 18px;
             padding: 12px;
@@ -164,13 +166,16 @@
 
         /* Style the form container */
         form {
+            position: relative;
             text-align: left; /* Align text to the left */
-            max-width: 600px; /* Set a maximum width */
+            width: 900px; /* Set a maximum width */
             margin: 0 auto; /* Center the form container on the page */
-            padding: 20px; /* Add some padding */
+            padding: 10px; /* Add some padding */
             background-color: #ffffff; /* Optional: Set a background color */
             border-radius: 10px; /* Optional: Add rounded corners */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for visual separation */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+         /* Optional: Add a shadow for visual separation */
+
         }
     </style>
 </head>

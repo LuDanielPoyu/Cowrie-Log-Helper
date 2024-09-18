@@ -3,7 +3,7 @@
 {% block title %}Classification{% endblock %}
 
 {% block content %}
-    <div class="container">
+    <!-- <div class="container"> -->
         <h1>Cowrie Log Attack Type Classification</h1>
 
         <!-- Small comment below the heading -->
@@ -50,7 +50,9 @@
                     <input type="text" id="kexAlgs" name="kexAlgs" class="form-control" required>
                 </div>
             </div>
+           
             <button type="submit" class="btn btn-primary">Get Cowrie Log Attack Type</button>
+            
         </form>
 
         <!-- Display the classification result -->
@@ -65,6 +67,6 @@
                 <p>{{ description }}</p>
             </div>
         {% endif %}
-    </div>
+    <!--</div>-->
 {% endblock %}
 

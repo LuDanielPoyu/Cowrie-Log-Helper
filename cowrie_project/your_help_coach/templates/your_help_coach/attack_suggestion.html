@@ -10,7 +10,7 @@
 </head>
 <body>
     {% block content %}
-    <div class="container">
+    
         <h1>Personal Attack Diagnosis Coach</h1>
         <p class="comment">Please check your Cowrie log data and enter</p>
 
@@ -54,20 +54,21 @@
                     <label for="kexAlgs">Key Exchange Algorithms:</label>
                     <input type="text" id="kexAlgs" name="kexAlgs" class="form-control" required>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Get Cowrie Log Attack Type</button>
+                
+                <button type="submit">Get Cowrie Log Attack Type</button>
+                <div>
+                    <h1>The attack you encountered:</h1>
+                    <input type="text" id="encounteredAttack" name="encounteredAttack" value="newCowrie.client.kex" class="form-control" readonly>
+                    <button type="submit">Submit</button>
+                </div>    
+                
             </div>
         </form>
         
         <!-- Display result -->
-        <div class="form-group result-display">
-            <label for="encounteredAttack">The attack you encountered:</label>
-            <input type="text" id="encounteredAttack" name="encounteredAttack" value="newCowrie.client.kex" class="form-control" readonly>
-        </div>
-
-     
         
-    </div>
+        
+    
     {% endblock %}
 </body>
 </html>
