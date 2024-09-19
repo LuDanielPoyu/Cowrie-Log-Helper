@@ -35,7 +35,7 @@
             color: #000000;
             display: flex;
             flex-direction: column;
-            width: 250px; /* Width of the sidebar */
+            width: 150px; /* Width of the sidebar */
             position: fixed; /* Fixed position for sidebar */
             height: 100%; /* Full height */
             top: 0;
@@ -72,12 +72,13 @@
         }
         .dropdown {
             position: relative;
+            max-width: 100px;
         }
         .dropdown-content {
             display: none;
             position: absolute;
             background-color: #00CCFF;
-            min-width: 160px;
+            width: 100px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             z-index: 1;
         }
@@ -117,15 +118,18 @@
         }
 
 
-
         .container {
             /* margin-left: 270px; /* Offset for the sidebar */
             position: center;
             padding: 20px;
-            max-width: calc( 600px); /* Full width minus sidebar width */
+            width: 80%; /* Use the full width of the screen */
+            max-width: none; /* Remove any max-width constraints */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* New styles to move the container */
+            transform: translateX(60px); /* Move 100px to the left */
         }
+        
         footer {
             background-color: #333;
             color: #fff;
@@ -165,8 +169,8 @@
         /* Style the form container */
         form {
             text-align: left; /* Align text to the left */
-            max-width: 600px; /* Set a maximum width */
-            margin: 0 auto; /* Center the form container on the page */
+            max-width: 1200px; /* Set a maximum width */
+            margin:  auto; /* Center the form container on the page */
             padding: 20px; /* Add some padding */
             background-color: #ffffff; /* Optional: Set a background color */
             border-radius: 10px; /* Optional: Add rounded corners */
