@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Attack Diagnosis Coach</title>
 </head>
 <body>
     {% block content %}
@@ -14,10 +15,11 @@
         <h1>Personal Attack Diagnosis Coach</h1>
         <p class="comment">Please check your Cowrie log data and enter</p>
 
-        <!-- Form to input parameters -->
-        <form method="POST" action="{% url 'ask_me:classification' %}">
+        <!-- Form to input parameters and get diagnosis -->
+        <form method="POST" action="{% url 'your_help_coach:attack_suggestion'%}">
             {% csrf_token %}
             <div class="form-flex">
+                <!-- 表單輸入欄位 -->
                 <div class="form-group">
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username" class="form-control" required>
@@ -54,20 +56,24 @@
                     <label for="kexAlgs">Key Exchange Algorithms:</label>
                     <input type="text" id="kexAlgs" name="kexAlgs" class="form-control" required>
                 </div>
-                
-                <button type="submit">Get Cowrie Log Attack Type</button>
-                <div>
-                    <h1>The attack you encountered:</h1>
-                    <input type="text" id="encounteredAttack" name="encounteredAttack" value="newCowrie.client.kex" class="form-control" readonly>
-                    <button type="submit">Submit</button>
-                </div>    
-                
             </div>
+
+            <!-- 顯示 attack_type 和結果區塊 -->
+            <div class="form-group">
+                <h1>The attack you encountered:</h1>
+                <input type="text" id="encounteredAttack" name="encounteredAttack" value="{{ attack_type }}" class="form-control" readonly>
+                
+                <!-- 如果有 attack_type，就顯示結果區塊 -->
+                {% if attack_type %}
+                <div class="result-block">
+                    <p>{{ attack_type }}</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- 提交表單 -->
+            <button type="submit">Get Your Diagnosis</button>
         </form>
-        
-        <!-- Display result -->
-        
-        
     
     {% endblock %}
 </body>

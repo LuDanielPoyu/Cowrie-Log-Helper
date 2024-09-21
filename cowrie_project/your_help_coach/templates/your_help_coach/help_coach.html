@@ -1,0 +1,54 @@
+{% extends "layout2.html" %}
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+        {% block content %}
+        
+            <h1>Your Personal Attack Diagnosis </h1>
+           
+            <!-- Form to input parameters -->
+            <form method="POST" action="{% url 'your_help_coach:help_coach' %}">
+                {% csrf_token %}
+               
+                <div class="form-group">
+                    <label for="encounteredAttack">Attack Type:</label>
+                    <input type="text" id="encounteredAttack" name="encounteredAttack" value="{{ attack_type }}" class="form-control" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="Affected">Affected:</label>
+                    <input type="text" id="Affected" name="Affected" value="{{ affected }}" class="form-control" readonly>
+                </div>
+            
+                <div class="form-group">
+                    <label for="Mitigation">Mitigation:</label>
+                    <input type="text" id="Mitigation" name="Mitigation" value="{{ mitigation }}" class="form-control" readonly>
+                </div>
+            
+                <div class="form-group">
+                    <label for="Solutions">Solutions:</label>
+                    <input type="text" id="Solutions" name="Solutions" value="{{ solutions }}" class="form-control" readonly>
+                </div>
+            
+                <div class="form-group">
+                    <label for="LearnMore">Learn More:</label>
+                    <input type="text" id="LearnMore" name="LearnMore" value="{{ learn_more }}" class="form-control" readonly>
+                </div>  
+            </form>
+                   
+                
+            
+            
+            
+        
+        {% endblock %}
+    </body>
+    </html>
+    

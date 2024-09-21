@@ -142,10 +142,10 @@
         /* Button styling */
         button {
             /*display: inline-block;*/
-            position: center;
+            position: relative;
             width: 30%;
             font-size: 18px;
-            padding: 12px;
+            padding: 10px;
             border: none;
             border-radius: 8px;
             background-color: #35d7ff;
@@ -168,7 +168,7 @@
         form {
             position: relative;
             text-align: left; /* Align text to the left */
-            width: 900px; /* Set a maximum width */
+            width: calc(100% - 200px);; /* Set a maximum width */
             margin: 0 auto; /* Center the form container on the page */
             padding: 10px; /* Add some padding */
             background-color: #ffffff; /* Optional: Set a background color */
@@ -181,8 +181,8 @@
 </head>
 
 <body>
-    <header>
-        <h1>My Website</h1>
+    <header style=" right:200px">
+        <h4>My Website</h4>
     </header>
     
     <nav>
