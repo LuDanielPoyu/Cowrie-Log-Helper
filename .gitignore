@@ -7,10 +7,11 @@ db.sqlite3
 /media
 
 # Environment
-.env
+*.env
 .venv
 .venv/
 venv/
+pyvenv.cfg
 
 # VSCode settings
 .vscode/
