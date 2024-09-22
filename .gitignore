@@ -12,6 +12,8 @@ db.sqlite3
 .venv/
 venv/
 pyvenv.cfg
+.venv/pyvenv.cfg
 
 # VSCode settings
 .vscode/
+
