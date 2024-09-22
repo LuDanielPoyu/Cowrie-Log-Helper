@@ -60,7 +60,7 @@ def summary_view(request):
     if request.method == 'POST':
         paragraph = request.POST.get('paragraph')
 
-        backend_url = "https://cfd5-34-74-82-165.ngrok-free.app"  # Replace with your Flask backend URL
+        backend_url = "https://ewe-happy-centrally.ngrok-free.app/summarize"  # Replace with your Flask backend URL
         
         try:
             response = requests.post(backend_url, json={'paragraph': paragraph})
