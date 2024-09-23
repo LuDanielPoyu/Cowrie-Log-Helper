@@ -8,4 +8,9 @@ class AttackType(models.Model):
     def __str__(self):
         return self.attack_type
 
+class Tips(models.Model):
+    content = models.TextField()
+
+    def __str__(self):
+        return self.content
 
