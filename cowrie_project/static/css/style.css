@@ -151,3 +151,80 @@ textarea:focus {
     }
 }
 
+/* Center the loading section */
+.loading-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;  /* Full viewport height */
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for focus */
+}
+
+/* Box that contains the loading message and the tip */
+.loading-box {
+    background-color: #fff;  /* White box for better contrast */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Loading message (with dots) */
+.loading-top {
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 1.8em;
+    color: #333;
+    margin: 0;
+}
+
+#loading-dots {
+    font-size: 1.5em;
+    color: #3498db;
+    animation: blink 1s infinite; /* Dots will blink */
+}
+
+/* Animation for blinking dots */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Tip box */
+.tip-block {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    max-width: 100%;
+    text-align: center;
+}
+
+/* Tip text styling */
+#tip-text {
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* General loading text styling */
+.loading-container h3 {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.loading-container p {
+    font-size: 1.2em;
+    color: #333;
+    font-style: italic;
+}

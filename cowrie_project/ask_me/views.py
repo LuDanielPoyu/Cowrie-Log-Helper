@@ -1,8 +1,8 @@
 from django.shortcuts import render
-import requests
+import requests, random, time
 from django.http import JsonResponse
-from .models import AttackType  
-
+from .models import AttackType, Tips
+import json
 
 # Create your views here.
 def classification_view(request):
@@ -42,16 +42,24 @@ def qa_view(request):
     answer = None
     question = None
     
+    tips = list(Tips.objects.all())
+    tips_data = [{'content': tip.content} for tip in tips] 
+    
     if request.method == 'POST':
         question = request.POST.get('question')
-
-        backend_url = "https://cfd5-34-74-82-165.ngrok-free.app"  # Replace with your Flask backend URL
+        backend_url = "https://cfd5-34-74-82-165.ngrok-free.app" 
         response = requests.post(backend_url, json={'question': question})
-
         if response.status_code == 200:
             answer = response.json().get('answer')
 
-    return render(request, 'ask_me/qa.html', {'answer': answer, 'question': question})
+    random.shuffle(tips)
+
+    return render(request, 'ask_me/qa.html', {
+        'answer': answer, 
+        'question': question, 
+        'tips': json.dumps(tips_data)  
+    })
+
 
 def summary_view(request):
     summary = None
