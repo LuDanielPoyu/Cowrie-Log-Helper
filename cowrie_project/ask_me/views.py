@@ -22,7 +22,7 @@ def classification_view(request):
             'kexAlgs': request.POST.get('kexAlgs')
         }
 
-        backend_url = "https://cfd5-34-74-82-165.ngrok-free.app"  # Replace with your Flask backend URL
+        backend_url = "https://ewe-happy-centrally.ngrok-free.app/classify"  # Replace with your Flask backend URL
         response = requests.post(backend_url, json=data)
 
         if response.status_code == 200:
@@ -47,7 +47,7 @@ def qa_view(request):
     
     if request.method == 'POST':
         question = request.POST.get('question')
-        backend_url = "https://cfd5-34-74-82-165.ngrok-free.app" 
+        backend_url = "https://ewe-happy-centrally.ngrok-free.app/qa" 
         response = requests.post(backend_url, json={'question': question})
         if response.status_code == 200:
             answer = response.json().get('answer')
