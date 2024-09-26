@@ -8,6 +8,7 @@ db.sqlite3
 
 # Environment
 .venv/
+cowrie_project/.venv/
 
 # VSCode settings
 .vscode/
