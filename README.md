@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This web application is designed to provide classification and analysis of **cowrie log data** by integrating a **pre-trained T5 downstream model** via a Flask API. The project consists of two main sections: "Ask Me" and "Your Help Coach," each offering specific functionalities to classify log data and provide relevant suggestions for cyber attack mitigation.
+This web application is designed to provide analysis of **cowrie log data** by integrating **pre-trained T5 downstream models** via a Flask API. The project consists of two main sections: "Ask Me" and "Your Help Coach," each offering specific functionalities to classify log data and provide relevant suggestions for cyber attack mitigation.
 
 The frontend is developed using **Django** and interacts with the backend via a **Flask API** to fetch results from a trained T5 model. This README will guide you through the setup, installation, and usage of the project.
 
@@ -14,10 +14,7 @@ The frontend is developed using **Django** and interacts with the backend via a 
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Setup Instructions](#setup-instructions)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-
+  
 ---
 
 ## Features
@@ -59,9 +56,3 @@ Make sure you have the following installed:
 - Django 4.x
 - Flask
 - Virtual environment tools (like `venv` or `virtualenv`)
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-username/cowrie-log-classification.git
-cd cowrie-log-classification
