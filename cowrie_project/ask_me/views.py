@@ -60,7 +60,6 @@ def qa_view(request):
         'tips': json.dumps(tips_data)  
     })
 
-
 def summary_view(request):
     summary = None
     paragraph = None

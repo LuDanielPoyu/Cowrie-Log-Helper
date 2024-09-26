@@ -5,7 +5,6 @@
 {% block content %}
     <div class="container">
         <h1>Question and Answer</h1>
-
         <form id="qa-form" method="POST" action="{% url 'ask_me:qa' %}">
             {% csrf_token %}
             <div class="form-group">
@@ -23,6 +22,8 @@
                 <div class="loading-top">
                     <h3>Loading, here's a tip<span id="loading-dots"> ...</span></h3>
                 </div>
+                <!-- Loader Icon -->
+                <div class="loader"></div>
                 <div class="loading-bottom">
                     <div class="tip-block">
                         <p id="tip-text"> <span id="dynamic-tip">Stay curious!</span></p>

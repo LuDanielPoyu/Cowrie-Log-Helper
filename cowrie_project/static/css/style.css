@@ -153,24 +153,60 @@ textarea:focus {
 
 /* Center the loading section */
 .loading-container {
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;  /* Full viewport height */
     text-align: center;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for focus */
+    background-color: transparent; /* Make the background transparent */
+    position: fixed; /* Make it overlay the page */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999; /* Ensures it's above all other content */
 }
 
 /* Box that contains the loading message and the tip */
 .loading-box {
-    background-color: #fff;  /* White box for better contrast */
+    background-color: #fff;  /* White box for contrast */
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
     max-width: 400px;
     width: 100%;
     text-align: center;
+}
+
+/* Loader Icon */
+.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid #514b82;
+    margin: 20px auto; /* Center loader horizontally inside its container */
+    animation:
+      l20-1 0.8s infinite linear alternate,
+      l20-2 1.6s infinite linear;
+}
+
+/* Keyframes for loader animation */
+@keyframes l20-1 {
+     0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
+     12.5% {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100%   0%, 100%   0%, 100%   0% )}
+     25%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 100% 100%, 100% 100% )}
+     50%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
+     62.5% {clip-path: polygon(50% 50%,100%    0, 100%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
+     75%   {clip-path: polygon(50% 50%,100% 100%, 100% 100%,  100% 100%, 100% 100%, 50%  100%, 0%   100% )}
+     100%  {clip-path: polygon(50% 50%,50%  100%,  50% 100%,   50% 100%,  50% 100%, 50%  100%, 0%   100% )}
+}
+
+@keyframes l20-2 { 
+    0%    {transform:scaleY(1)  rotate(0deg)}
+    49.99%{transform:scaleY(1)  rotate(135deg)}
+    50%   {transform:scaleY(-1) rotate(0deg)}
+    100%  {transform:scaleY(-1) rotate(-135deg)}
 }
 
 /* Loading message (with dots) */
@@ -228,3 +264,4 @@ h3 {
     color: #333;
     font-style: italic;
 }
+
