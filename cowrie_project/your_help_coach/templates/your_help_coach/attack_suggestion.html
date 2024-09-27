@@ -1,21 +1,16 @@
 {% extends "layout2.html" %}
-<!DOCTYPE html>
-{% load static %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    {% block content %}
+{% block title %}Classification{% endblock %}
+
+{% block content %}
     <div class="container">
-        <h1>Personal Attack Diagnosis Coach</h1>
-        <p class="comment">Please check your Cowrie log data and enter</p>
+        <h1>Cowrie Log Attack Type Classification</h1>
+
+        <!-- Small comment below the heading -->
+        <p class="comment">Please check your cowrie log data and enter</p>
 
         <!-- Form to input parameters -->
-        <form method="POST" action="{% url 'ask_me:classification' %}">
+        <form method="POST" action="{% url 'your_help_coach:attack_suggestion' %}">
             {% csrf_token %}
             <div class="form-flex">
                 <div class="form-group">
@@ -54,20 +49,24 @@
                     <label for="kexAlgs">Key Exchange Algorithms:</label>
                     <input type="text" id="kexAlgs" name="kexAlgs" class="form-control" required>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Get Cowrie Log Attack Type</button>
             </div>
+            <button type="submit" class="btn btn-primary">Get Cowrie Log Attack Type</button>
         </form>
-        
-        <!-- Display result -->
-        <div class="form-group result-display">
-            <label for="encounteredAttack">The attack you encountered:</label>
-            <input type="text" id="encounteredAttack" name="encounteredAttack" value="newCowrie.client.kex" class="form-control" readonly>
-        </div>
 
-     
+        <!-- Display the classification result -->
+        {% if attack_type %}
+            <hr>
+            <h3>Attack Type:</h3>
+            <div class="result-block">
+                <p>{{ attack_type }}</p>
+            </div>
         
+            <!-- New form for transitioning to help_coach page -->
+            <form method="POST" action="{% url 'your_help_coach:help_coach' %}">
+                {% csrf_token %}
+                <input type="hidden" name="encounteredAttack" value="{{ attack_type }}">
+                <button type="submit" class="btn btn-success">Get personal Diagnosis</button>
+            </form>
+        {% endif %}
     </div>
-    {% endblock %}
-</body>
-</html>
+{% endblock %}
