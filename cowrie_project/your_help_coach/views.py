@@ -8,13 +8,10 @@ def attack_suggestion_view(request):
     attack_type = None
     
     if request.method == 'POST':
-        # Collect form data and assign "nan" to any field that is empty
         fields = ['username', 'input', 'protocol', 'duration', 'data', 'keyAlgs', 'message', 'eventid', 'kexAlgs']
         
-        # Create the data dictionary, assigning "nan" to empty fields
         data = {field: request.POST.get(field, 'nan') or 'nan' for field in fields}
 
-        # Send the request to the backend with the data
         backend_url = "https://ewe-happy-centrally.ngrok-free.app/classify"  # Replace with your Flask backend URL
         response = requests.post(backend_url, json=data)
 
