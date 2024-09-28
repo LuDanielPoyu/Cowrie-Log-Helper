@@ -5,23 +5,19 @@ from .models import AttackType, Tips
 import json
 
 # Create your views here.
+
 def classification_view(request):
     attack_type = None
     description = None
     
     if request.method == 'POST':
-        data = {
-            'username': request.POST.get('username'),
-            'input': request.POST.get('input'),
-            'protocol': request.POST.get('protocol'),
-            'duration': request.POST.get('duration'),
-            'data': request.POST.get('data'),
-            'keyAlgs': request.POST.get('keyAlgs'),
-            'message': request.POST.get('message'),
-            'eventid': request.POST.get('eventid'),
-            'kexAlgs': request.POST.get('kexAlgs')
-        }
+        # Collect form data and assign "nan" to any field that is empty
+        fields = ['username', 'input', 'protocol', 'duration', 'data', 'keyAlgs', 'message', 'eventid', 'kexAlgs']
+        
+        # Create the data dictionary, assigning "nan" to empty fields
+        data = {field: request.POST.get(field, 'nan') or 'nan' for field in fields}
 
+        # Send the request to the backend with the data
         backend_url = "https://ewe-happy-centrally.ngrok-free.app/classify"  # Replace with your Flask backend URL
         response = requests.post(backend_url, json=data)
 
@@ -35,8 +31,11 @@ def classification_view(request):
                 description = attack_type_entry.description
             except AttackType.DoesNotExist:
                 description = "No description available for this attack type."
+        else:
+            attack_type = "Error retrieving attack type from backend."
 
     return render(request, 'ask_me/classification.html', {'attack_type': attack_type, 'description': description})
+
 
 def qa_view(request):
     answer = None
