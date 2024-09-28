@@ -9,11 +9,12 @@
         <!-- Form to input paragraph -->
         <form method="POST" action="{% url 'ask_me:summary' %}">
             {% csrf_token %}
-            <div class="form-group">
+            <div class="form-flex">
                 <label for="paragraph">Please input cyber security related paragraph or sentences:</label>
-                <textarea id="paragraph" name="paragraph" rows="6" class="form-control" placeholder="Please input your question..." required></textarea>
+                <textarea id="paragraph" name="paragraph" rows="6" class="form-control" placeholder="Type or paste your paragraph here..." required>{{ paragraph }}</textarea>
+                <button type="submit" >Generate Summary</button>
             </div>
-            <button type="submit" class="btn btn-primary">Generate Summary</button>
+        
         </form>
 
         <!-- Display the generated summary -->
@@ -28,6 +29,7 @@
                 {% csrf_token %}
                 <input type="hidden" name="paragraph" value="{{ paragraph }}">
                 <button type="submit" class="btn btn-secondary">Generate Summary Again</button>
+            
             </form>
         {% endif %}
     </div>

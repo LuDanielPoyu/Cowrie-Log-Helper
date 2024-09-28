@@ -3,12 +3,13 @@
 __pycache__/
 
 # Django
-db.sqlite3
-/media
+# db.sqlite3
+# /media
 
 # Environment
 .venv/
 cowrie_project/.venv/
+.DS_Store
 
 # VSCode settings
 .vscode/
