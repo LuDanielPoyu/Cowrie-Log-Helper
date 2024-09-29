@@ -14,13 +14,15 @@
             margin: 0 auto;
             padding: 0;
             color: #000;
-            background-color: #F3EFEB;
+            background-color: #DCDCDC;
             display: flex;
             min-height: 100vh;
             flex-direction: column;
+            width: calc(100% - 100px); /* Use the full width of the screen */
+
         }
         header {
-            background-color: #F3EFEB;
+            background-color: #DCDCDC;
             color: #333;
             padding: 10px 0;
             text-align: center;
@@ -31,7 +33,7 @@
             font-size: 24px;
         }
         nav {
-            background-color:#A99985;
+            background-color:#6A8DB1;
             padding: 10px;
             color: #000000;
             display: flex;
@@ -67,7 +69,7 @@
             margin-bottom: 10px;
         }
         .nav-links a:hover {
-            background-color: #DAD2BC;
+            background-color: #386C91;
             color: #fff;
             border-radius: 5px;
         }
@@ -123,7 +125,7 @@
             /* margin-left: 270px; /* Offset for the sidebar */
             position: center;
             padding: 20px;
-            width: 80%; /* Use the full width of the screen */
+            width: calc(90% - 100px); /* Use the full width of the screen */
             max-width: none; /* Remove any max-width constraints */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -152,7 +154,7 @@
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background-color: #DAD2BC;
+            background-color: #6A8DB1;
             color: #000;
             cursor: pointer;
             margin-bottom: 20px;
@@ -160,7 +162,7 @@
         }
 
         button:hover {
-            background-color: #A99985;
+            background-color:#386C91;
         }
 
         /* Ensure button link styles are correct */
@@ -196,7 +198,7 @@
             <a href="{% url 'ask_me:classification' %}">Classification</a>
             <a href="{% url 'ask_me:qa' %}">QA</a>
             <a href="{% url 'ask_me:summary' %}">Summary</a>
-            <a href="{% url 'your_help_coach:attack_suggestion' %}">Attack Suggestion</a>
+            <a href="{% url 'your_help_coach:attack_suggestion' %}">Your Help Coach </a>
         </div>
 
         <!-- Recent History Section -->
@@ -225,7 +227,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 NCCUMIS GroupXX</p>
+        <p>&copy; 2024 Loglytics</p>
     </footer>
 </body>
 </html>

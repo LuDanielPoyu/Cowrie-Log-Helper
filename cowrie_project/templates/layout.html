@@ -13,10 +13,10 @@
             margin: 0;
             padding: 0;
             color: #000;
-            background-color: #D2F7FF;
+            background-color: #DCDCDC;
         }
         header {
-            background-color: #D2F7FF;
+            background-color: #DCDCDC;
             color: #333;
             padding: 10px 0;
             text-align: center;
@@ -26,7 +26,7 @@
             font-size: 24px;
         }
         nav {
-            background-color: #9EECff;
+            background-color: #6A8DB1;
             padding: 10px;
             color: #000000;
             display: flex;
@@ -59,7 +59,7 @@
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #00CCFF;
+            background-color: #386C91;
             min-width: 160px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             z-index: 1;
@@ -72,7 +72,7 @@
             text-align: left;
         }
         .dropdown-content a:hover {
-            background-color: #35D7FF;
+            background-color: #386C91;
         }
         .dropdown:hover .dropdown-content {
             display: block;
@@ -103,7 +103,7 @@
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background-color: #35d7ff;
+            background-color: #6A8DB1;
             color: #000;
             cursor: pointer;
             margin-bottom: 20px;
@@ -111,7 +111,7 @@
         }
 
         button:hover {
-            background-color: #00CCFF;
+            background-color: #386C91;
         }
 
         /* Ensure button link styles are correct */
@@ -139,7 +139,7 @@
 
 <body>
     <header>
-        <h1>My Website</h1>
+        
     </header>
     
     <nav>
@@ -162,7 +162,7 @@
 
             <!-- Dropdown Menu for "Your Help Coach" -->
             <div class="dropdown">
-                <a href="#">Attack Suggestion</a>
+                <a href="#">Your Help Coach</a>
                 <div class="dropdown-content">
                     <a href="{% url 'your_help_coach:attack_suggestion' %}">Detailed Suggestion</a>
                 </div>
@@ -188,7 +188,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 GroupXX</p>
+        <p>&copy; 2024 Loglytics</p>
     </footer>
 </body>
 </html>
