@@ -1,5 +1,4 @@
 {% extends 'layout.html' %}
-
 <!DOCTYPE html>
 {% load static %}
 
@@ -11,58 +10,33 @@
     <link rel="stylesheet"  type="text/css" href={% static 'css/style.css' %}>
 </head>
 
-<!-- <body>
-    <div class="container">
-        <h1>Register as our new user</h1>
-        <form class="form-with-validation" action="users/register" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <button class="form-submit">Submit</button>
-        </form>>
-    </div>
-</body> -->
-
-<!-- <body>
-    <div class="container">
-        <h1>Register</h1>
-        <form method="post" action="{% url 'users:register' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-</body>
-</html> -->
-
 {% block content %}
-    <div class="content">
-        <h1>Register</h1>
-        <form method="post" action="{% url 'users:register' %}">
-            {% csrf_token %}
+<h1>Register</h1>
+<form method="post" action="{% url 'users:register' %}">
+    {% csrf_token %}
 
-            <!-- Loop through form fields -->
-            {% for field in form %}
-                <div class="form-group">
-                    <!-- Field label -->
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+    <!-- Loop through form fields -->
+    {% for field in form %}
+        <div class="form-group">
+            <!-- Field label -->
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
 
-                    <!-- Field widget (input) -->
-                    {{ field }}
+            <!-- Field widget (input) -->
+            {{ field }}
 
-                    <!-- Help text -->
-                    {% if field.help_text %}
-                        <small class="helptext">{{ field.help_text }}</small>
-                    {% endif %}
+            <!-- Help text -->
+            {% if field.help_text %}
+                <small class="helptext">{{ field.help_text }}</small>
+            {% endif %}
 
-                    <!-- Error message -->
-                    {% for error in field.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
-                </div>
+            <!-- Error message -->
+            {% for error in field.errors %}
+                <div class="error">{{ error }}</div>
             {% endfor %}
-
-            <button type="submit">Submit</button>
-        </form>
-        <p>Already have an account? <a href="{% url 'users:login' %}">Login here</a>.</p>
-    </div>
+        </div>
+    {% endfor %}
+    <button type="submit">Submit</button>
+</form>
+<br>
+<p>Already have an account? <a href="{% url 'users:login' %}">Login here</a>.</p>
 {% endblock content %}

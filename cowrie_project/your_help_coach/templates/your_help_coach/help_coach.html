@@ -10,49 +10,45 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    {% block content %}
+{% block content %}
+    <h1>Your Personal Attack Diagnosis</h1>
     
-    <div class="container">
-        <h1>Your Personal Attack Diagnosis</h1>
-        
-        <!-- Display the encountered attack type -->
-        <div class="form-group">
-            <label for="encounteredAttack">Attack Type:</label>
-            <input type="text" id="encounteredAttack" name="encounteredAttack" value="{{ attack_type }}" class="form-control" readonly>
-        </div>
-        
-        <!-- Display Affected -->
-        <div class="form-group">
-            <label for="affected">Affected:</label>
-            <textarea id="affected" name="affected" class="form-control" readonly>{{ affected }}</textarea>
-        </div>
+    <!-- Display the encountered attack type -->
+    <div class="form-group">
+        <label for="encounteredAttack">Attack Type:</label>
+        <input type="text" id="encounteredAttack" name="encounteredAttack" value="{{ attack_type }}" class="form-control" readonly>
+    </div>
+    
+    <!-- Display Affected -->
+    <div class="form-group">
+        <label for="affected">Affected:</label>
+        <textarea id="affected" name="affected" class="form-control" readonly>{{ affected }}</textarea>
+    </div>
 
-        <!-- Display Mitigation -->
-        <div class="form-group">
-            <label for="mitigation">Mitigation:</label>
-            <textarea id="mitigation" name="mitigation" class="form-control" readonly>{{ mitigation }}</textarea>
-        </div>
+    <!-- Display Mitigation -->
+    <div class="form-group">
+        <label for="mitigation">Mitigation:</label>
+        <textarea id="mitigation" name="mitigation" class="form-control" readonly>{{ mitigation }}</textarea>
+    </div>
 
-        <!-- Display Solutions -->
-        <div class="form-group">
-            <label for="solutions">Solutions:</label>
-            <textarea id="solutions" name="solutions" class="form-control" readonly>{{ solutions }}</textarea>
-        </div>
+    <!-- Display Solutions -->
+    <div class="form-group">
+        <label for="solutions">Solutions:</label>
+        <textarea id="solutions" name="solutions" class="form-control" readonly>{{ solutions }}</textarea>
+    </div>
 
-        <!-- Display Learn More Links (if any) -->
-        <div class="form-group">
-            <label for="learnMore">Learn More:</label>
-            {% if learn_more_links %}
-                <ul class="learn-more-list">
-                    {% for link in learn_more_links %}
-                        <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No additional information available.</p>
-            {% endif %}
-        </div>
-
+    <!-- Display Learn More Links (if any) -->
+    <div class="form-group">
+        <label for="learnMore">Learn More:</label>
+        {% if learn_more_links %}
+            <ul class="learn-more-list">
+                {% for link in learn_more_links %}
+                    <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No additional information available.</p>
+        {% endif %}
     </div>
 
     {% endblock %}
