@@ -28,10 +28,11 @@
         nav {
             background-color: #6A8DB1;
             padding: 10px;
-            color: #000000;
+            color: #ffffff;
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Space between logo and menu items */
+            justify-content: space-between; /* Space between left and right sections */
+            margin-top: -20px; /* 調整Y軸位置，根據需要調整數值 */
         }
         
         .logo {
@@ -39,23 +40,136 @@
             align-items: center;
         }
         .logo img {
-            height: 40px; /* Adjust size as needed */
+            width: 30px;
+            height: 38px; /* Adjust size as needed */
         }
         .nav-links {
             display: flex;
             align-items: center;
+            position: relative;
+            margin-right: auto; /* Move nav links to the left */
+            
         }
+
         .nav-links a {
-            color: #000;
+            color: #ffffff;
             text-decoration: none;
             margin: 0 15px;
         }
         .nav-links a:hover {
             text-decoration: underline;
         }
+
+        .nav-right {
+            display: flex; /* Align Login and Register to the right */
+            align-items: center;
+        }
+
+        .nav-right a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        .nav-right a:hover {
+            text-decoration: underline; /* 添加底線 */
+        }
+
+        .nav-right button {
+            background-color: #000; /* 按鈕背景顏色 */
+            color: #ffffff; /* 按鈕文字顏色 */
+            border: 0px; /* 去掉邊框 */
+            width: auto;
+            border-radius: 4px; /* 添加圓角 */
+            padding: 8px 12px; /* 按鈕內邊距 */
+            cursor: pointer; /* 鼠標懸停時顯示手形光標 */
+            transition: background-color 0.3s; /* 添加過渡效果 */
+            white-space: nowrap;
+            margin-top: 2px; /* 調整Y軸位置，根據需要調整數值 */
+        }
+
+        .nav-right button:hover {
+            background-color: #8ec1f5; /* 鼠標懸停時的背景顏色 */
+        }
+
+        .about-container {
+            display: flex;
+            width: auto;
+            height: auto;
+            justify-content: center;
+            gap: 20px; /* 控制區塊之間的間距 */
+            text-align: center;
+        }
+        
+        .about-section {
+            flex: 1;
+            padding: 20px;
+            border: 1px solid #ddd; /* 添加邊框以區分各區塊 */
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* 添加陰影 */
+            max-width: 300px; /* 控制區塊的最大寬度 */
+            text-align: center;
+        }
+
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            gap: 20px; /* 控制區塊之間的間距 */
+            margin-top: 20px;
+        }
+
+        .team-member {
+            position: relative;
+            width: 65px;
+            height: 65px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .team-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .team-photo:hover {
+            transform: scale(1.1); /* 鼠標懸停時圖片放大 */
+        }
+
+        .member-name {
+            position: absolute;
+            bottom: -25px; /* 顯示在頭像下方 */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #333;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .team-member:hover .member-name {
+            opacity: 1; /* 鼠標懸停時顯示名字 */
+        }
+
+        .contact-member {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            align-items: center; /* Center items horizontally */
+            text-align: center; /* Center text */
+            margin-top: 20px; /* Add space above the contact member block */
+        }
+
+        .contact-photo {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            transition: transform 0.3s ease-in-out;
+        }
+
         .dropdown {
             position: relative;
         }
+        
         .dropdown-content {
             display: none;
             position: absolute;
@@ -70,6 +184,7 @@
             text-decoration: none;
             display: block;
             text-align: left;
+            left: -50px; /* 向左移動 */
         }
         .dropdown-content a:hover {
             background-color: #386C91;
@@ -77,13 +192,17 @@
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
         .container {
-            max-width: 800px;
+            max-width: auto;
+            max-height: auto;
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 10px; /* 調整Y軸位置，根據需要調整數值 */
         }
+
         footer {
             background-color: #333;
             color: #fff;
@@ -93,7 +212,7 @@
             width: 100%;
             bottom: 0;
         }
-
+        
         /* Button styling */
         button {
             display: inline-block;
@@ -104,7 +223,7 @@
             border: none;
             border-radius: 8px;
             background-color: #6A8DB1;
-            color: #000;
+            color: #fff;
             cursor: pointer;
             margin-bottom: 20px;
             transition: background-color 0.3s ease;
@@ -119,8 +238,6 @@
             text-decoration: none; /* Remove underline */
         }
 
-
-
         /* Style the form container */
         form {
             text-align: center; /* Align text to the left */
@@ -130,12 +247,10 @@
             background-color: #ffffff; /* Optional: Set a background color */
             border-radius: 10px; /* Optional: Add rounded corners */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for visual separation */
+            margin-top: -20px; /* 調整Y軸位置，根據需要調整數值 */
         }
     </style>
 </head>
-
-
-
 
 <body>
     <header>
@@ -144,10 +259,11 @@
     
     <nav>
         <div class="logo">
-            <img src="{% static 'images/Logo.png' %}" alt="Logo">
+            <a href="{% url 'homepage_view' %}" >
+                <img src="{% static 'images/Logo2.png' %}">
+            </a>
         </div>
         <div class="nav-links">
-            <a href="{% url 'homepage_view' %}">Home</a>
             <a href="{% url 'about_view' %}">About</a>
             
             <!-- Dropdown Menu for "Ask Me" -->
@@ -167,17 +283,12 @@
                     <a href="{% url 'your_help_coach:attack_suggestion' %}">Detailed Suggestion</a>
                 </div>
             </div>
-
-            <!-- Dropdown Menu for "Login/Register" -->
-            <div class="dropdown">
-                <a href="#">
-                    <img src="{% static 'images/login.png' %}" alt="Login" style="height: 30px; vertical-align: middle;">
-                </a>
-                <div class="dropdown-content">
-                    <a href="{% url 'users:login' %}">Login</a>
-                    <a href="{% url 'users:register' %}">Register</a>
-                </div>
-            </div>
+        </div>
+        <div class="nav-right">
+            <a href="{% url 'users:login' %}">Login</a>
+            <button onclick="location.href='{% url 'users:register' %}'">
+                Join for Free
+            </button>
         </div>
     </nav>
 
@@ -188,7 +299,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 GroupXX</p>
+        <p>&copy; 2024 Loglytics</p>
     </footer>
 </body>
 </html>

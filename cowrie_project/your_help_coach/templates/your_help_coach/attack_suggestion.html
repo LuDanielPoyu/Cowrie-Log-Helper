@@ -3,70 +3,68 @@
 {% block title %}Classification{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Personal Attack Diagnosis Coach</h1>
+<h1>Personal Attack Diagnosis Coach</h1>
 
-        <!-- Small comment below the heading -->
-        <p class="comment">Please check your Cowrie log data and enter</p>
+<!-- Small comment below the heading -->
+<p class="comment">Please check your Cowrie log data and enter</p>
 
-        <!-- Form to input parameters -->
-        <form method="POST" action="{% url 'your_help_coach:attack_suggestion' %}">
+<!-- Form to input parameters -->
+<form method="POST" action="{% url 'your_help_coach:attack_suggestion' %}">
+    {% csrf_token %}
+    <div class="form-flex">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="input">Input:</label>
+            <input type="text" id="input" name="input" class="form-control" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="protocol">Protocol:</label>
+            <input type="text" id="protocol" name="protocol" class="form-control" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="duration">Duration:</label>
+            <input type="text" id="duration" name="duration" class="form-control" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="data">Data:</label>
+            <input type="text" id="data" name="data" class="form-control" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="keyAlgs">Key Algorithms:</label>
+            <input type="text" id="keyAlgs" name="keyAlgs" class="form-control" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="message">Message:</label>
+            <input type="text" id="message" name="message" class="form-control" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="eventid">Event ID:</label>
+            <input type="text" id="eventid" name="eventid" class="form-control" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="kexAlgs">Key Exchange Algorithms:</label>
+            <input type="text" id="kexAlgs" name="kexAlgs" class="form-control" placeholder="">
+        </div>
+    <button type="submit" class="btn btn-primary">Get personal Attack Diagnosis</button>
+</form>
+
+    <!-- Display the classification result -->
+    {% if attack_type %}
+        <hr>
+        <h3>Attack Type:</h3>
+        <div class="result-block">
+            <p>{{ attack_type }}</p>
+        </div>
+    
+        <!-- New form for transitioning to help_coach page -->
+        <form method="POST" action="{% url 'your_help_coach:help_coach' %}">
             {% csrf_token %}
-            <div class="form-flex">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="input">Input:</label>
-                    <input type="text" id="input" name="input" class="form-control" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="protocol">Protocol:</label>
-                    <input type="text" id="protocol" name="protocol" class="form-control" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="duration">Duration:</label>
-                    <input type="text" id="duration" name="duration" class="form-control" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="data">Data:</label>
-                    <input type="text" id="data" name="data" class="form-control" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="keyAlgs">Key Algorithms:</label>
-                    <input type="text" id="keyAlgs" name="keyAlgs" class="form-control" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <input type="text" id="message" name="message" class="form-control" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="eventid">Event ID:</label>
-                    <input type="text" id="eventid" name="eventid" class="form-control" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="kexAlgs">Key Exchange Algorithms:</label>
-                    <input type="text" id="kexAlgs" name="kexAlgs" class="form-control" placeholder="">
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Get Cowrie Log Attack Type</button>
+            <input type="hidden" name="encounteredAttack" value="{{ attack_type }}">
+            <button type="submit" class="btn btn-success">Get personal Diagnosis</button>
         </form>
-
-        <!-- Display the classification result -->
-        {% if attack_type %}
-            <hr>
-            <h3>Attack Type:</h3>
-            <div class="result-block">
-                <p>{{ attack_type }}</p>
-            </div>
-        
-            <!-- New form for transitioning to help_coach page -->
-            <form method="POST" action="{% url 'your_help_coach:help_coach' %}">
-                {% csrf_token %}
-                <input type="hidden" name="encounteredAttack" value="{{ attack_type }}">
-                <button type="submit" class="btn btn-success">Get personal Diagnosis</button>
-            </form>
-        {% endif %}
-    </div>
+    {% endif %}
+</div>
 {% endblock %}
