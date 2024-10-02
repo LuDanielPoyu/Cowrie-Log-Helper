@@ -2,10 +2,11 @@
 {% block title %}QA{% endblock %}
 {% block content %}
 <h1>Question and Answer</h1>
+
 <form id="qa-form" method="POST" action="{% url 'ask_me:qa' %}">
     {% csrf_token %}
     <div class="form-group"
-        <p class="comment">Enter Question:</p>
+        <p class="comment" style="text-align: center;">Enter Question:</p>
         <textarea id="question" name="question" rows="10" class="form-control" style="height: auto; width: 600px;" placeholder="Type or paste your question here..." required></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Get Answer</button>
