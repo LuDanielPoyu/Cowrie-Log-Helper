@@ -5,9 +5,9 @@
 
 <form id="qa-form" method="POST" action="{% url 'ask_me:qa' %}">
     {% csrf_token %}
-    <div class="form-group"
+    <div class="form-group">
         <p class="comment" style="text-align: center;">Enter Question:</p>
-        <textarea id="question" name="question" rows="10" class="form-control" style="height: auto; width: 600px;" placeholder="Type or paste your question here..." required></textarea>
+        <textarea id="question" name="question" rows="10" class="form-control" style="height: auto; width: 1000px;" placeholder="Type or paste your question here..." required></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Get Answer</button>
 </form>
