@@ -48,23 +48,26 @@
             <label for="kexAlgs">Key Exchange Algorithms:</label>
             <input type="text" id="kexAlgs" name="kexAlgs" class="form-control" placeholder="">
         </div>
-    <button type="submit" class="btn btn-primary">Get personal Attack Diagnosis</button>
+        <button type="submit" class="btn btn-primary">Get personal Attack Diagnosis</button>
+    </div>
 </form>
 
     <!-- Display the classification result -->
     {% if attack_type %}
-        <hr>
-        <h3>Attack Type:</h3>
-        <div class="result-block">
-            <p>{{ attack_type }}</p>
-        </div>
     
-        <!-- New form for transitioning to help_coach page -->
-        <form method="POST" action="{% url 'your_help_coach:help_coach' %}">
-            {% csrf_token %}
-            <input type="hidden" name="encounteredAttack" value="{{ attack_type }}">
-            <button type="submit" class="btn btn-success">Get personal Diagnosis</button>
-        </form>
-    {% endif %}
+    
+    <h3>Attack Type:</h3>
+    <div class="result">
+        <p>{{ attack_type }}</p>
+    </div>
+   
+
+    <!-- New form for transitioning to help_coach page -->
+    <form method="POST" action="{% url 'your_help_coach:help_coach' %}">
+        {% csrf_token %}
+        <input type="hidden" name="encounteredAttack" value="{{ attack_type }}">
+        <button type="submit" class="btn btn-success">Get personal Diagnosis</button>
+    </form>
+{% endif %}
 </div>
 {% endblock %}

@@ -4,48 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Brandname{% endblock title %}</title>
+    <title>Brandname</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    
+  
     <style>
-        body {
-            width: 100%;
-            font-family: Arial, sans-serif;
-            margin: 0 auto;
+        html, body {
+            height: 100%; /* Full height for the page */
+            margin: 0;
             padding: 0;
-            color: #000;
-            background-color: #DCDCDC;
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-            width: calc(100% - 100px); /* Use the full width of the screen */
-
         }
+
+        /* Flexbox for body */
+        body {
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            background-color: #DCDCDC;
+            min-height: 100vh; /* Ensure body expands to fill the viewport */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styles */
         header {
             background-color: #DCDCDC;
             color: #333;
             padding: 10px 0;
             text-align: center;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Prevent header from shrinking */
         }
+
         header h1 {
             margin: 0;
             font-size: 24px;
         }
+
+        /* Sidebar (nav) */
         nav {
-            background-color:#6A8DB1;
+            background-color: #6A8DB1;
             padding: 10px;
-            color: #000000;
+            color: #000;
             display: flex;
             flex-direction: column;
-            width: 150px; /* Width of the sidebar */
-            position: fixed; /* Fixed position for sidebar */
-            height: 100%; /* Full height */
+            width: 150px;
+            position: fixed;
+            height: 100%;
             top: 0;
             left: 0;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow to sidebar */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
@@ -61,6 +69,7 @@
             display: flex;
             flex-direction: column;
         }
+
         .nav-links a {
             color: #fff;
             text-decoration: none;
@@ -68,81 +77,43 @@
             display: block;
             margin-bottom: 10px;
         }
+
         .nav-links a:hover {
             background-color: #386C91;
             color: #fff;
             border-radius: 5px;
         }
-        .dropdown {
-            position: relative;
-            max-width: 100px;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #DAD2BC;
-            width: 100px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-        .dropdown-content a {
-            color: #fff;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-        }
-        .dropdown-content a:hover {
-            background-color: #35D7FF;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
 
-        .recent-history {
-            background-color: #DAD2BC; /* Set the background color */
-            padding: 10px; /* Add some padding */
-            border-radius: 8px; /* Optional: Add rounded corners */
-            color: #000; /* Text color inside the section */
-            margin-top: 30px; /* Adjust as needed for spacing */
-        }
-
-        .recent-history h2 {
-            margin-top: 0; /* Remove top margin from the heading */
-        }
-
-        .recent-history ul {
-            list-style: none; /* Remove default list styling */
-            padding: 0; /* Remove default padding */
-        }
-
-        .recent-history li {
-            padding: 8px 0; /* Add padding to list items */
-        }
-
-
+        /* Main content container */
         .container {
-            /* margin-left: 270px; /* Offset for the sidebar */
-            position: center;
+            margin-left: 170px;
             padding: 20px;
-            width: calc(90% - 100px); /* Use the full width of the screen */
-            max-width: none; /* Remove any max-width constraints */
+            flex: 1; /* This allows the container to take up remaining space */
             background-color: #fff;
+            width: calc(100% - 170px); /* Adjust for sidebar */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            /* New styles to move the container */
-            transform: translateX(40px); /* Move 100px to the left */
-            text-align: center;
         }
-        
+
+        /* Result block */
+        .result {
+            padding: 0;
+            width: 100%;
+            margin: 0 auto;
+            height: auto;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer styles */
         footer {
             background-color: #333;
             color: #fff;
             text-align: center;
             padding: 10px 0;
-            position: fixed;
-            width: calc(100% - 150px); /* Adjust width considering the sidebar */
-            bottom: 0;
-            left: 150px; /* Adjust position considering the sidebar */
+            width: calc(100% - 150px);
+            margin-left: 150px;
+            flex-shrink: 0; /* Ensure footer doesn't shrink */
         }
 
         /* Button styling */
@@ -151,45 +122,40 @@
             display: inline-block;
             width: auto;
             font-size: 18px;
-            padding: 20px 40px;
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
             background-color: #6A8DB1;
             color: #fff;
             cursor: pointer;
-            margin-bottom: 20px 0;
+            margin-bottom: 20px;
             transition: background-color 0.3s ease;
             white-space: nowrap;
         }
 
         button:hover {
-            background-color:#386C91;
-        }
-
-        /* Ensure button link styles are correct */
-        button-link {
-            text-decoration: none; /* Remove underline */
+            background-color: #386C91;
         }
 
         /* Style the form container */
         form {
-            text-align: left; /* Align text to the left */
-            max-width: 1200px; /* Set a maximum width */
-            margin: auto; /* Center the form container on the page */
-            padding: 20px; /* Add some padding */
-            background-color: #ffffff; /* Optional: Set a background color */
-            border-radius: 10px; /* Optional: Add rounded corners */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for visual separation */
-            display: flex; /* Make form a flex container */
-            flex-direction: column; /* Arrange children vertically */
-            align-items: center; /* Center children horizontally */
+            text-align: left;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
-</head>
+</head> 
 
 <body>
     <header>
-       
+        <h1> </h1>
     </header>
     
     <nav>
@@ -202,26 +168,8 @@
             <a href="{% url 'ask_me:classification' %}">Classification</a>
             <a href="{% url 'ask_me:qa' %}">QA</a>
             <a href="{% url 'ask_me:summary' %}">Summary</a>
-            <a href="{% url 'your_help_coach:attack_suggestion' %}">Your Help Coach </a>
+            <a href="{% url 'your_help_coach:attack_suggestion' %}">Your Help Coach</a>
         </div>
-
-        <!-- Recent History Section -->
-        <!-- <div class="recent-history">
-            <h3>Recent History</h3>
-            <ul>
-                <li>Recent history 1</li>
-                <li>Recent history 2</li>
-                <li>Recent history 3</li>
-            </ul>
-        </div> -->
-
-
-        <!-- <div class="login">
-            <a href="{% url 'users:login' %}">
-                <img src="{% static 'images/login.png' %}" alt="Login" style="height: 30px; vertical-align: middle;">
-            </a>
-        </div> -->
-
     </nav>
 
     <div class="container">

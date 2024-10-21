@@ -4,8 +4,7 @@
 <h1>Cowrie Log Attack Type Classification</h1>
 
 <!-- Small comment below the heading -->
-<p class="comment">Please check your cowrie log data and enter</p>
-<p class="comment">Note that you only need to fill in blocks with values !</p>
+<p class="comment">Please check your cowrie log data and enter! Note that you only need to fill in blocks with values !</p>
 
 <!-- Form to input parameters -->
 <form method="POST" action="{% url 'ask_me:classification' %}">
@@ -56,7 +55,7 @@
 {% if attack_type %}
     <hr>
     <h3>Attack Type:</h3>
-    <div class="result-block">
+    <div class="result">
         <p>{{ attack_type }}</p>
     </div>
     <h3>Description:</h3>
