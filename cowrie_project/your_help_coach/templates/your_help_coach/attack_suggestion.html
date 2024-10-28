@@ -1,6 +1,5 @@
 {% extends "layout2.html" %}
-
-{% block title %}Classification{% endblock %}
+{% block title %}<title>Your Help Coach</title>{% endblock %}
 
 {% block content %}
 <h1>Personal Attack Diagnosis Coach</h1>
@@ -11,7 +10,7 @@
 <!-- Form to input parameters -->
 <form method="POST" action="{% url 'your_help_coach:attack_suggestion' %}">
     {% csrf_token %}
-    <div class="form-flex">
+    <div class="form-flex-classification">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="">

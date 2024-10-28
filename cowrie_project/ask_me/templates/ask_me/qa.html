@@ -1,16 +1,17 @@
 {% extends "layout2.html" %}
-{% block title %}QA{% endblock %}
+{% block title %}<title>Question-Answering</title>{% endblock %}
+
 {% block content %}
 <h1>Question and Answer</h1>
-
 
 <form id="qa-form" method="POST" action="{% url 'ask_me:qa' %}">
     {% csrf_token %}
     <div class="form-flex">
-        <p class="comment" style="text-align: left;">Enter Question:</p>
-        <textarea id="question" name="question" rows="6" class="form-control"  placeholder="Type or paste your question here..." required>{% if question %}{{ question }}{% endif %}</textarea>
-        <button type="submit" class="btn btn-primary" >Get Answer</button>
+        <p class="comment">Enter Question:</p>
+        <textarea id="question" name="question" rows="10" class="form-control" placeholder="Type or paste your question here..." required>{% if question %}{{ question }}{% endif %}</textarea>
+        <button type="submit" class="btn btn-primary">Get Answer</button>
     </div>
+    <br>
 </form>
 
 <!-- Loading Section -->
@@ -71,7 +72,7 @@
             const tipInterval = setInterval(() => {
                 tipIndex = (tipIndex + 1) % tips.length;  
                 tipText.textContent = tips[tipIndex].content;
-            }, 5000);  // Switch tips every 5 seconds
+            }, 7000);  // Switch tips every 7 seconds
 
             this.submit();
         });

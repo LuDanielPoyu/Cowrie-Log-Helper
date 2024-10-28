@@ -1,5 +1,6 @@
 {% extends "layout2.html" %}
-{% block title %}Classification{% endblock %}
+{% block title %}<title>Classification</title>{% endblock %}
+
 {% block content %}
 <h1>Cowrie Log Attack Type Classification</h1>
 
@@ -8,7 +9,7 @@
 <!-- Form to input parameters -->
 <form method="POST" action="{% url 'ask_me:classification' %}">
     {% csrf_token %}
-    <div class="form-flex">
+    <div class="form-flex-classification">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="">

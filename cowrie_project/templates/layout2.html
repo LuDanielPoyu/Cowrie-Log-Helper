@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brandname</title>
+    {% block title %}{% endblock title %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
   
     <style>
@@ -92,6 +92,7 @@
         /* Main content container */
         .container {
             margin-left: 170px;
+            margin-bottom: 30px;
             padding: 20px;
             flex: 1; /* This allows the container to take up remaining space */
             background-color: #fff;

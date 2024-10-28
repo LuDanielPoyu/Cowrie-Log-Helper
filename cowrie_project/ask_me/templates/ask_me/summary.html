@@ -1,5 +1,6 @@
 {% extends "layout2.html" %}
-{% block title %}Summary{% endblock %}
+{% block title %}<title>Summarization</title>{% endblock %}
+
 {% block content %}
 <h1>Summarization</h1>
 
@@ -7,10 +8,11 @@
 <form method="POST" action="{% url 'ask_me:summary' %}">
     {% csrf_token %}
     <div class="form-flex">
-        <p class="comment" style="text-align: center;">Please input cyber security related paragraph or sentences:</p>
-        <textarea id="paragraph" name="paragraph" rows="6" class="form-control" placeholder="Type or paste your paragraph here..." required>{% if paragraph %}{{ paragraph }}{% endif %}</textarea>
+        <p class="comment">Please input cybersecurity related paragraph or sentences:</p>
+        <textarea id="paragraph" name="paragraph" rows="10" class="form-control" placeholder="Type or paste your paragraph here..." required>{% if paragraph %}{{ paragraph }}{% endif %}</textarea>
         <button type="submit" class="btn btn-primary">Generate Summary</button>
     </div>
+    <br>
 </form>
 
 <!-- Display the generated summary -->
