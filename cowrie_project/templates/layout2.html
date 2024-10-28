@@ -83,6 +83,11 @@
             color: #fff;
             border-radius: 5px;
         }
+        .nav-links a.active {
+            background-color: #386C91;
+            color: #fff;
+            border-radius: 5px;
+        }
 
         /* Main content container */
         .container {
@@ -165,12 +170,13 @@
             </a>
         </div>
         <div class="nav-links">
-            <a href="{% url 'ask_me:classification' %}">Classification</a>
-            <a href="{% url 'ask_me:qa' %}">QA</a>
-            <a href="{% url 'ask_me:summary' %}">Summary</a>
-            <a href="{% url 'your_help_coach:attack_suggestion' %}">Your Help Coach</a>
+        <a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">Classification</a>
+        <a href="{% url 'ask_me:qa' %}" class="{% if request.path == '/ask_me/qa/' %}active{% endif %}">QA</a>
+        <a href="{% url 'ask_me:summary' %}" class="{% if request.path == '/ask_me/summary/' %}active{% endif %}">Summary</a>
+        <a href="{% url 'your_help_coach:attack_suggestion' %}" class="{% if request.path == '/your_help_coach/attack-suggestion/' %}active{% endif %}">Your Help Coach</a>
         </div>
     </nav>
+
 
     <div class="container">
         {% block content %}
@@ -183,3 +189,6 @@
     </footer>
 </body>
 </html>
+
+<script>
+
