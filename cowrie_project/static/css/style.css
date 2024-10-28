@@ -106,10 +106,16 @@ textarea:focus {
 
 /* Flexbox layout for form fields */
 .form-flex {
+     /* Set a fixed max-width if needed */
+    width: 100%;
+    max-width: 600px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
     margin-bottom: 30px;
+    
 }
 
 
@@ -130,6 +136,8 @@ textarea:focus {
 /* Input field styling */
 .form-control {
     width: 100%;
+    max-width: 600px; /* Adjust as needed to control maximum width */
+    text-align: left;
     padding: 10px;
     font-size: 16px;
     border-radius: 8px;

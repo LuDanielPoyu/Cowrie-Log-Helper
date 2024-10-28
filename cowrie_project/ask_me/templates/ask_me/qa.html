@@ -3,13 +3,14 @@
 {% block content %}
 <h1>Question and Answer</h1>
 
+
 <form id="qa-form" method="POST" action="{% url 'ask_me:qa' %}">
     {% csrf_token %}
-    <div class="form-group">
-        <p class="comment" style="text-align: center;">Enter Question:</p>
-        <textarea id="question" name="question" rows="10" class="form-control" style="height: auto; width: 1000px;" placeholder="Type or paste your question here..." required></textarea>
+    <div class="form-flex">
+        <p class="comment" style="text-align: left;">Enter Question:</p>
+        <textarea id="question" name="question" rows="6" class="form-control"  placeholder="Type or paste your question here..." required>{% if question %}{{ question }}{% endif %}</textarea>
+        <button type="submit" class="btn btn-primary" >Get Answer</button>
     </div>
-    <button type="submit" class="btn btn-primary">Get Answer</button>
 </form>
 
 <!-- Loading Section -->
@@ -33,12 +34,13 @@
     <h3>Answer:</h3>
     <div class="answer-block">
         <p>{{ answer }}</p>
-        <form method="POST" action="{% url 'ask_me:qa' %}">
-            {% csrf_token %}
-            <input type="hidden" name="question" value="{{ question }}">
-            <button type="submit" class="btn btn-secondary">Get Answer Again</button>
-        </form>
     </div>
+    <form method="POST" action="{% url 'ask_me:qa' %}">
+        {% csrf_token %}
+        <input type="text" name="question" value="{{ question }}">
+        <button type="submit" class="btn btn-secondary">Get Answer Again</button>
+    </form>
+    
 {% endif %}
 
 
