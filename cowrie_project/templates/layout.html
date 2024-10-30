@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}{% endblock title %}
-
+    <title>
+        {% block title %}
+            Loglytics
+        {% endblock %}
+    </title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     
     <style>
@@ -37,6 +40,7 @@
             align-items: center;
             justify-content: space-between; /* Space between left and right sections */
             margin-top: -20px; /* 調整Y軸位置，根據需要調整數值 */
+            font-size: 17px;
         }
         
         .logo {
@@ -56,7 +60,6 @@
             align-items: center;
             position: relative;
             margin-right: auto; /* Move nav links to the left */
-            
         }
 
         .nav-links a {
@@ -77,7 +80,7 @@
         .nav-right a {
             color: #ffffff;
             text-decoration: none;
-            margin: 0 15px;
+            margin: 0 25px;
         }
 
         .nav-right a:hover {
@@ -96,10 +99,37 @@
             white-space: nowrap;
             position: relative;
             top: 10px;
+            margin-right: 10px;
+            font-size: 17px;
         }
 
         .nav-right button:hover {
             background-color: #8ec1f5; /* 鼠標懸停時的背景顏色 */
+        }
+
+        .logout-form {
+            background-color: #6A8DB1;
+            height: 20px;
+            margin: 8px 0px;
+            border: none;
+            box-shadow: none;
+        }
+
+        .logout-form button {
+            background: none;
+            color: #ffffff;
+            border: none;
+            width: auto;
+            cursor: pointer;
+            white-space: nowrap;
+            position: relative;
+            top: -18px;
+            font-size: 17px;
+        }
+
+        .logout-form button:hover {
+            background-color: #6A8DB1;
+            text-decoration: underline;
         }
 
         .about-container {
@@ -205,6 +235,7 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             z-index: 1;
         }
+
         .dropdown-content a {
             color: #fff;
             padding: 12px 16px;
@@ -213,9 +244,11 @@
             text-align: left;
             left: -50px; /* 向左移動 */
         }
+
         .dropdown-content a:hover {
             background-color: #386C91;
         }
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
@@ -331,6 +364,7 @@
             display: block;
             margin: 0 auto;
         }
+
     </style>
 </head>
 
@@ -367,10 +401,17 @@
             </div>
         </div>
         <div class="nav-right">
-            <a href="{% url 'users:login' %}">Login</a>
-            <button onclick="location.href='{% url 'users:register' %}'">
-                Join for Free
-            </button>
+            {% if user.is_authenticated %}
+                <form action="{% url 'users:logout' %}" method="post" class="logout-form">
+                    {% csrf_token %}
+                    <button>Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'users:login' %}">Login</a>
+                <button onclick="location.href='{% url 'users:register' %}'">
+                    Join for Free
+                </button>
+            {% endif %}
         </div>
     </nav>
 
