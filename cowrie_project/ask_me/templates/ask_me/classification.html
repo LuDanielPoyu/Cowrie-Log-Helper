@@ -12,44 +12,43 @@
     <div class="form-flex-classification">
         <div class="form-group">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="">
+            <input type="text" id="username" name="username" class="form-control" placeholder="" value="{{ request.POST.username }}">
         </div>
         <div class="form-group">
             <label for="input">Input:</label>
-            <input type="text" id="input" name="input" class="form-control" placeholder="">
+            <input type="text" id="input" name="input" class="form-control" placeholder="" value="{{ request.POST.input }}">
         </div>
         <div class="form-group">
             <label for="protocol">Protocol:</label>
-            <input type="text" id="protocol" name="protocol" class="form-control" placeholder="">
+            <input type="text" id="protocol" name="protocol" class="form-control" placeholder="" value="{{ request.POST.protocol }}">
         </div>
         <div class="form-group">
             <label for="duration">Duration:</label>
-            <input type="text" id="duration" name="duration" class="form-control" placeholder="">
+            <input type="text" id="duration" name="duration" class="form-control" placeholder="" value="{{ request.POST.duration }}">
         </div>
         <div class="form-group">
             <label for="data">Data:</label>
-            <input type="text" id="data" name="data" class="form-control" placeholder="">
+            <input type="text" id="data" name="data" class="form-control" placeholder="" value="{{ request.POST.data }}">
         </div>
         <div class="form-group">
             <label for="keyAlgs">Key Algorithms:</label>
-            <input type="text" id="keyAlgs" name="keyAlgs" class="form-control" placeholder="">
+            <input type="text" id="keyAlgs" name="keyAlgs" class="form-control" placeholder="" value="{{ request.POST.keyAlgs }}">
         </div>
         <div class="form-group">
             <label for="message">Message:</label>
-            <input type="text" id="message" name="message" class="form-control" placeholder="">
+            <input type="text" id="message" name="message" class="form-control" placeholder="" value="{{ request.POST.message }}">
         </div>
         <div class="form-group">
             <label for="eventid">Event ID:</label>
-            <input type="text" id="eventid" name="eventid" class="form-control" placeholder="">
+            <input type="text" id="eventid" name="eventid" class="form-control" placeholder="" value="{{ request.POST.eventid }}">
         </div>
         <div class="form-group">
             <label for="kexAlgs">Key Exchange Algorithms:</label>
-            <input type="text" id="kexAlgs" name="kexAlgs" class="form-control" placeholder="">
+            <input type="text" id="kexAlgs" name="kexAlgs" class="form-control" placeholder="" value="{{ request.POST.kexAlgs }}">
         </div>
-        <button type="submit" class="btn btn-primary" >Get Cowrie Log Attack Type</button>
+        <button type="submit" class="btn btn-primary">Get Cowrie Log Attack Type</button>
     </div>
 </form>
-
 <!-- Display the classification result -->
 {% if attack_type %}
     <hr>
