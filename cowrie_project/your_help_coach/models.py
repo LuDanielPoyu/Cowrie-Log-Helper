@@ -3,11 +3,11 @@ from django.db import models
 # Create your models here.
 
 class CowrieLogAttack(models.Model):
-    attack_name = models.CharField(max_length=255, unique=True) 
-    description = models.TextField(null=True)
-    affected = models.TextField()  
-    mitigation = models.TextField()  
-    solutions = models.TextField() 
+    attack_name = models.CharField(max_length=255, unique=True)
+    description = models.TextField()
+    affected = models.TextField()
+    mitigation = models.TextField() 
+    solutions = models.TextField()
     learn_more = models.TextField(blank=True, null=True) 
 
     def __str__(self):

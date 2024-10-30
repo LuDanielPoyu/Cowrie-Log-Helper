@@ -8,6 +8,12 @@
     <div class="form-group">
         <label for="encounteredAttack">Attack Type:</label>
         <input type="text" id="encounteredAttack" name="encounteredAttack" value="{{ attack_type }}" class="form-control" readonly>
+    </div><br>
+
+    <!-- Display the descriptions -->
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" class="form-control" readonly>{{ description }}</textarea>
     </div>
     
     <!-- Display Affected -->
@@ -42,6 +48,4 @@
         {% endif %}
     </div>
 
-    {% endblock %}
-</body>
-</html>
+{% endblock %}

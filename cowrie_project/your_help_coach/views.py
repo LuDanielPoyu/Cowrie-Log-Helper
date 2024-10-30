@@ -18,9 +18,11 @@ def attack_suggestion_view(request):
         if response.status_code == 200:
             result = response.json()
             attack_type = result.get('attack_type')
+        else:
+            attack_type = "Error retrieving attack type from backend."
             
     return render(request, 'your_help_coach/attack_suggestion.html', {
-        'attack_type': attack_type,
+        'attack_type': attack_type
     })
     
 def help_coach_view(request):
@@ -36,21 +38,24 @@ def help_coach_view(request):
         # Query for the attack type
         try:
             attack = CowrieLogAttack.objects.get(attack_name__iexact=attack_type)  # Case-insensitive search
+            description = attack.description
             affected = attack.affected
             mitigation = attack.mitigation
             solutions = attack.solutions
             learn_more_links = attack.get_learn_more_links()  # Get list of learn more links
         except CowrieLogAttack.DoesNotExist:
             logging.error(f'Attack type {attack_type} not found in the database.')
+            description = "No descriptions for this attack type."
             affected = "No data available for this attack type."
             mitigation = "No mitigation available."
             solutions = "No solutions available."
             learn_more_links = []
 
     return render(request, 'your_help_coach/help_coach.html', {
-        'attack_type': attack_type,
-        'affected': affected,
-        'mitigation': mitigation,
-        'solutions': solutions,
+        'attack_type': attack_type, 
+        'description': description, 
+        'affected': affected, 
+        'mitigation': mitigation, 
+        'solutions': solutions, 
         'learn_more_links': learn_more_links  # Pass the links to the template
     })
