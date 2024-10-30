@@ -14,7 +14,6 @@ body {
     line-height: 1.6;
     text-align: center;
     padding: 20px;
-
 }
 
 /* Container styling */
@@ -61,7 +60,6 @@ h1 {
     margin-right: 2%;
 }
 
-
 .input-block:last-child {
     margin-right: 0;
 }
@@ -101,7 +99,6 @@ textarea:focus {
     color: #495057;
 }
 
-
 /* Flexbox layout for form fields */
 .form-flex {
      /* Set a fixed max-width if needed */
@@ -114,7 +111,6 @@ textarea:focus {
     margin-bottom: 30px;
 }
 
-
 .form-flex-classification {
     /* Set a fixed max-width if needed */
    width: 100%;
@@ -125,21 +121,19 @@ textarea:focus {
    margin-bottom: 30px;
 }
 
-
 .form-group {
     flex: 1 1 calc(33.333% - 20px); /* 3 columns, minus gap */
     box-sizing: border-box;
     margin-bottom: 15px;
 }
 
-
 /* Label styling */
 .form-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    font-size: 18px;
 }
-
 
 /* Input field styling */
 .form-control {
@@ -282,3 +276,31 @@ h3 {
     font-style: italic;
 }
 
+.errorlist {
+    color: #F00;
+    margin-left: 2rem;
+    text-align: left;
+}
+
+.errorlist li::marker {
+    content: '🔺';
+}
+
+.helptext {
+    font-size: 15px;        /* 調整字體大小 */
+    color: #4e5358;       /* 使用柔和的灰色 */
+    margin-top: 4px;        /* 增加間距 */
+    display: block;
+}
+
+.error {
+    color: #F00;                /* 使用醒目的紅色 */
+    font-size: 14px;              /* 略微增大字體 */
+    background-color: #f9e0e2;  /* 紅色背景以引起注意 */
+    padding: 5px 10px;            /* 添加內邊距讓錯誤訊息更突出 */
+    border: none;
+    border-radius: 4px;           /* 圓角邊框 */
+    margin-top: 5px;
+    display: inline-block;
+    text-align: center;
+}
