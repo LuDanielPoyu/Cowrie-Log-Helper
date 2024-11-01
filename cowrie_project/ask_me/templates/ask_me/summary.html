@@ -8,25 +8,26 @@
 <form method="POST" action="{% url 'ask_me:summary' %}">
     {% csrf_token %}
     <div class="form-flex">
-        <p class="comment">Please input cybersecurity related paragraph or sentences:</p>
-        <textarea id="paragraph" name="paragraph" rows="10" class="form-control" placeholder="Type or paste your paragraph here..." required>{% if paragraph %}{{ paragraph }}{% endif %}</textarea>
+        <p class="comment">Please input cybersecurity-related paragraph or articles:</p>
+        <textarea id="paragraph" name="paragraph" rows="16" class="form-control" placeholder="Type or paste your paragraph here..." required>{% if paragraph %}{{ paragraph }}{% endif %}</textarea>
         <button type="submit" class="btn btn-primary">Generate Summary</button>
     </div>
-    <br>
 </form>
-
+<br>
 <!-- Display the generated summary -->
 {% if summary %}
-    <hr>
-    <h3>Generated Summary:</h3>
-    <div class="summary-block">
-        <p>{{ summary }}</p>
-    </div>
+    <hr><br>
     <!-- Button to generate summary again with the input preserved -->
     <form method="POST" action="{% url 'ask_me:summary' %}">
         {% csrf_token %}
+
+        <h3>Generated Summary:</h3>
+        <div class="response-block">
+            <p>{{ summary }}</p>
+        </div>
+
         <input type="hidden" name="paragraph" value="{{ paragraph }}">
         <button type="submit" class="btn btn-secondary">Generate Summary Again</button>
-    </form>
+    </form><br>
 {% endif %}
 {% endblock %}

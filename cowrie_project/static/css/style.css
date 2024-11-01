@@ -64,10 +64,17 @@ h1 {
     margin-right: 0;
 }
 
-/* Summary block specific styling */
-.summary-block {
+/* Summary and QA block specific styling */
+.response-block {
     background-color: #f1f3f5;
     min-height: 200px;
+    text-align: left;
+    padding: 15px 20px;
+    margin: 30px 60px 40px;
+    color: #323232;
+    font-family:"Calibri", sans-serif;
+    font-size: 18px;
+    border-radius: 8px;
 }
 
 textarea, .result-block {
