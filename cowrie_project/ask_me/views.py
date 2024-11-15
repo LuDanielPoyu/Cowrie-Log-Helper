@@ -1,7 +1,6 @@
 from django.shortcuts import render
-import requests, random, time
-from django.http import JsonResponse
-from .models import AttackType, Tips
+import requests, random
+from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationHistory
 import json
 import re
 
@@ -46,6 +45,16 @@ def classification_view(request):
         if response.status_code == 200:
             result = response.json()
             attack_type = result.get('attack_type')
+
+            # if request.user.is_authenticated:
+            #     record = ClassificationHistory(
+            #         user = request.user, attack_type = attack_type, 
+            #         username = data["username"], input = data["input"], protocol = data["protocol"], 
+            #         duration = data["duration"], dataAttr = data["data"], keyAlgs = data["keyAlgs"], 
+            #         message = data["message"], eventid = data["eventid"], kexAlgs = data["kexAlgs"]
+            #     )
+            #     record.save()
+
             try:
                 attack_type_entry = AttackType.objects.get(attack_type=attack_type)
                 description = attack_type_entry.description
@@ -75,8 +84,13 @@ def qa_view(request):
         question = request.POST.get('question')
         backend_url = "https://ewe-happy-centrally.ngrok-free.app/qa" 
         response = requests.post(backend_url, json={'question': question})
+
         if response.status_code == 200:
             answer = response.json().get('answer')
+
+            if request.user.is_authenticated:
+                record = QAHistory(user = request.user, question = question, answer = answer)
+                record.save()
 
     random.shuffle(tips)
 
@@ -99,6 +113,11 @@ def summary_view(request):
             response = requests.post(backend_url, json={'paragraph': paragraph})
             response.raise_for_status()
             summary = response.json().get('summary')
+
+            if request.user.is_authenticated:
+                record = SummaryHistory(user = request.user, paragraph = paragraph, summary = summary)
+                record.save()
+            
         except requests.RequestException as e:
             print(f"Request failed: {e}")
 

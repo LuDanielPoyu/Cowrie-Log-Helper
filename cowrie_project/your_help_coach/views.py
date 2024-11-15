@@ -3,7 +3,7 @@ import requests
 import logging
 import re
 from .models import CowrieLogAttack
-# Create your views here.
+from ask_me.models import ClassificationHistory
 
 def attack_suggestion_view(request):
     attack_type = None
@@ -55,6 +55,16 @@ def attack_suggestion_view(request):
         if response.status_code == 200:
             result = response.json()
             attack_type = result.get('attack_type')
+
+            if request.user.is_authenticated:
+                record = ClassificationHistory(
+                    user = request.user, attack_type = attack_type, 
+                    username = data["username"], input = data["input"], protocol = data["protocol"], 
+                    duration = data["duration"], dataAttr = data["data"], keyAlgs = data["keyAlgs"], 
+                    message = data["message"], eventid = data["eventid"], kexAlgs = data["kexAlgs"]
+                )
+                record.save()
+
         else:
             attack_type = "Error retrieving attack type from backend."
 
