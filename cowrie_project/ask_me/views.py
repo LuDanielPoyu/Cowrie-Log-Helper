@@ -3,26 +3,49 @@ import requests, random, time
 from django.http import JsonResponse
 from .models import AttackType, Tips
 import json
+import re
 
 # Create your views here.
-
 def classification_view(request):
     attack_type = None
     description = None
-    
+    log_input = ""
+
     if request.method == 'POST':
-        fields = ['username', 'input', 'protocol', 'duration', 'data', 'keyAlgs', 'message', 'eventid', 'kexAlgs']
+        log_input = request.POST.get('log_input', '').strip()
+        if not log_input:
+            return render(request, 'ask_me/classification.html', {
+                'attack_type': "Error: No input provided.",
+                'description': "Please paste a valid cowrie log row.",
+                'log_input': log_input  
+            })
+        col_names = [
+            "username", "input", "size", "compCS", "width", "outfile", "protocol",
+            "duration", "height", "url", "keyAlgs", "ttylog", "data", "sensor",
+            "arch", "session", "shasum", "message", "langCS", "timestamp",
+            "kexAlgs", "encCS", "password", "version", "dst_port", "macCS",
+            "destfile", "client_fingerprint", "filename", "eventid"
+        ]
         
-        data = {field: request.POST.get(field, 'nan') or 'nan' for field in fields}
+        regex_pattern = r"(\[[^\]]*\]|'[^']*'|\"[^\"]*\"|\S+)"
+        fields = re.findall(regex_pattern, log_input)
+        fields = [field.strip() if field.strip() else 'nan' for field in fields]
+        
+        if len(fields) < len(col_names):
+            fields.extend(['nan'] * (len(col_names) - len(fields)))  
+        elif len(fields) > len(col_names):
+            fields = fields[:len(col_names)]  
+        data_dict = dict(zip(col_names, fields))
+        required_params = {param: data_dict.get(param, 'nan') for param in [
+            'username', 'input', 'protocol', 'duration', 'data', 'keyAlgs', 'message', 'eventid', 'kexAlgs'
+        ]}
 
         backend_url = "https://ewe-happy-centrally.ngrok-free.app/classify"  # Replace with your Flask backend URL
-        response = requests.post(backend_url, json=data)
+        response = requests.post(backend_url, json=required_params)
 
         if response.status_code == 200:
             result = response.json()
             attack_type = result.get('attack_type')
-
-            # Look up the description from the database
             try:
                 attack_type_entry = AttackType.objects.get(attack_type=attack_type)
                 description = attack_type_entry.description
@@ -30,9 +53,16 @@ def classification_view(request):
                 description = "No description available for this attack type."
         else:
             attack_type = "Error retrieving attack type from backend."
+            description = "Please check the input or try again later."
 
-    return render(request, 'ask_me/classification.html', {'attack_type': attack_type, 'description': description})
+        log_input = ""  # Clear the input field
 
+    return render(request, 'ask_me/classification.html', {
+        'attack_type': attack_type,
+        'description': description,
+        'data_dict': locals().get('data_dict', {}),
+        'log_input': log_input  
+    })
 
 def qa_view(request):
     answer = None
