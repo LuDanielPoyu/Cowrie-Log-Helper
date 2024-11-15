@@ -4,7 +4,7 @@ from django.db import models
 
 class CowrieLogAttack(models.Model):
     attack_name = models.CharField(max_length=255, unique=True)
-    description = models.TextField()
+    description = models.TextField(default = "no description available")
     affected = models.TextField()
     mitigation = models.TextField() 
     solutions = models.TextField()
