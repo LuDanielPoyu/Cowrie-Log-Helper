@@ -11,8 +11,14 @@ def classification_view(request):
     log_input = ""
 
     if request.method == 'POST':
-        log_input = eval(request.POST.get('log_input', '').strip())
-        print(log_input)
+        log_input = request.POST.get('log_input', '').strip()
+        
+        if not log_input.startswith('{'):
+            log_input = '{' + log_input
+        if not log_input.endswith('}'):
+            log_input = log_input + '}'
+        
+        log_input = eval(log_input)
 
         if not log_input:
             return render(request, 'ask_me/classification.html', {
