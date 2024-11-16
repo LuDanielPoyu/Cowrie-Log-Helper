@@ -118,14 +118,12 @@ textarea:focus {
     margin-bottom: 30px;
 }
 
-.form-flex-classification {
-    /* Set a fixed max-width if needed */
-   width: 100%;
-   max-width: 1000px;
-   display: flex;
-   flex-wrap: wrap;
-   gap: 20px;
-   margin-bottom: 30px;
+.form-flex label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 17px;
+    text-align: center;
 }
 
 .form-group {
@@ -147,6 +145,18 @@ textarea:focus {
     width: 100%;
     max-width: 1000px; /* Adjust as needed to control maximum width */
     text-align: left;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.form-control-class {
+    width: 100%;
+    max-width: 800px;
+    text-align: left;
+    margin: 0px auto 15px;
     padding: 10px;
     font-size: 16px;
     border-radius: 8px;

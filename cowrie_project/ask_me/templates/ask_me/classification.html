@@ -4,21 +4,23 @@
 {% block content %}
 <h1>Cowrie Log Attack Type Classification</h1>
 
-<p class="comment">Please check your cowrie log data and enter! Note that you only need to fill in blocks with values!</p>
+{% comment %} <p class="comment">Please check your cowrie log data and enter! Note that you only need to fill in blocks with values!</p> {% endcomment %}
+<p class="comment">Please check your Cowrie Log data and enter!</p>
 
 <!-- Form to input parameters -->
 <form method="POST" action="{% url 'ask_me:classification' %}">
     {% csrf_token %}
-    <div class="form-group">
+    <div class="form-flex">
         <label for="log_input">Paste Cowrie Log Data:</label>
         <textarea 
             id="log_input" 
             name="log_input" 
-            class="form-control" 
-            rows="10" 
-            placeholder="Paste your cowrie log row here...">{{ log_input }}</textarea>
+            class="form-control-class" 
+            rows="3" 
+            placeholder="Paste your cowrie log row here...">{{ request.POST.log_input }}</textarea>
     </div>
     <button type="submit" class="btn btn-primary">Get Cowrie Log Attack Type</button>
+    <br><br>
 </form>
 
 {% if attack_type %}

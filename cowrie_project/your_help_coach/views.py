@@ -12,6 +12,7 @@ def attack_suggestion_view(request):
     if request.method == 'POST':
         # Get the pasted log input
         log_input = request.POST.get('log_input', '').strip()
+
         if not log_input:
             return render(request, 'your_help_coach/attack_suggestion.html', {
                 'attack_type': "Error: No input provided.",
@@ -37,7 +38,8 @@ def attack_suggestion_view(request):
         # Ensure the number of fields matches the number of columns
         if len(fields) < len(col_names):
             fields.extend(['nan'] * (len(col_names) - len(fields)))  # Pad with 'nan'
-        elif len(fields) > len(col_names):
+
+        if len(fields) > len(col_names):
             fields = fields[:len(col_names)]  # Truncate extra fields
 
         # Create a dictionary mapping column names to their corresponding values
@@ -57,12 +59,7 @@ def attack_suggestion_view(request):
             attack_type = result.get('attack_type')
 
             if request.user.is_authenticated:
-                record = ClassificationHistory(
-                    user = request.user, attack_type = attack_type, 
-                    username = data["username"], input = data["input"], protocol = data["protocol"], 
-                    duration = data["duration"], dataAttr = data["data"], keyAlgs = data["keyAlgs"], 
-                    message = data["message"], eventid = data["eventid"], kexAlgs = data["kexAlgs"]
-                )
+                record = ClassificationHistory(user = request.user, input_log = log_input, attack_type = attack_type)
                 record.save()
 
         else:

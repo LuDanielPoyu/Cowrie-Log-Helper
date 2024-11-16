@@ -20,15 +20,7 @@ class Tips(models.Model):
 class ClassificationHistory(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add = True)
-    username = models.CharField(max_length = 256, null = True)
-    input = models.CharField(max_length = 256, null = True)
-    protocol = models.CharField(max_length = 256, null = True)
-    duration = models.CharField(max_length = 256, null = True)
-    dataAttr = models.CharField(max_length = 256, null = True)
-    keyAlgs = models.CharField(max_length = 256, null = True)
-    message = models.CharField(max_length = 256, null = True)
-    eventid = models.CharField(max_length = 256, null = True)
-    kexAlgs = models.CharField(max_length = 256, null = True)
+    input_log = models.TextField(default = "None")
     attack_type = models.CharField(max_length = 128)
 
 

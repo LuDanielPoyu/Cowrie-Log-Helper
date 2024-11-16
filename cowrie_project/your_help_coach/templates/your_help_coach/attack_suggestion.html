@@ -4,19 +4,18 @@
 {% block content %}
 <h1>Personal Attack Diagnosis Coach</h1>
 
-<p class="comment">Please check your Cowrie log data and enter</p>
+<p class="comment">Please check your Cowrie Log data and enter!</p>
 
 <!-- Form to input the Cowrie log data -->
 <form method="POST" action="{% url 'your_help_coach:attack_suggestion' %}">
     {% csrf_token %}
-    <div class="form-group">
+    <div class="form-flex">
         <label for="log_input">Paste Cowrie Log Data:</label>
         <textarea 
             id="log_input" 
             name="log_input" 
-            class="form-control" 
-            rows="10" 
-            style="width: 100%; font-size: 16px;" 
+            class="form-control-class" 
+            rows="3" 
             placeholder="Paste your cowrie log row here...">{{ request.POST.log_input }}</textarea>
     </div>
     <button type="submit" class="btn btn-primary">Get Personal Attack Diagnosis</button>

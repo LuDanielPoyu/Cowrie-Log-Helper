@@ -12,12 +12,14 @@ def classification_view(request):
 
     if request.method == 'POST':
         log_input = request.POST.get('log_input', '').strip()
+
         if not log_input:
             return render(request, 'ask_me/classification.html', {
                 'attack_type': "Error: No input provided.",
                 'description': "Please paste a valid cowrie log row.",
                 'log_input': log_input  
             })
+        
         col_names = [
             "username", "input", "size", "compCS", "width", "outfile", "protocol",
             "duration", "height", "url", "keyAlgs", "ttylog", "data", "sensor",
@@ -31,9 +33,11 @@ def classification_view(request):
         fields = [field.strip() if field.strip() else 'nan' for field in fields]
         
         if len(fields) < len(col_names):
-            fields.extend(['nan'] * (len(col_names) - len(fields)))  
-        elif len(fields) > len(col_names):
-            fields = fields[:len(col_names)]  
+            fields.extend(['nan'] * (len(col_names) - len(fields)))
+
+        if len(fields) > len(col_names):
+            fields = fields[:len(col_names)]
+
         data_dict = dict(zip(col_names, fields))
         required_params = {param: data_dict.get(param, 'nan') for param in [
             'username', 'input', 'protocol', 'duration', 'data', 'keyAlgs', 'message', 'eventid', 'kexAlgs'
@@ -46,14 +50,9 @@ def classification_view(request):
             result = response.json()
             attack_type = result.get('attack_type')
 
-            # if request.user.is_authenticated:
-            #     record = ClassificationHistory(
-            #         user = request.user, attack_type = attack_type, 
-            #         username = data["username"], input = data["input"], protocol = data["protocol"], 
-            #         duration = data["duration"], dataAttr = data["data"], keyAlgs = data["keyAlgs"], 
-            #         message = data["message"], eventid = data["eventid"], kexAlgs = data["kexAlgs"]
-            #     )
-            #     record.save()
+            if request.user.is_authenticated:
+                record = ClassificationHistory(user = request.user, input_log = log_input, attack_type = attack_type)
+                record.save()
 
             try:
                 attack_type_entry = AttackType.objects.get(attack_type=attack_type)
