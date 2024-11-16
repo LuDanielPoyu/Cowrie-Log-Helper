@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AttackType, Tips
+from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationHistory
 # Register your models here.
 
 @admin.register(AttackType)
@@ -10,3 +10,16 @@ class AttackTypeAdmin(admin.ModelAdmin):
 class TipsAdmin(admin.ModelAdmin):
     list_display = ('content',)
     search_fields = ('content',)
+    
+@admin.register(ClassificationHistory)
+class ClassificationHistory(admin.ModelAdmin):
+    list_display = ('user', 'timestamp', 'input_log', 'attack_type')
+    
+@admin.register(QAHistory)
+class QAHistory(admin.ModelAdmin):
+    list_display = ('user', 'timestamp', 'question', 'answer')
+    
+@admin.register(SummaryHistory)
+class SummaryHistory(admin.ModelAdmin):
+    list_display = ('user', 'timestamp', 'paragraph', 'summary')
+    

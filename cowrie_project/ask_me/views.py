@@ -11,7 +11,8 @@ def classification_view(request):
     log_input = ""
 
     if request.method == 'POST':
-        log_input = request.POST.get('log_input', '').strip()
+        log_input = eval(request.POST.get('log_input', '').strip())
+        print(log_input)
 
         if not log_input:
             return render(request, 'ask_me/classification.html', {
@@ -28,17 +29,12 @@ def classification_view(request):
             "destfile", "client_fingerprint", "filename", "eventid"
         ]
         
-        regex_pattern = r"(\[[^\]]*\]|'[^']*'|\"[^\"]*\"|\S+)"
-        fields = re.findall(regex_pattern, log_input)
-        fields = [field.strip() if field.strip() else 'nan' for field in fields]
+        data_dict = {col: 'nan' for col in col_names}
         
-        if len(fields) < len(col_names):
-            fields.extend(['nan'] * (len(col_names) - len(fields)))
-
-        if len(fields) > len(col_names):
-            fields = fields[:len(col_names)]
-
-        data_dict = dict(zip(col_names, fields))
+        for key, value in log_input.items():
+            if key in col_names:
+                data_dict[key] = value
+                
         required_params = {param: data_dict.get(param, 'nan') for param in [
             'username', 'input', 'protocol', 'duration', 'data', 'keyAlgs', 'message', 'eventid', 'kexAlgs'
         ]}
@@ -63,7 +59,7 @@ def classification_view(request):
             attack_type = "Error retrieving attack type from backend."
             description = "Please check the input or try again later."
 
-        log_input = ""  # Clear the input field
+        input_log = ""  # Clear the input field
 
     return render(request, 'ask_me/classification.html', {
         'attack_type': attack_type,
