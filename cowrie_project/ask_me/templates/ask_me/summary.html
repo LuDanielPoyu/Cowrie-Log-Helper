@@ -7,13 +7,14 @@
 <!-- Form to input paragraph -->
 <form method="POST" action="{% url 'ask_me:summary' %}">
     {% csrf_token %}
-    <div class="form-flex">
+    <div class="form-flex-sum">
         <p class="comment">Please input cybersecurity-related paragraph or articles:</p>
-        <textarea id="paragraph" name="paragraph" rows="16" class="form-control" placeholder="Type or paste your paragraph here..." required>{% if paragraph %}{{ paragraph }}{% endif %}</textarea>
+        <textarea id="paragraph" name="paragraph" rows="14" class="form-control" placeholder="Type or paste your paragraph here..." required>{% if paragraph %}{{ paragraph }}{% endif %}</textarea>
         <button type="submit" class="btn btn-primary">Generate Summary</button>
     </div>
 </form>
 <br>
+
 <!-- Display the generated summary -->
 {% if summary %}
     <hr><br>
