@@ -18,7 +18,7 @@ class Tips(models.Model):
 
 
 class ClassificationHistory(models.Model):
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    user = models.ForeignKey(User, on_delete = models.DO_NOTHING)
     timestamp = models.DateTimeField(auto_now_add = True)
     input_log = models.TextField(default = "None")
     attack_type = models.CharField(max_length = 128)
