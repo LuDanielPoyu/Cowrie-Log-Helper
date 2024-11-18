@@ -1,28 +1,24 @@
 from django.shortcuts import render
-import requests, random
+from django.conf import settings
+from django.db.models import Count
 from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationHistory
+
+import requests, random
 import json
 import pandas as pd
-import matplotlib
-matplotlib.use('Agg')  # Use non-interactive backend
+import matplotlib  
 import matplotlib.pyplot as plt
-from django.conf import settings
+import io
+import base64
+import os
 
-# Create your views here
 def classification_view(request):
-    import matplotlib
     matplotlib.use('Agg') 
-    import matplotlib.pyplot as plt
-    import pandas as pd
-    import json
-    import io
-    import base64
-    import os
-
+    
     attack_type = None
     description = None
-    log_input = ""
     chart_data = None
+    log_input = ""
 
     if request.method == 'POST':
         log_input = request.POST.get('log_input', '').strip()
@@ -82,21 +78,19 @@ def classification_view(request):
             attack_type = "Error retrieving attack type from backend."
             description = "Please check the input or try again later."
 
-        # Generate chart
-        csv_file_path = os.path.join(settings.BASE_DIR, 'static', 'csv files', 'cowrie_train_data.csv')
+        type_data = ClassificationHistory.objects.values('attack_type').annotate(count=Count('attack_type'))
+        type_counts = pd.Series({item['attack_type']: item['count'] for item in type_data}).sort_values(ascending=False)
         try:
-            df = pd.read_csv(csv_file_path, low_memory=False)
-            event_counts = df['eventid'].value_counts()
             fig, ax = plt.subplots(figsize=(10, 6))
-            event_counts.plot(kind='bar', ax=ax, color='skyblue', alpha=0.7)
-            for i, v in enumerate(event_counts):
+            type_counts.plot(kind='bar', ax=ax, color='skyblue', alpha=0.7)
+            for i, v in enumerate(type_counts):
                 ax.text(i, v + 0.5, str(v), ha='center')
 
-            if attack_type in event_counts.index:
-                idx = event_counts.index.tolist().index(attack_type)
+            if attack_type in type_counts.index:
+                idx = type_counts.index.tolist().index(attack_type)
                 ax.patches[idx].set_facecolor('navy')
 
-            ax.set_xticklabels(event_counts.index, rotation=45, ha='right')  
+            ax.set_xticklabels(type_counts.index, rotation=45, ha='right')  
             ax.set_xlabel("Attack Types")  
             ax.set_ylabel("Number of Occurrences")  
             ax.set_title("Proportion of Attack Types From History")  
