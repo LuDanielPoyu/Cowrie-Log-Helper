@@ -65,7 +65,7 @@ def classification_view(request):
             attack_type = "Error retrieving attack type from backend."
             description = "Please check the input or try again later."
 
-        input_log = ""  # Clear the input field
+        log_input = ""  # Clear the input field
 
     return render(request, 'ask_me/classification.html', {
         'attack_type': attack_type,
