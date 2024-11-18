@@ -4,7 +4,6 @@
 {% block content %}
 <h1>Cowrie Log Attack Type Classification</h1>
 
-{% comment %} <p class="comment">Please check your cowrie log data and enter! Note that you only need to fill in blocks with values!</p> {% endcomment %}
 <p class="comment">Please check your Cowrie Log data and enter!</p>
 
 <!-- Form to input parameters -->
@@ -34,6 +33,16 @@
     <div class="description-block">
         <p>{{ description }}</p>
     </div>
+
+    <!-- Display the chart -->
+    <h3>Attack Type Proportion Chart:</h3>
+    {% if chart_data %}
+        <div class="chart-container">
+            <img src="data:image/png;base64,{{ chart_data }}" alt="Attack Type Chart">
+        </div>
+    {% else %}
+        <p>No chart data available.</p>
+    {% endif %}
 {% elif error %}
     <hr>
     <div class="alert alert-danger">
@@ -42,3 +51,4 @@
 {% endif %}
 
 {% endblock %}
+
