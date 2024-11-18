@@ -18,7 +18,7 @@
             margin: 0;
             padding: 0;
         }
-
+        
         /* Flexbox for body */
         body {
             display: flex;
@@ -29,7 +29,7 @@
             margin: 0;
             padding: 0;
         }
-
+        
         /* Header styles */
         header {
             background-color: #DCDCDC;
@@ -38,12 +38,12 @@
             text-align: center;
             flex-shrink: 0; /* Prevent header from shrinking */
         }
-
+        
         header h1 {
             margin: 0;
             font-size: 24px;
         }
-
+        
         /* Sidebar (nav) */
         nav {
             background-color: #6A8DB1;
@@ -51,60 +51,97 @@
             color: #000;
             display: flex;
             flex-direction: column;
-            width: 150px;
+            width: 200px;
             position: fixed;
             height: 100%;
             top: 0;
             left: 0;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
-
+        
         .logo {
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
+            margin-top: 10px;
         }
-
+        
         .logo img {
             height: 40px; /* Adjust size as needed */
         }
-
+        
         .nav-links {
             display: flex;
             flex-direction: column;
+            margin-left: 18px;
+            text-align: left;
+            overflow: hidden; /* 隱藏內容的超出部分 */
+            height: auto; /* 初始展開狀態 */
+            transition: height 0.5s ease; /* 添加過渡效果 */
         }
-
-        .nav-links a {
+        
+        .nav-links li {
+            padding: 5px;
+        }
+        
+        .nav-links li a {
             color: #fff;
             text-decoration: none;
             padding: 10px;
             display: block;
-            margin-bottom: 10px;
         }
-
-        .nav-links a:hover {
+        
+        .nav-links li a:hover {
             background-color: #386C91;
             color: #fff;
             border-radius: 5px;
         }
-        .nav-links a.active {
+        
+        .nav-links li a.active {
             background-color: #386C91;
             color: #fff;
             border-radius: 5px;
         }
-
+        
+        /* 顯示或隱藏的行為由 JavaScript 控制 */
+        .nav-links.hide {
+            height: 0;
+        }
+        
+        .toggle-btn {
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            background-color: transparent;
+            align-items: center;
+        }
+        
+        .toggle-btn img {
+            width: 12px; /* 圖片寬度 */
+            height: 12px; /* 圖片高度 */
+            margin-right: 10px; /* 圖片和文字之間的間距 */
+        }
+        
+        .toggle-btn span {
+            color: #000000;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
         /* Main content container */
         .container {
-            margin: 5px 25px 20px 175px;
+            margin: 5px 25px 20px 225px;
             padding: 20px 30px 10px;
             flex: 1; /* This allows the container to take up remaining space */
             background-color: #fff;
-            width: calc(100% - 200px); /* Adjust for sidebar */
-            max-width: 1400px;
+            width: calc(100% - 250px); /* Adjust for sidebar */
+            max-width: 1350px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
+        
         /* Result block */
         .result {
             padding: 0;
@@ -119,18 +156,18 @@
             font-size: 18px;
             margin: 30px 30px 40px;
         }
-
+        
         /* Footer styles */
         footer {
             background-color: #333;
             color: #fff;
             text-align: center;
             padding: 10px 0;
-            width: calc(100% - 150px);
-            margin-left: 150px;
+            width: calc(100% - 200px);
+            margin-left: 200px;
             flex-shrink: 0; /* Ensure footer doesn't shrink */
         }
-
+        
         /* Button styling */
         button {
             margin: 0 auto;
@@ -147,11 +184,11 @@
             transition: background-color 0.3s ease;
             white-space: nowrap;
         }
-
+        
         button:hover {
             background-color: #386C91;
         }
-
+        
         /* Style the form container */
         form {
             text-align: left;
@@ -165,15 +202,13 @@
             flex-direction: column;
             align-items: center;
         }
-
+        
         .learn-more-list {
             text-align: left;
             padding-left: 90px;
         }
-
+        
         .learn-more-list li {
-            {% comment %} list-style-position: inside; {% endcomment %}
-            {% comment %} text-indent: -30px; /* 根據需要調整縮排的值 */ {% endcomment %}
             padding-left: 10px;
             margin-left: 60px;
             margin-right: 80px;
@@ -192,14 +227,27 @@
                 <img src="{% static 'images/Logo2.png' %}" alt="Logo">
             </a>
         </div>
-        <div class="nav-links">
-            <a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">Classification</a>
-            <a href="{% url 'ask_me:qa' %}" class="{% if request.path == '/ask_me/qa/' %}active{% endif %}">QA</a>
-            <a href="{% url 'ask_me:summary' %}" class="{% if request.path == '/ask_me/summary/' %}active{% endif %}">Summary</a>
-            <a href="{% url 'your_help_coach:attack_suggestion' %}" class="{% if request.path == '/your_help_coach/attack_suggestion/' %}active{% endif %}">Your Help Coach</a>
+        
+        <div class="toggle-btn" id="toggle-btn-1">
+            <img src="{% static 'images/minus.png' %}" alt="Toggle Navigation" class="toggle-img" id="toggle-img-1">
+            <span>Ask Me</span>
         </div>
-    </nav>
+        <ul class="nav-links" id="nav-links-1">
+            <li><a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">Classification</a></li>
+            <li><a href="{% url 'ask_me:qa' %}" class="{% if request.path == '/ask_me/qa/' %}active{% endif %}">QA</a></li>
+            <li><a href="{% url 'ask_me:summary' %}" class="{% if request.path == '/ask_me/summary/' %}active{% endif %}">Summarization</a></li>
+        </ul>
 
+        <div class="toggle-btn" id="toggle-btn-2">
+            <img src="{% static 'images/minus.png' %}" alt="Toggle Navigation" class="toggle-img" id="toggle-img-2">
+            <span>Help Coach</span>
+        </div>
+        <ul class="nav-links" id="nav-links-2">
+            <li><a href="{% url 'your_help_coach:attack_suggestion' %}" class="{% if request.path == '/your_help_coach/attack_suggestion/' %}active{% endif %}">Detailed Suggestion</a></li>
+        </ul>
+
+    </nav>
+    <script src="{% static 'js/script.js' %}"></script>
 
     <div class="container">
         {% block content %}
@@ -212,6 +260,4 @@
     </footer>
 </body>
 </html>
-
 <script>
-

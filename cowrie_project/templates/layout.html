@@ -226,6 +226,7 @@
 
         .dropdown {
             position: relative;
+            display: inline-block;
         }
         
         .dropdown-content {
@@ -234,9 +235,25 @@
             background-color: #386C91;
             min-width: 160px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            top: 100%;
+            left: 0;
+            transition: max-height 0.5s ease, opacity 0.5s ease, visibility 0.5s ease;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
         }
-
+        
+        .dropdown:hover .dropdown-content {
+            max-height: 300px;
+            opacity: 1;
+            visibility: visible;
+            background-color: #386C91;
+        }
+        
         .dropdown-content a {
             color: #fff;
             padding: 12px 16px;
@@ -245,13 +262,9 @@
             text-align: left;
             left: -50px; /* 向左移動 */
         }
-
-        .dropdown-content a:hover {
-            background-color: #386C91;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
+        
+        .dropdown-content a:last-child {
+            border-bottom: none;
         }
 
         .container {
@@ -395,7 +408,7 @@
                 <div class="dropdown-content">
                     <a href="{% url 'ask_me:classification' %}">Classification</a>
                     <a href="{% url 'ask_me:qa' %}">QA</a>
-                    <a href="{% url 'ask_me:summary' %}">Summary</a>
+                    <a href="{% url 'ask_me:summary' %}">Summarization</a>
                 </div>
             </div>
 

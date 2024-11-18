@@ -118,6 +118,16 @@ textarea:focus {
     margin-bottom: 30px;
 }
 
+.form-flex-sum {
+   width: 100%;
+   max-width: 1000px;
+   display: flex;
+   flex-wrap: wrap;
+   gap: 16px;
+   flex-direction: column;
+   margin-bottom: 5px;
+}
+
 .form-flex label {
     display: block;
     margin-bottom: 5px;
