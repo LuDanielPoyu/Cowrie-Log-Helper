@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.db.models import Count
 from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationHistory
+from django.contrib.auth.models import User
 
 import requests, random
 import json
@@ -21,7 +22,7 @@ def classification_view(request):
     log_input = ""
 
     if request.method == 'POST':
-        log_input = request.POST.get('log_input', '').strip()
+        log_input = request.POST.get('log_input', '').strip().replace("'", '"')
         
         if not log_input.startswith('{'):
             log_input = '{' + log_input
@@ -29,7 +30,7 @@ def classification_view(request):
             log_input = log_input + '}'
         
         try:
-            log_input = json.loads(log_input) 
+            log_input = json.loads(log_input)
         except json.JSONDecodeError:
             return render(request, 'ask_me/classification.html', {
                 'attack_type': "Error: Invalid input format.",
@@ -43,31 +44,15 @@ def classification_view(request):
                 'description': "Please paste a valid cowrie log row.",
                 'log_input': log_input
             })
-            
-        col_names = [
-            "username", "input", "size", "compCS", "width", "outfile", "protocol",
-            "duration", "height", "url", "keyAlgs", "ttylog", "data", "sensor",
-            "arch", "session", "shasum", "message", "langCS", "timestamp",
-            "kexAlgs", "encCS", "password", "version", "dst_port", "macCS",
-            "destfile", "client_fingerprint", "filename", "eventid"
-        ]
-        data_dict = {col: 'nan' for col in col_names}
-        for key, value in log_input.items():
-            if key in col_names:
-                data_dict[key] = value
-
-        required_params = {param: data_dict.get(param, 'nan') for param in [
-            'username', 'input', 'protocol', 'duration', 'data', 'keyAlgs', 'message', 'eventid', 'kexAlgs'
-        ]}
 
         backend_url = "https://ewe-happy-centrally.ngrok-free.app/classify"  
-        response = requests.post(backend_url, json=required_params)
+        response = requests.post(backend_url, json=log_input)
         
         if response.status_code == 200:
             result = response.json()
             attack_type = result.get('attack_type')
             if request.user.is_authenticated:
-                record = ClassificationHistory(user=request.user, input_log=json.dumps(log_input), attack_type=attack_type)
+                record = ClassificationHistory(user=request.user, input_log=json.dumps(log_input), attack_type=attack_type, actual_type=log_input['eventid'])
                 record.save()
             try:
                 attack_type_entry = AttackType.objects.get(attack_type=attack_type)

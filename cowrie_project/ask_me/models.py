@@ -22,6 +22,7 @@ class ClassificationHistory(models.Model):
     timestamp = models.DateTimeField(auto_now_add = True)
     input_log = models.TextField(default = "None")
     attack_type = models.CharField(max_length = 128)
+    actual_type = models.CharField(max_length = 128)
 
 
 class QAHistory(models.Model):
