@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% block title %}User Registration{% endblock %}
 
+{% load socialaccount %}
 {% load static %}
 
 {% block content %}
@@ -31,6 +32,13 @@
     <button type="submit">Register</button>
 </form>
 <br>
+<div class="google-login-btn">
+    <a href="{% provider_login_url 'google' %}">
+        <img src="{% static 'images/google.png' %}" alt="Google">
+        Sign up with Google
+    </a>
+</div>
+<br><br>
 <p>Already have an account? <a href="{% url 'users:login' %}">Login here</a>.</p>
 <br><br>
 {% endblock content %}

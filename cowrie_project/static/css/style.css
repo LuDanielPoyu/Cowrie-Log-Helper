@@ -331,3 +331,27 @@ h3 {
     display: inline-block;
     text-align: center;
 }
+
+.google-login-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fefefe;
+    border-radius: 6px;
+    box-shadow: 1px 1px 2px 0.5px rgba(0, 0, 0, 0.2);
+    margin: 10px 0;
+}
+
+.google-login-btn a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+}
+
+.google-login-btn img {
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
