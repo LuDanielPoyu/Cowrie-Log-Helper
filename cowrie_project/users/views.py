@@ -6,7 +6,7 @@ def register_view(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            login(request, form.save()) # register same time as logging in
+            login(request, form.save()) 
             return redirect('homepage_view')
     else:
         form = UserCreationForm()
