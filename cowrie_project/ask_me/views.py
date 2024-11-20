@@ -45,7 +45,7 @@ def classification_view(request):
                 'log_input': log_input
             })
 
-        backend_url = "https://blindly-mint-mudfish.ngrok-free.app/classify"  
+        backend_url = "https://marten-loving-accurately.ngrok-free.app/classify"  
         response = requests.post(backend_url, json=log_input)
         
         if response.status_code == 200:
@@ -109,7 +109,7 @@ def qa_view(request):
     
     if request.method == 'POST':
         question = request.POST.get('question')
-        backend_url = "https://blindly-mint-mudfish.ngrok-free.app/qa" 
+        backend_url = "https://marten-loving-accurately.ngrok-free.app/qa" 
         response = requests.post(backend_url, json={'question': question})
 
         if response.status_code == 200:
@@ -134,7 +134,7 @@ def summary_view(request):
     if request.method == 'POST':
         paragraph = request.POST.get('paragraph')
 
-        backend_url = "https://blindly-mint-mudfish.ngrok-free.app/summarize"  # Replace with your Flask backend URL
+        backend_url = "https://marten-loving-accurately.ngrok-free.app/summarize"  # Replace with your Flask backend URL
         
         try:
             response = requests.post(backend_url, json={'paragraph': paragraph})

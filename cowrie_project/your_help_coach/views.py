@@ -2,6 +2,7 @@ from django.shortcuts import render
 import requests
 import logging
 import re
+import json
 from .models import CowrieLogAttack
 from ask_me.models import ClassificationHistory
 
@@ -10,56 +11,39 @@ def attack_suggestion_view(request):
     log_input = ""
 
     if request.method == 'POST':
-        # Get the pasted log input
-        log_input = request.POST.get('log_input', '').strip()
+        log_input = request.POST.get('log_input', '').strip().replace("'", '"')
 
-        if not log_input:
-            return render(request, 'your_help_coach/attack_suggestion.html', {
-                'attack_type': "Error: No input provided.",
-                'log_input': log_input  # Retain input if there was an error
+        if not log_input.startswith('{'):
+            log_input = '{' + log_input
+        if not log_input.endswith('}'):
+            log_input = log_input + '}'
+
+        try:
+            log_input = json.loads(log_input)
+        except json.JSONDecodeError:
+            return render(request, 'ask_me/classification.html', {
+                'attack_type': "Error: Invalid input format.",
+                'description': "Please provide a valid JSON-formatted cowrie log row.",
+                'log_input': log_input
             })
 
-        # Define column names based on the input data structure
-        col_names = [
-            "username", "input", "size", "compCS", "width", "outfile", "protocol",
-            "duration", "height", "url", "keyAlgs", "ttylog", "data", "sensor",
-            "arch", "session", "shasum", "message", "langCS", "timestamp",
-            "kexAlgs", "encCS", "password", "version", "dst_port", "macCS",
-            "destfile", "client_fingerprint", "filename", "eventid"
-        ]
-
-        # Regex pattern to split input while preserving lists, strings, and spaces
-        regex_pattern = r"(\[[^\]]*\]|'[^']*'|\"[^\"]*\"|\S+)"
-        fields = re.findall(regex_pattern, log_input)
-
-        # Clean up the fields (strip whitespace and replace empty fields with 'nan')
-        fields = [field.strip() if field.strip() else 'nan' for field in fields]
-
-        # Ensure the number of fields matches the number of columns
-        if len(fields) < len(col_names):
-            fields.extend(['nan'] * (len(col_names) - len(fields)))  # Pad with 'nan'
-
-        if len(fields) > len(col_names):
-            fields = fields[:len(col_names)]  # Truncate extra fields
-
-        # Create a dictionary mapping column names to their corresponding values
-        data_dict = dict(zip(col_names, fields))
-
-        # Extract the required parameters for the backend
-        required_params = {param: data_dict.get(param, 'nan') for param in [
-            'username', 'input', 'protocol', 'duration', 'data', 'keyAlgs', 'message', 'eventid', 'kexAlgs'
-        ]}
+        if not log_input:
+            return render(request, 'ask_me/classification.html', {
+                'attack_type': "Error: No input provided.",
+                'description': "Please paste a valid cowrie log row.",
+                'log_input': log_input
+            })
 
         # Send data to the Flask backend
-        backend_url = "https://ewe-happy-centrally.ngrok-free.app/classify"  # Replace with your Flask backend URL
-        response = requests.post(backend_url, json=required_params)
+        backend_url = "https://marten-loving-accurately.ngrok-free.app/classify"  # Replace with your Flask backend URL
+        response = requests.post(backend_url, json=log_input)
 
         if response.status_code == 200:
             result = response.json()
             attack_type = result.get('attack_type')
 
             if request.user.is_authenticated:
-                record = ClassificationHistory(user = request.user, input_log = log_input, attack_type = attack_type)
+                record = ClassificationHistory(user = request.user, input_log=json.dumps(log_input), attack_type = attack_type)
                 record.save()
 
         else:
