@@ -74,15 +74,18 @@
         .nav-links {
             display: flex;
             flex-direction: column;
-            margin-left: 18px;
+            margin-left: 12px;
             text-align: left;
             overflow: hidden; /* 隱藏內容的超出部分 */
             height: auto; /* 初始展開狀態 */
             transition: height 0.5s ease; /* 添加過渡效果 */
+            white-space: nowrap;
+            font-size: 15.8px;
+            gap: 3px;
         }
         
         .nav-links li {
-            padding: 5px;
+            padding: 5px 5px 5px 4px;
         }
         
         .nav-links li a {
@@ -112,7 +115,7 @@
         .toggle-btn {
             color: white;
             border: none;
-            padding: 10px;
+            padding: 10px 10px 10px 5px;
             cursor: pointer;
             display: flex;
             background-color: transparent;
@@ -122,7 +125,7 @@
         .toggle-btn img {
             width: 12px; /* 圖片寬度 */
             height: 12px; /* 圖片高度 */
-            margin-right: 10px; /* 圖片和文字之間的間距 */
+            margin-right: 9px; /* 圖片和文字之間的間距 */
         }
         
         .toggle-btn span {
