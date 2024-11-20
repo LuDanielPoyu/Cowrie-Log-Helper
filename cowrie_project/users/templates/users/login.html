@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% block title %}User Login{% endblock %}
 
+{% load socialaccount %}
 {% load static %}
 
 {% block content %}
@@ -8,8 +9,16 @@
     <form method="post" action="{% url 'users:login' %}" class="form-login">
         {% csrf_token %}
         {{ form.as_p }}
-        <br>
         <button type="submit">Login</button>
+        <span>or</span>
+        <div class="google-login-btn">
+            <a href="{% provider_login_url 'google' %}">
+                <img src="{% static 'images/google.png' %}" alt="Google">
+                Continue with Google
+            </a>
+        </div>
     </form>
 <br><br>
+<p>Haven't had an account? <a href="{% url 'users:register' %}">Sign up here</a>.</p>
+<br>
 {% endblock content %}
