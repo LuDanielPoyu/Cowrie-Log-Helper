@@ -11,11 +11,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 import io
 import base64
-import os
 
 def classification_view(request):
     matplotlib.use('Agg') 
-    
+        
     attack_type = None
     description = None
     chart_data = None
