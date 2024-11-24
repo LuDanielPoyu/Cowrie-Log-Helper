@@ -27,6 +27,13 @@
             {% for error in field.errors %}
                 <div class="error">{{ error }}</div>
             {% endfor %}
+
+            {% if field.label == 'Verification Code' %}
+                <div style="display: flex; gap: 10px;">
+                    <button type = "submit" name = "send">Get verification code</button>
+                    <button type = "submit" name = "verify">verify</button>
+                </div>
+            {% endif %}
         </div>
     {% endfor %}
     <button type="submit">Register</button>

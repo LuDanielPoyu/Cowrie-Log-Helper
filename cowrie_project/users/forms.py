@@ -8,10 +8,17 @@ class CustomUserCreationForm(UserCreationForm):
         widget = forms.EmailInput(attrs = {"class": "register-emailfield"}), 
         help_text = "Please enter a valid email address"
     )
+    
+    verification_code = forms.CharField(
+        required= False,
+        widget = forms.TextInput(attrs = {"class": "register-verifyfield"}),
+        label = "Verification Code",
+        help_text = "Please enter verification code"
+    )
 
     class Meta:
         model = User
-        fields = ("username", "email", "password1", "password2")
+        fields = ("username", "email", "verification_code", "password1", "password2")
 
     def save(self, commit = True):
         user = super().save(commit = False)
