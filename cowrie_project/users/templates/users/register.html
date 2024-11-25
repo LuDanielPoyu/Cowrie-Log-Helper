@@ -38,12 +38,10 @@
     {% endfor %}
     <button type="submit">Register</button>
     <span>or</span>
-    <div class="google-login-btn-register">
-        <a href="{% provider_login_url 'google' %}">
-            <img src="{% static 'images/google.png' %}" alt="Google">
-            Sign up with Google
-        </a>
-    </div>
+    <a href="{% provider_login_url 'google' %}" class="google-login-btn-register">
+        <img src="{% static 'images/google.png' %}" alt="Google">
+        Sign up with Google
+    </a>
 </form>
 <br><br>
 <p>Already have an account? <a href="{% url 'users:login' %}">Login here</a>.</p>

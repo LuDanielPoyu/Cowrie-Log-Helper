@@ -11,12 +11,10 @@
         {{ form.as_p }}
         <button type="submit">Login</button>
         <span>or</span>
-        <div class="google-login-btn">
-            <a href="{% provider_login_url 'google' %}">
-                <img src="{% static 'images/google.png' %}" alt="Google">
-                Continue with Google
-            </a>
-        </div>
+        <a href="{% provider_login_url 'google' %}" class="google-login-btn">
+            <img src="{% static 'images/google.png' %}" alt="Google">
+            Continue with Google
+        </a>
     </form>
 <br><br>
 <p>Haven't had an account? <a href="{% url 'users:register' %}">Sign up here</a>.</p>

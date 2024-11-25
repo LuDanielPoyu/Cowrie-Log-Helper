@@ -25,8 +25,7 @@ def register_view(request):
                 form.add_error("verification_code", "Please enter a valid email.")
                 
             return render(request, 'users/register.html', {"form": form})
-            
-            
+                 
         if "verify" in request.POST:
             email = request.POST.get('email').lower()
             if cache.get(email) == request.POST.get('verification_code'):
@@ -49,27 +48,16 @@ def register_view(request):
                 cache.clear()
                 login(request, form.save(), backend = 'django.contrib.auth.backends.ModelBackend') 
                 return redirect('homepage_view')
+            
     else:
         form = CustomUserCreationForm()
+        
     return render(request, 'users/register.html', {"form": form})
-
-def login_view(request):
-    if request.method == "POST":
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            login(request, form.get_user(), backend = 'django.contrib.auth.backends.ModelBackend')
-            return redirect('homepage_view')
-    else:
-        form = AuthenticationForm()
-    return render(request, "users/login.html", {"form": form })
-
-def logout_view(request):
-    if request.method == "POST":
-        logout(request)
-        return redirect('homepage_view')
     
+
 def generate_verification_code():
     return ''.join([str(random.randint(0, 9)) for _ in range(6)])
+
 
 def send_verification_email(email, code):
     email = EmailMessage(
@@ -81,3 +69,20 @@ def send_verification_email(email, code):
     
     email.fail_silently = False
     email.send()
+
+
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user(), backend = 'django.contrib.auth.backends.ModelBackend')
+            return redirect('homepage_view')
+    else:
+        form = AuthenticationForm()
+    return render(request, "users/login.html", {"form": form })
+
+
+def logout_view(request):
+    if request.method == "POST":
+        logout(request)
+        return redirect('homepage_view')
