@@ -5,7 +5,7 @@
 {% load static %}
 
 {% block content %}
-<h1>Register</h1>
+<h1>User Registration</h1>
 <form method="post" action="{% url 'users:register' %}" class="form-with-validation">
     {% csrf_token %}
 
