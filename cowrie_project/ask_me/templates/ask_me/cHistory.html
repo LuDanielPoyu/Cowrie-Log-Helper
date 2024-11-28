@@ -1,0 +1,177 @@
+{% extends "layout2.html" %}
+{% block title %}Classification History{% endblock %}
+
+{% block content %}
+<h1>Cowrie Log Attack Type Classification History</h1>
+
+<p class="comment">Here you can explore the past events with visualization.</p>
+
+<!-- 引入 p5.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script> 
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #controls {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background-color: #ecf0f1;
+        }
+
+        .button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #bdc3c7;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .button.active {
+            background-color: #34495e;
+        }
+
+        #content {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        #visualization {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="controls">
+        <button id="btn-attack" class="button active">Attack Type</button>
+        <button id="btn-time" class="button">Time</button>
+    </div>
+
+    <div id="content">
+        <div id="records"></div>
+        <div id="visualization"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+
+    <script>
+        // Buttons and content containers
+        const btnAttack = document.getElementById("btn-attack");
+        const btnTime = document.getElementById("btn-time");
+        const recordsDiv = document.getElementById("records");
+        const visualizationDiv = document.getElementById("visualization");
+
+        // Sample data
+        const attackData = [
+            { type: "cowrie.session.connect", times: ["2024-02-09", "2024-12-09"] },
+            { type: "cowrie.session.params", times: ["2024-04-20"] },
+            { type: "cowrie.direct-tcpip.data", times: ["2024-06-24", "2024-10-15"] },
+        ];
+
+        const timeData = [
+            { time: "2024-02-09", type: "cowrie.session.connect", detail: "Detail A" },
+            { time: "2024-04-20", type: "cowrie.session.params", detail: "Detail B" },
+        ];
+
+        // Event listeners for buttons
+        btnAttack.addEventListener("click", () => showAttackType());
+        btnTime.addEventListener("click", () => showTime());
+
+        // Show attack type data
+        function showAttackType() {
+            btnAttack.classList.add("active");
+            btnTime.classList.remove("active");
+            recordsDiv.innerHTML = generateAttackTable();
+        }
+
+        // Show time data
+        function showTime() {
+            btnTime.classList.add("active");
+            btnAttack.classList.remove("active");
+            recordsDiv.innerHTML = generateTimeTable();
+        }
+
+        // Generate attack type table
+        function generateAttackTable() {
+            let html = `<table>
+                <tr>
+                    <th>Attack Type</th>
+                    <th>Times</th>
+                    <th>Detail</th>
+                </tr>`;
+            attackData.forEach((item) => {
+                html += `<tr>
+                    <td>${item.type}</td>
+                    <td>${item.times.join(", ")}</td>
+                    <td><button class="detail-btn">Detail</button></td>
+                </tr>`;
+            });
+            html += `</table>`;
+            return html;
+        }
+
+        // Generate time table
+        function generateTimeTable() {
+            let html = `<table>
+                <tr>
+                    <th>Time</th>
+                    <th>Attack Type</th>
+                    <th>Detail</th>
+                </tr>`;
+            timeData.forEach((item) => {
+                html += `<tr>
+                    <td>${item.time}</td>
+                    <td>${item.type}</td>
+                    <td><button class="detail-btn">Detail</button></td>
+                </tr>`;
+            });
+            html += `</table>`;
+            return html;
+        }
+
+        // Initial render
+        showAttackType();
+    </script>
+</body>
+</html>
+
+{% endblock %}
+
