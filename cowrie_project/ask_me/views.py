@@ -146,5 +146,8 @@ def summary_view(request):
             
         except requests.RequestException as e:
             print(f"Request failed: {e}")
-
     return render(request, 'ask_me/summary.html', {'summary': summary, 'paragraph': paragraph})
+
+def cHistory_view(request):
+    return render(request, 'ask_me/cHistory.html')  # 假設您的 HTML 檔案命名為 history.html
+
