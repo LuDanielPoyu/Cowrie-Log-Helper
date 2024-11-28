@@ -12,6 +12,16 @@ import random
 def register_view(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
+
+        #######################################################################
+        action = request.POST.get('action')
+        if action == 'verify':
+            # 處理驗證的邏輯
+            pass
+        elif action == 'resend':
+            # 處理重新發送驗證碼的邏輯
+            return render(request, 'users/register.html', {"resend": True})
+        #######################################################################
         
         if "send" in request.POST:
             email = request.POST.get('email').lower()
