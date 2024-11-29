@@ -148,6 +148,48 @@ def summary_view(request):
             print(f"Request failed: {e}")
     return render(request, 'ask_me/summary.html', {'summary': summary, 'paragraph': paragraph})
 
-def cHistory_view(request):
-    return render(request, 'ask_me/cHistory.html')  # 假設您的 HTML 檔案命名為 history.html
 
+def cHistory_view(request):
+    attackTypes = [
+        "cowrie.session.connect", 
+        "cowrie.session.params", 
+        "cowrie.direct-tcpip.data", 
+        "cowrie.session.data", 
+        "cowrie.session.disconnect",
+        "cowrie.password.failed",
+        "cowrie.password.success",
+        "cowrie.system.info",
+        "cowrie.shell.request",
+        "cowrie.direct-tcpip.data",
+        "cowrie.connection",
+        "cowrie.session.shell",
+        "cowrie.login.failed",
+        "cowrie.login.success",
+        "cowrie.exec",
+        "cowrie.session.term"
+    ]
+    
+    frequencies = [5, 3, 7, 6, 4, 9, 8, 10, 2, 3, 1, 6, 2, 3, 5, 7]
+    
+    # 將 0-15 範圍傳遞給模板
+    range_data = range(16)
+    
+    # return render(request, 'ask_me/cHistory.html', {
+    #     'attackTypes': attackTypes,
+    #     'frequencies': frequencies,
+    #     'range_data': range_data,
+    # }
+
+    # 合併 attackTypes 和 frequencies
+    attack_data = [{'attackType': attackTypes[i], 'frequency': frequencies[i]} 
+                   for i in range(len(attackTypes))]
+    
+    # If you want to include historical records for each attack type, add that logic here:
+    # Example (mocked records):
+    for item in attack_data:
+        item["records"] = [{"time": "2024-11-29 06:00:00", "input_log": "Sample log"}]  # Replace with actual records from your database
+
+
+    return render(request, 'ask_me/cHistory.html', {
+        'attack_data': attack_data,
+    })
