@@ -20,21 +20,24 @@ def register_view(request):
             
             try:
                 send_verification_email(email, code)
-                form.add_error("verification_code", "Verification code has been sent to your email.")
+                # form.add_error("verification_code", "Verification code has been sent to your email.")
+                # 用 render(request, "users/verify.html", {"first_time": True})
             except Exception:
                 form.add_error("verification_code", "Please enter a valid email.")
+                # 有任何 error 都用 render(request, "users/verify.html", {"error": "錯誤訊息"})
                 
             return render(request, 'users/register.html', {"form": form})
-            
-            
+                 
         if "verify" in request.POST:
             email = request.POST.get('email').lower()
             if cache.get(email) == request.POST.get('verification_code'):
                 cache.set("verification", True)
-                form.add_error("verification_code", "Verification successful! You can now register.")
+                form.add_error("verification_code", "Verification successful! You can now register.")  ## NEED FIX ##
+                # 改成 alert("Verification success, welcome to Loglytics!");
 
+            ## 需要判斷是否包含非數字的字符嗎? ##
             else:
-                form.add_error("verification_code", "Invalid verification code")
+                form.add_error("verification_code", "Invalid verification code! Please try again.")
         
             return render(request, 'users/register.html', {"form": form})
 
@@ -49,9 +52,33 @@ def register_view(request):
                 cache.clear()
                 login(request, form.save(), backend = 'django.contrib.auth.backends.ModelBackend') 
                 return redirect('homepage_view')
+            
     else:
         form = CustomUserCreationForm()
+
     return render(request, 'users/register.html', {"form": form})
+    
+
+def generate_verification_code():
+    return ''.join([str(random.randint(0, 9)) for _ in range(6)])
+
+
+def send_verification_email(email, code):
+    email = EmailMessage(
+        'Loglytics Registration Verification Code',
+        f'Welcome to Loglytics\nYour verification code is: {code}',
+        settings.EMAIL_HOST_USER,
+        [email],
+    )
+    
+    email.fail_silently = False
+    email.send()
+
+
+def verify_view(request):
+    ## Implement verification here ##
+    return render(request, "users/verify.html")
+
 
 def login_view(request):
     if request.method == "POST":
@@ -63,21 +90,8 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, "users/login.html", {"form": form })
 
+
 def logout_view(request):
     if request.method == "POST":
         logout(request)
         return redirect('homepage_view')
-    
-def generate_verification_code():
-    return ''.join([str(random.randint(0, 9)) for _ in range(6)])
-
-def send_verification_email(email, code):
-    email = EmailMessage(
-        'Registration Verification Code',
-        f'Your verification code is: {code}',
-        settings.EMAIL_HOST_USER,
-        [email],
-    )
-    
-    email.fail_silently = False
-    email.send()
