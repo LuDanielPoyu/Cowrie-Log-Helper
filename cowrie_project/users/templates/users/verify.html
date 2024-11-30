@@ -11,6 +11,8 @@
     {% if first_time %}
         <label>The six-digit verification code has been sent to your email. 
             Please enter the code below to verify your email address.</label>
+    {% elif resend %}
+        <label>The verification code has been resent. Please enter the code below to verify your email address.</label>
     {% else %}
         <label>Please enter the verification code below to verify your email address.</label>
     {% endif %}
@@ -18,17 +20,17 @@
     <input type="text" name="verification_code" required>
     
     {% if error %}
-        <div class="error">{{ error }}</div>
+        <div class="error-verify">{{ error }}</div>
     {% endif %}
 
-    {% if resend %}
-        <div class="resend-text"></div>
-    {% endif %}
+    <button type="submit" name="verify" value="verify">Verify</button>
 
-    <button type="submit">Verify</button>
-
-    {% comment %} redend邏輯還需要再改 {% endcomment %}
-    <p>Didn't receive the code? <a href="">Resend Code</a></p>
+    <div class="resend-block">
+        <span>Didn't receive the code?</span>
+        <button type="submit" id="resend-btn" formnovalidate>Resend Code</button>
+        <span class="timer" id="timer"></span>
+        <script src="{% static 'js/timer.js' %}"></script>
+    </div>
 </form>
-<br><br>
+<br>
 {% endblock content %}

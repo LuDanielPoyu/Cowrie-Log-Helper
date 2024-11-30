@@ -52,7 +52,7 @@
         }
 
         .logo img {
-            width: 30px;
+            width: 32px;
             height: 38px; /* Adjust size as needed */
         }
 
@@ -325,7 +325,7 @@
 
         .form-with-validation {
             text-align: center;
-            max-width: 700px;
+            max-width: 720px;
             margin: 0 auto;
             padding: 20px;
             background-color: #ffffff;
@@ -404,7 +404,6 @@
         }
 
         .form-verify {
-            text-align: center;
             max-width: 700px;
             margin: 0 auto;
             padding: 30px 50px;
@@ -413,13 +412,9 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-flow: column;
+            text-align: center;
+            justify-content: center;
             gap: 30px;
-        }
-
-        .form-verify div {
-            display: flex;
-            flex-flow: column;
-            gap: 0.5rem;
         }
 
         .form-verify input {
@@ -432,7 +427,7 @@
 
         .form-verify button {
             display: block;
-            margin: 40px auto 6px;
+            margin: 32px auto 6px;
         }
 
         .google-login-btn {
@@ -472,6 +467,62 @@
             margin-right: 10px;
             vertical-align: middle;
         }
+
+        .resend-block {
+            display: flex;
+            flex-flow: row;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            align-items: center;
+            width: auto;
+            gap: 7px;
+            margin: 0 auto;
+        }
+
+        .resend-block span {
+            line-height: 1.5;
+        }
+
+        .resend-block button {
+            background-color: #FFF;
+            color: #2a71b8;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            border: none;
+            line-height: 1.5;
+            height: auto;
+            width: auto;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .resend-block button:hover:not(:disabled) {
+            text-decoration: underline;
+        }
+
+        .resend-block button:disabled {
+            color: #000;
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        
+        .error-verify {
+            color: #F00;                /* 使用醒目的紅色 */
+            font-size: 14px;              /* 略微增大字體 */
+            background-color: #f9e0e2;  /* 紅色背景以引起注意 */
+            padding: 5px 10px;            /* 添加內邊距讓錯誤訊息更突出 */
+            border: none;
+            border-radius: 4px;           /* 圓角邊框 */
+            margin-top: 15px;
+            display: inline-block;
+            text-align: center;
+        }
+
     </style>
 </head>
 

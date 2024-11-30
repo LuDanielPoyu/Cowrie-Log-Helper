@@ -9,12 +9,6 @@ class CustomUserCreationForm(UserCreationForm):
         help_text = "Please enter a valid email address"
     )
 
-    # verification_code = forms.CharField(
-    #     required = False,
-    #     widget = forms.TextInput(attrs = {"class": "register-verifyfield"}),
-    #     label = "Verification Code"
-    # )
-
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
