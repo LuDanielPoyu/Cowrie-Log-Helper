@@ -20,18 +20,17 @@
     <input type="text" name="verification_code" required>
     
     {% if error %}
-        <div class="error">{{ error }}</div>
+        <div class="error-verify">{{ error }}</div>
     {% endif %}
 
-    <button type="submit" name="action" value="verify">Verify</button>
+    <button type="submit" name="verify" value="verify">Verify</button>
 
-    {% comment %} resend邏輯還需要再改 {% endcomment %}
     <div class="resend-block">
         <span>Didn't receive the code?</span>
-        <button type="submit" id="resend-btn" name="action" value="resend">Resend Code</button>
+        <button type="submit" id="resend-btn" formnovalidate>Resend Code</button>
         <span class="timer" id="timer"></span>
         <script src="{% static 'js/timer.js' %}"></script>
     </div>
 </form>
-<br><br>
+<br>
 {% endblock content %}
