@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 from django.db.models import Count
+from django.db.models.functions import TruncDate
 from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationHistory
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -63,7 +64,9 @@ def classification_view(request):
             attack_type = "Error retrieving attack type from backend."
             description = "Please check the input or try again later."
 
-        type_data = ClassificationHistory.objects.values('attack_type').annotate(count=Count('attack_type'))
+        type_data = ClassificationHistory.objects.values('attack_type') \
+        .annotate(count=Count('attack_type'))
+        
         type_counts = pd.Series({item['attack_type']: item['count'] for item in type_data}).sort_values(ascending=False)
         try:
             fig, ax = plt.subplots(figsize=(10, 6))
@@ -153,46 +156,107 @@ def summary_view(request):
 
 
 def cHistory_view(request):
-    attackTypes = [
-        "cowrie.session.connect", 
-        "cowrie.session.params", 
-        "cowrie.direct-tcpip.data", 
-        "cowrie.session.data", 
-        "cowrie.session.disconnect",
-        "cowrie.password.failed",
-        "cowrie.password.success",
-        "cowrie.system.info",
-        "cowrie.shell.request",
-        "cowrie.direct-tcpip.data",
-        "cowrie.connection",
-        "cowrie.session.shell",
-        "cowrie.login.failed",
-        "cowrie.login.success",
-        "cowrie.exec",
-        "cowrie.session.term"
-    ]
+    history_bar_data = ClassificationHistory.objects.filter(user=request.user) \
+    .values('attack_type') \
+    .annotate(count=Count('attack_type'))
     
-    frequencies = [5, 3, 7, 6, 4, 9, 8, 10, 2, 3, 1, 6, 2, 3, 5, 7]
-    
-    # 將 0-15 範圍傳遞給模板
-    range_data = range(16)
-    
-    # return render(request, 'ask_me/cHistory.html', {
-    #     'attackTypes': attackTypes,
-    #     'frequencies': frequencies,
-    #     'range_data': range_data,
-    # }
+    history_bar = pd.Series({item['attack_type']: item['count'] for item in history_bar_data}).sort_values(ascending=False)
+    fig, ax = plt.subplots(figsize=(10, 5))
+    history_bar.plot(kind='bar', ax=ax, color='skyblue', alpha=0.7)
+    for i, v in enumerate(history_bar):
+        ax.text(i, v + 0.5, str(v), ha='center')
 
-    # 合併 attackTypes 和 frequencies
-    attack_data = [{'attackType': attackTypes[i], 'frequency': frequencies[i]} 
-                   for i in range(len(attackTypes))]
+    ax.set_xticklabels(history_bar.index, rotation=45, ha='right')
+    ax.set_xlabel('Attack_type')
+    ax.set_ylabel('Count')
+    
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    chart_data = base64.b64encode(image_png).decode('utf-8')
+    
     
     # If you want to include historical records for each attack type, add that logic here:
     # Example (mocked records):
-    for item in attack_data:
-        item["records"] = [{"time": "2024-11-29 06:00:00", "input_log": "Sample log"}]  # Replace with actual records from your database
+    history_data = ClassificationHistory.objects \
+    .filter(user=request.user) \
+    .values('attack_type') \
+    .annotate(count=Count('attack_type')) \
+    .order_by('attack_type')
+    
+    attack_data = []
+    for item in history_data:
+        records = ClassificationHistory.objects \
+        .filter(user=request.user) \
+        .filter(attack_type=item['attack_type']) \
+        .values('timestamp', 'input_log') \
+        .order_by('timestamp') 
 
+        records_list = [{'time': record['timestamp'], 'input_log': record['input_log']} for record in records]
 
+        attack_data.append({
+            "attack_type": item['attack_type'],
+            "count": item['count'],
+            "records": records_list
+        })
+        
+    timeset = ClassificationHistory.objects.annotate(date=TruncDate('timestamp')) \
+    .filter(user=request.user) \
+    .values('timestamp') \
+    .annotate(count=Count('id')) \
+    .order_by('timestamp')
+    
+    time_data = [{'time': entry['timestamp'].strftime('%Y-%m-%d'), 'count': entry['count']} for entry in timeset]
+        
     return render(request, 'ask_me/cHistory.html', {
         'attack_data': attack_data,
+        'chart_data': chart_data,
+        'time_data': time_data
     })
+
+
+def pie_chart_view(request):
+    categories = [
+        'cowrie.session.connect',
+        'cowrie.client.version',
+        'cowrie.client.kex',
+        'cowrie.login.failed',
+        'cowrie.session.closed',
+        'cowrie.login.success',
+        'cowrie.session.params',
+        'cowrie.command.input',
+        'cowrie.session.file_download',
+        'cowrie.direct-tcpip.request',
+        'cowrie.direct-tcpip.data',
+        'cowrie.log.closed',
+        'cowrie.command.failed',
+        'cowrie.client.size',
+        'cowrie.session.file_upload',
+        'cowrie.session.file_download.failed'
+    ]
+    
+    ######## 這裡改成模型輸出的機率 ########
+    probabilities = [
+        0.0996, 0.0228, 0.0595, 0.0558, 0.1314, 0.0398, 0.0619, 0.023, 
+        0.1161, 0.1212, 0.0288, 0.0048, 0.0422, 0.0546, 0.0459, 0.0926
+    ]
+    ######################################
+
+    # 找出前五名
+    combined = list(zip(categories, probabilities))
+    combined_sorted = sorted(combined, key = lambda x: x[1], reverse = True)
+    top_5 = combined_sorted[:5]
+    top_5_cat, top_5_prob = zip(*top_5)
+    top_5_cat = list(top_5_cat)
+    top_5_prob = list(top_5_prob)
+
+    data = {
+        "categories": categories,
+        "probabilities": probabilities,
+        "top_5_cat": top_5_cat,
+        "top_5_prob": top_5_prob
+    }
+
+    return render(request, 'ask_me/pie.html', data)

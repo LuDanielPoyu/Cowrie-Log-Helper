@@ -114,7 +114,7 @@
     <div id="content">
         <!-- Attack Frequency Bar Chart Section -->
         <div id="visualization">
-            <canvas id="attackChart" width="400" height="200"></canvas>
+            <img src="data:image/png;base64,{{ chart_data }}" alt="Attack Type Chart">
         </div>
 
         <!-- Time-based Heatmap Section -->
@@ -151,12 +151,12 @@
         <div id="cards-container" class="hidden">
             {% for attack in attack_data %}
                 <div class="attack-category">
-                    {{ attack.type }}
+                    {{ attack.attack_type }}
                 </div>
                 <div class="attack-card">
-                    <h2>{{ attack.type }}</h2>
+                    <h2>{{ attack.attack_type }}</h2>
                     <div class="details">
-                        <p><strong>Frequency:</strong> {{ attack.frequency }}</p>
+                        <p><strong>Frequency:</strong> {{ attack.count }}</p>
                     </div>
                     <table>
                         <thead>
@@ -184,51 +184,6 @@
     <!-- Chart.js Script -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Sample attack types and frequencies data
-        const attackTypes = [
-            "cowrie.session.connect", 
-            "cowrie.session.params", 
-            "cowrie.direct-tcpip.data", 
-            "cowrie.session.data", 
-            "cowrie.session.disconnect",
-            "cowrie.password.failed",
-            "cowrie.password.success",
-            "cowrie.system.info",
-            "cowrie.shell.request",
-            "cowrie.direct-tcpip.data",
-            "cowrie.connection",
-            "cowrie.session.shell",
-            "cowrie.login.failed",
-            "cowrie.login.success",
-            "cowrie.exec",
-            "cowrie.session.term"
-        ];
-        
-        const frequencies = [5, 3, 7, 6, 4, 9, 8, 10, 2, 3, 1, 6, 2, 3, 5, 7];
-
-        const ctx = document.getElementById('attackChart').getContext('2d');
-        const attackChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: attackTypes,
-                datasets: [{
-                    label: 'Attack Frequency',
-                    data: frequencies,
-                    backgroundColor: 'rgba(52, 73, 94, 0.2)',
-                    borderColor: 'rgba(52, 73, 94, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
         // Function to switch between "Attack Type" and "Time" views
         document.getElementById("btn-attack").addEventListener("click", function() {
             document.getElementById("visualization").style.display = "block";
@@ -249,13 +204,7 @@
         });
 
         // Sample data for the heatmap (could be replaced with real data)
-        const timeData = [
-            { time: "2024-01-01", count: 10 },
-            { time: "2024-01-02", count: 15 },
-            { time: "2024-01-03", count: 20 },
-            { time: "2024-01-04", count: 25 },
-            { time: "2024-01-05", count: 30 }
-        ];
+        const timeData = {{ time_data|safe }};
 
         function drawHeatmap() {
             const heatmapDiv = document.getElementById('heatmap');
