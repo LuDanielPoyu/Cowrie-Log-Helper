@@ -129,6 +129,7 @@ def qa_view(request):
         'tips': json.dumps(tips_data)  
 })
 
+
 def summary_view(request):
     summary = None
     paragraph = None
@@ -212,3 +213,48 @@ def cHistory_view(request):
         'chart_data': chart_data,
         'time_data': time_data
     })
+
+
+def pie_chart_view(request):
+    categories = [
+        'cowrie.session.connect',
+        'cowrie.client.version',
+        'cowrie.client.kex',
+        'cowrie.login.failed',
+        'cowrie.session.closed',
+        'cowrie.login.success',
+        'cowrie.session.params',
+        'cowrie.command.input',
+        'cowrie.session.file_download',
+        'cowrie.direct-tcpip.request',
+        'cowrie.direct-tcpip.data',
+        'cowrie.log.closed',
+        'cowrie.command.failed',
+        'cowrie.client.size',
+        'cowrie.session.file_upload',
+        'cowrie.session.file_download.failed'
+    ]
+    
+    ######## 這裡改成模型輸出的機率 ########
+    probabilities = [
+        0.0996, 0.0228, 0.0595, 0.0558, 0.1314, 0.0398, 0.0619, 0.023, 
+        0.1161, 0.1212, 0.0288, 0.0048, 0.0422, 0.0546, 0.0459, 0.0926
+    ]
+    ######################################
+
+    # 找出前五名
+    combined = list(zip(categories, probabilities))
+    combined_sorted = sorted(combined, key = lambda x: x[1], reverse = True)
+    top_5 = combined_sorted[:5]
+    top_5_cat, top_5_prob = zip(*top_5)
+    top_5_cat = list(top_5_cat)
+    top_5_prob = list(top_5_prob)
+
+    data = {
+        "categories": categories,
+        "probabilities": probabilities,
+        "top_5_cat": top_5_cat,
+        "top_5_prob": top_5_prob
+    }
+
+    return render(request, 'ask_me/pie.html', data)
