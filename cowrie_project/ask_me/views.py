@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db.models import Count
 from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationHistory
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 import requests, random
 import json
@@ -97,8 +98,6 @@ def classification_view(request):
         'chart_data': chart_data,
         'log_input': log_input
     })
-
-
 def qa_view(request):
     answer = None
     question = None
@@ -126,6 +125,7 @@ def qa_view(request):
         'tips': json.dumps(tips_data)  
 })
 
+
 def summary_view(request):
     summary = None
     paragraph = None
@@ -141,12 +141,15 @@ def summary_view(request):
             summary = response.json().get('summary')
 
             if request.user.is_authenticated:
-                record = SummaryHistory(user = request.user, paragraph = paragraph, summary = summary)
+                record = SummaryHistory(user=request.user, paragraph=paragraph, summary=summary)
                 record.save()
             
         except requests.RequestException as e:
             print(f"Request failed: {e}")
+            summary = "An error occurred while generating the summary. Please try again."
+
     return render(request, 'ask_me/summary.html', {'summary': summary, 'paragraph': paragraph})
+
 
 
 def cHistory_view(request):

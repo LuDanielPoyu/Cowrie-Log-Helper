@@ -7,7 +7,7 @@
 <p class="comment">Please check your Cowrie Log data and enter!</p>
 
 <!-- Form to input parameters -->
-<form method="POST" action="{% url 'ask_me:classification' %}">
+<form method="POST" action="{% url 'ask_me:classification' %}" id="classification-form">
     {% csrf_token %}
     <div class="form-flex">
         <label for="log_input">Paste Cowrie Log Data:</label>
@@ -27,11 +27,11 @@
     <hr><br>
     <h3>Attack Type:</h3>
     <div class="result">
-        <p>{{ attack_type }}</p>
+        <p id="attack-type"></p> 
     </div>
     <h3>Description:</h3>
     <div class="description-block">
-        <p>{{ description }}</p>
+        <p id="description"></p>
     </div>
 
     <!-- Display the chart -->
@@ -50,5 +50,36 @@
     </div>
 {% endif %}
 
+<script>
+    // Word-by-word rendering function
+    function displayWordByWord(text, elementId) {
+        const element = document.getElementById(elementId);
+        const words = text.split(" ");
+        let index = 0;
+
+        element.textContent = "";
+
+        const interval = setInterval(() => {
+            if (index < words.length) {
+                element.textContent += words[index] + " ";
+                index++;
+            } else {
+                clearInterval(interval); 
+            }
+        }, 200); 
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const attackType = "{{ attack_type|escapejs }}";
+        const description = "{{ description|escapejs }}";
+
+        if (attackType) {
+            displayWordByWord(attackType, "attack-type");
+        }
+        if (description) {
+            displayWordByWord(description, "description");
+        }
+    });
+</script>
 {% endblock %}
 

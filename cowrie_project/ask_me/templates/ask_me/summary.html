@@ -4,8 +4,7 @@
 {% block content %}
 <h1>Summarization</h1>
 
-<!-- Form to input paragraph -->
-<form method="POST" action="{% url 'ask_me:summary' %}">
+<form id="summary-form" method="POST" action="{% url 'ask_me:summary' %}">
     {% csrf_token %}
     <div class="form-flex-sum">
         <p class="comment">Please input cybersecurity-related paragraph or articles:</p>
@@ -15,20 +14,60 @@
 </form>
 <br>
 
-<!-- Display the generated summary -->
+<div id="loading-section" class="loading-container" style="display:none;">
+    <div class="loading-box">
+        <div class="loading-top">
+            <h3>Generating Summary<span id="loading-dots">...</span></h3>
+        </div>
+        <div class="loader"></div>
+    </div>
+</div>
+
 {% if summary %}
     <hr><br>
-    <!-- Button to generate summary again with the input preserved -->
+    <h3>Generated Summary:</h3>
+    <div class="response-block">
+        <p id="summary-text"></p>
+    </div>
     <form method="POST" action="{% url 'ask_me:summary' %}">
         {% csrf_token %}
-
-        <h3>Generated Summary:</h3>
-        <div class="response-block">
-            <p>{{ summary }}</p>
-        </div>
-
         <input type="hidden" name="paragraph" value="{{ paragraph }}">
         <button type="submit" class="btn btn-secondary">Generate Summary Again</button>
     </form><br>
 {% endif %}
+
+<script>
+    const form = document.getElementById('summary-form');
+    const loadingSection = document.getElementById('loading-section');
+    const summaryText = document.getElementById('summary-text');
+
+    form.addEventListener('submit', function() {
+        loadingSection.style.display = 'flex';
+    });
+
+    function displayWordByWord(text, elementId) {
+        const element = document.getElementById(elementId);
+        const words = text.split(" ");
+        let index = 0;
+
+        element.textContent = "";
+
+        const interval = setInterval(() => {
+            if (index < words.length) {
+                element.textContent += words[index] + " ";
+                index++;
+            } else {
+                clearInterval(interval); 
+            }
+        }, 200); 
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const summary = "{{ summary|escapejs }}";
+        if (summary) {
+            displayWordByWord(summary, "summary-text");
+        }
+    });
+</script>
 {% endblock %}
+
