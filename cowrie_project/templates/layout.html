@@ -140,7 +140,9 @@
             justify-content: center;
             gap: 30px; /* 控制區塊之間的間距 */
             text-align: center;
+            margin-top: 50px;
         }
+       
         
         .about-section {
             flex: 1;
@@ -300,6 +302,22 @@
             cursor: pointer;
             margin-bottom: 20px;
             transition: background-color 0.3s ease;
+        }
+        .start-button {
+            display: inline-block;
+            width: 90%; /* 增加寬度 */
+            font-size: 24px; /* 增加字體大小 */
+            padding: 16px 32px; /* 增加上下、左右的內邊距 */
+            border: none;
+            border-radius: 8px;
+            background-color: #6A8DB1;
+            color: #fff;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* 增加按鈕的變化效果 */
+        }
+        .start-button:hover {
+            background-color: #386C91;
         }
 
         button:hover {
@@ -472,6 +490,61 @@
             margin-right: 10px;
             vertical-align: middle;
         }
+
+        /* 外層容器 */
+        .marquee-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        /* 跑馬燈部分 */
+        .marquee-left, .marquee-right {
+            width: 40%;
+            height: 150px; /* 增加高度以顯示更多文字 */
+            overflow: hidden; /* 隱藏超出範圍的內容 */
+            position: relative;
+        }
+        .marquee-left .marquee-item {
+            font-size: 1rem;
+            color: rgba(128, 128, 128, 0.8);
+            padding: 5px 10px; /* 添加內距 */
+            text-align: right; /* 靠右對齊 */
+        }
+
+        /* 跑馬燈內容 */
+        .marquee-content {
+            display: flex;
+            flex-direction: column;
+            animation: scroll 30s linear infinite; /* 增加滾動動畫 */
+        }
+
+        /* 單個跑馬燈項目 */
+        .marquee-item {
+            font-size: 1rem;
+            color: rgba(128, 128, 128, 0.8); /* 灰色文字 */
+            padding: 5px 0;
+            text-align: left;
+        }
+
+        
+
+        /* 無縫垂直滾動動畫 */
+        @keyframes scroll {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-100%);
+            }
+        }
+        /* Logo 容器 */
+        .logo-container {
+            flex-shrink: 0;
+        }
+
+
     </style>
 </head>
 
