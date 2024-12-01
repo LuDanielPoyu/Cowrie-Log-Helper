@@ -197,12 +197,31 @@ def cHistory_view(request):
 
 
 def pie_chart_view(request):
-    ### 這裡改成模型的類別與輸出中該類別對應的機率 ###
-    categories = list(range(1, 17))  # 類別
+    categories = [
+        'cowrie.session.connect',
+        'cowrie.client.version',
+        'cowrie.client.kex',
+        'cowrie.login.failed',
+        'cowrie.session.closed',
+        'cowrie.login.success',
+        'cowrie.session.params',
+        'cowrie.command.input',
+        'cowrie.session.file_download',
+        'cowrie.direct-tcpip.request',
+        'cowrie.direct-tcpip.data',
+        'cowrie.log.closed',
+        'cowrie.command.failed',
+        'cowrie.client.size',
+        'cowrie.session.file_upload',
+        'cowrie.session.file_download.failed'
+    ]
+    
+    ######## 這裡改成模型輸出的機率 ########
     probabilities = [
         0.0996, 0.0228, 0.0595, 0.0558, 0.1314, 0.0398, 0.0619, 0.023, 
         0.1161, 0.1212, 0.0288, 0.0048, 0.0422, 0.0546, 0.0459, 0.0926
-    ]  # 百分比數值
+    ]
+    ######################################
 
     # 找出前五名
     combined = list(zip(categories, probabilities))
