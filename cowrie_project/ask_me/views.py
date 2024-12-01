@@ -101,6 +101,7 @@ def classification_view(request):
         'chart_data': chart_data,
         'log_input': log_input
     })
+    
 def qa_view(request):
     answer = None
     question = None
@@ -117,17 +118,14 @@ def qa_view(request):
             answer = response.json().get('answer')
 
             if request.user.is_authenticated:
-                record = QAHistory(user = request.user, question = question, answer = answer)
+                record = QAHistory(user=request.user, question=question, answer=answer)
                 record.save()
-
-    random.shuffle(tips)
 
     return render(request, 'ask_me/qa.html', {
         'answer': answer, 
         'question': question, 
         'tips': json.dumps(tips_data)  
-})
-
+    })
 
 def summary_view(request):
     summary = None

@@ -14,16 +14,15 @@
 </form>
 
 <!-- Loading Section -->
-<div id="loading-section" style="display:none;" class="loading-container">
+<div id="loading-section" class="loading-container" style="display:none;">
     <div class="loading-box">
         <div class="loading-top">
-            <h3>Loading, here's a tip<span id="loading-dots"> ...</span></h3>
+            <h3>Loading, here's a tip<span id="loading-dots">...</span></h3>
         </div>
-        <!-- Loader Icon -->
         <div class="loader"></div>
         <div class="loading-bottom">
             <div class="tip-block">
-                <p id="tip-text"> <span id="dynamic-tip">Stay curious!</span></p>
+                <p id="tip-text"><span id="dynamic-tip">Stay curious!</span></p>
             </div>
         </div>
     </div>
@@ -33,47 +32,88 @@
     <hr><br>
     <form method="POST" action="{% url 'ask_me:qa' %}">
         {% csrf_token %}
-
         <h3>Answer:</h3>
         <div class="response-block">
-            <p>{{ answer|linebreaksbr }}</p>
+            <p id="answer-text"></p>
         </div>
-
         <button type="submit" class="btn btn-secondary">Get Answer Again</button>
     </form><br>
 {% endif %}
 
+<script>
+    const form = document.getElementById('qa-form');
+    const loadingSection = document.getElementById('loading-section');
+    const tipText = document.getElementById('dynamic-tip');
+    const loadingDots = document.getElementById('loading-dots');
+    const answerText = document.getElementById('answer-text');
 
-    <script>
-        const form = document.getElementById('qa-form');
-        const loadingSection = document.getElementById('loading-section');
-        const tipText = document.getElementById('dynamic-tip');
-        const loadingDots = document.getElementById('loading-dots');
-        
-        let tips = JSON.parse('{{ tips|escapejs }}');  // JSON array of tips from the backend
+    let tips = JSON.parse('{{ tips|escapejs }}'); 
+    let tipInterval; 
 
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
-        shuffle(tips);
+    }
+    shuffle(tips);
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();  
+    function startTipCycling() {
+        if (tips.length === 0) {
+            tipText.textContent = "No tips available."; 
+            return;
+        }
 
-            loadingSection.style.display = 'flex';  
-            
-            let tipIndex = 0;
-            tipText.textContent = tips[tipIndex].content;  
+        let tipIndex = 0;
+        tipText.textContent = tips[tipIndex].content; 
 
-            const tipInterval = setInterval(() => {
-                tipIndex = (tipIndex + 1) % tips.length;  
-                tipText.textContent = tips[tipIndex].content;
-            }, 7000);  // Switch tips every 7 seconds
+        tipInterval = setInterval(() => {
+            tipIndex = (tipIndex + 1) % tips.length; 
+            tipText.textContent = tips[tipIndex].content; 
+        }, 5000); 
+    }
 
-            this.submit();
-        });
-    </script>
+    function stopTipCycling() {
+        if (tipInterval) {
+            clearInterval(tipInterval); 
+        }
+    }
+
+    setInterval(() => {
+        const dots = loadingDots.textContent.length % 3 + 1;
+        loadingDots.textContent = '.'.repeat(dots); 
+    }, 500);
+
+    function displayAnswerAnimated(answer) {
+        const words = answer.split(' ');
+        answerText.textContent = ''; 
+        let index = 0;
+
+        const interval = setInterval(() => {
+            if (index < words.length) {
+                answerText.textContent += (index > 0 ? ' ' : '') + words[index];
+                index++;
+            } else {
+                clearInterval(interval); 
+            }
+        }, 150); 
+    }
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        loadingSection.style.display = 'flex'; 
+        startTipCycling(); 
+
+        setTimeout(() => {
+            stopTipCycling(); 
+            form.submit(); 
+        }, 15000); 
+    });
+
+    const answer = `{{ answer|escapejs }}`;
+    if (answer) {
+        displayAnswerAnimated(answer);
+    }
+</script>
+
 {% endblock %}
