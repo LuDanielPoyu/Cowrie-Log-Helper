@@ -1,0 +1,184 @@
+{% extends "layout2.html" %}
+{% block title %}Pie Chart{% endblock %}
+
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<h1>Pie Chart of probability of 16 classes</h1>
+
+<div class="pie-chart-container">
+    <div class="pie-chart">
+        <canvas id="pieChart"></canvas>
+    </div>
+
+    <div class="top5-table">
+        <p class="top5-title">Top-5 Class Probability</p>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Class</th>
+                    <th>Probability</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- JavaScript 會動態填充這裡 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .pie-chart-container {
+        max-width: 1000px; /* 調整寬度 */
+        max-height: 500px;
+        margin: -10px auto 20px;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .pie-chart {
+        height: 45%;
+        width: 45%;
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .top5-table {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .top5-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 24px;
+    }
+
+    table {
+        width: 80%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+    // 從 Django 傳遞數據
+    const categories = {{ categories|safe }};
+    const probabilities = {{ probabilities|safe }};
+    const top_5_cat = {{ top_5_cat|safe }};
+    const top_5_prob = {{ top_5_prob|safe }};
+
+    // 創建圓餅圖
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: categories,
+            datasets: [{
+                label: '百分比',
+                data: probabilities,
+                backgroundColor: [
+                    '#FF6384CC', // 紅色
+                    '#36A2EBCC', // 藍色
+                    '#FFCE56CC', // 黃色
+                    '#4BC0C0CC', // 藍綠
+                    '#9966FFCC', // 紫色
+                    '#FF9F40CC', // 橙色
+                    '#29366FCC', // 靛色
+                    '#BCE784CC', // 淺綠
+                    '#FF99C8CC', // 粉紅
+                    '#9D8DF1CC', // 淡紫
+                    '#38B764CC', // 綠色
+                    '#119DA4CC', // 深青
+                    '#F4D670CC', // 沙黃
+                    '#8D99AECC', // 灰藍
+                    '#2D3D4DCC', // 深灰
+                    '#EE964BCC'  // 土橙
+                ],
+                borderColor: [
+                    '#FFFFFFFF'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            const label = tooltipItem.label || '';
+                            const value = tooltipItem.raw || 0;
+                            return `${label}: ${(value * 100).toFixed(2)}%`;
+                        }
+                    }
+                },
+                // 如果會太花就把 datalabels 和下方的 plugins: [ChartDataLabels] 刪掉
+                datalabels: {
+                    formatter: (value, ctx) => {
+                        const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                        const percentage = ((value / total) * 100).toFixed(2);
+                        return `${percentage}%`; // 顯示百分比
+                    },
+                    color: '#fff', // 字體顏色
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+
+    window.addEventListener('resize', () => {
+        pieChart.resize(); // 強制調整大小
+    });
+
+    // 創建前五高機率的類別表格
+    const tableBody = document.querySelector("#dataTable tbody");
+
+    top_5_cat.forEach((category, index) => {
+        const row = document.createElement("tr");
+
+        const categoryCell = document.createElement("td");
+        categoryCell.textContent = category;
+
+        const probabilityCell = document.createElement("td");
+        probabilityCell.textContent = (top_5_prob[index] * 100).toFixed(2) + "%";
+
+        row.appendChild(categoryCell);
+        row.appendChild(probabilityCell);
+        tableBody.appendChild(row);
+    });
+
+</script>
+
+{% endblock %}

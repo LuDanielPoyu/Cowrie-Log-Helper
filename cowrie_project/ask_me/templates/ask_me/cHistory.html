@@ -229,6 +229,10 @@
             }
         });
 
+        window.addEventListener('resize', () => {
+            attackChart.resize(); // 強制調整大小
+        });
+
         // Function to switch between "Attack Type" and "Time" views
         document.getElementById("btn-attack").addEventListener("click", function() {
             document.getElementById("visualization").style.display = "block";
