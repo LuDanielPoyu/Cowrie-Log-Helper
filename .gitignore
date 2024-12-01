@@ -8,8 +8,7 @@ __pycache__/
 
 # Environment
 .venv/
-cowrie_project/.venv/
-.DS_Store
+**/.DS_Store
 
 # VSCode settings
 .vscode/
