@@ -47,7 +47,7 @@ def attack_suggestion_view(request):
                                                input_log=json.dumps(log_input), 
                                                attack_type=attack_type, 
                                                actual_type=log_input['eventid'],
-                                               probability = probability)
+                                               probability = json.dumps(probability))
                 record.save()
 
         else:

@@ -6,6 +6,7 @@ from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationH
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 
+import ast
 import requests, random
 import json
 import pandas as pd
@@ -58,7 +59,7 @@ def classification_view(request):
                                                input_log=json.dumps(log_input), 
                                                attack_type=attack_type, 
                                                actual_type=log_input['eventid'],
-                                               probability = probability)
+                                               probability = json.dumps(probability))
                 record.save()
             try:
                 attack_type_entry = AttackType.objects.get(attack_type=attack_type)
@@ -139,7 +140,7 @@ def summary_view(request):
     if request.method == 'POST':
         paragraph = request.POST.get('paragraph')
 
-        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/summarize"  # Replace with your Flask backend URL
+        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/summarize"  
         
         try:
             response = requests.post(backend_url, json={'paragraph': paragraph})
@@ -180,9 +181,6 @@ def cHistory_view(request):
     buffer.close()
     chart_data = base64.b64encode(image_png).decode('utf-8')
     
-    
-    # If you want to include historical records for each attack type, add that logic here:
-    # Example (mocked records):
     history_data = ClassificationHistory.objects \
     .filter(user=request.user) \
     .values('attack_type') \
@@ -194,10 +192,10 @@ def cHistory_view(request):
         records = ClassificationHistory.objects \
         .filter(user=request.user) \
         .filter(attack_type=item['attack_type']) \
-        .values('timestamp', 'input_log') \
+        .values('id', 'timestamp', 'input_log') \
         .order_by('timestamp') 
 
-        records_list = [{'time': record['timestamp'], 'input_log': record['input_log']} for record in records]
+        records_list = [{'id': record['id'], 'time': record['timestamp'], 'input_log': record['input_log']} for record in records]
 
         attack_data.append({
             "attack_type": item['attack_type'],
@@ -207,11 +205,11 @@ def cHistory_view(request):
         
     timeset = ClassificationHistory.objects.annotate(date=TruncDate('timestamp')) \
     .filter(user=request.user) \
-    .values('timestamp') \
+    .values('id', 'timestamp') \
     .annotate(count=Count('id')) \
     .order_by('timestamp')
     
-    time_data = [{'time': entry['timestamp'].strftime('%Y-%m-%d'), 'count': entry['count']} for entry in timeset]
+    time_data = [{'id': entry['id'], 'time': entry['timestamp'].strftime('%Y-%m-%d'), 'count': entry['count']} for entry in timeset]
         
     return render(request, 'ask_me/cHistory.html', {
         'attack_data': attack_data,
@@ -221,6 +219,12 @@ def cHistory_view(request):
 
 
 def pie_chart_view(request):
+    id = request.GET.get('id')
+    probability = ClassificationHistory.objects.filter(user=request.user, id = id) \
+    .values('probability')
+    
+    test = eval(str([prob for prob in probability.values_list('probability', flat=True)])[2:-2])
+    
     categories = [
         'cowrie.session.connect',
         'cowrie.client.version',
@@ -239,16 +243,8 @@ def pie_chart_view(request):
         'cowrie.session.file_upload',
         'cowrie.session.file_download.failed'
     ]
-    
-    ######## 這裡改成模型輸出的機率 ########
-    probabilities = [
-        0.0996, 0.0228, 0.0595, 0.0558, 0.1314, 0.0398, 0.0619, 0.023, 
-        0.1161, 0.1212, 0.0288, 0.0048, 0.0422, 0.0546, 0.0459, 0.0926
-    ]
-    ######################################
 
-    # 找出前五名
-    combined = list(zip(categories, probabilities))
+    combined = list(zip(categories, test))
     combined_sorted = sorted(combined, key = lambda x: x[1], reverse = True)
     top_5 = combined_sorted[:5]
     top_5_cat, top_5_prob = zip(*top_5)
@@ -257,7 +253,7 @@ def pie_chart_view(request):
 
     data = {
         "categories": categories,
-        "probabilities": probabilities,
+        "probabilities": test,
         "top_5_cat": top_5_cat,
         "top_5_prob": top_5_prob
     }

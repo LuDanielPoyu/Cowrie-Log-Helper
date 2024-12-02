@@ -171,7 +171,7 @@
                                 <tr>
                                     <td>{{ record.time }}</td>
                                     <td>{{ record.input_log }}</td>
-                                    <td><a href="#detail{{ forloop.counter0 }}" class="detail-link">Detail</a></td>
+                                    <td><a href="{% url 'ask_me:pie' %}?id={{ record.id }}" class="detail-link">Detail</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -231,7 +231,7 @@
                 const logCell = document.createElement("td");
                 logCell.textContent = `Log data for ${record.time}`;
                 const detailCell = document.createElement("td");
-                detailCell.innerHTML = `<a href="#">Detail</a>`;
+                detailCell.innerHTML = `<a href="{% url 'ask_me:pie' %}?id={ ${record.id} }">Detail</a>`;
                 row.appendChild(timeCell);
                 row.appendChild(logCell);
                 row.appendChild(detailCell);
