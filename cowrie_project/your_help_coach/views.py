@@ -34,16 +34,20 @@ def attack_suggestion_view(request):
                 'log_input': log_input
             })
 
-        # Send data to the Flask backend
-        backend_url = "https://marten-loving-accurately.ngrok-free.app/classify"  # Replace with your Flask backend URL
+        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/classify" 
         response = requests.post(backend_url, json=log_input)
 
         if response.status_code == 200:
             result = response.json()
             attack_type = result.get('attack_type')
-
+            probability = result.get('probabilities')
+            
             if request.user.is_authenticated:
-                record = ClassificationHistory(user = request.user, input_log=json.dumps(log_input), attack_type = attack_type)
+                record = ClassificationHistory(user=request.user,
+                                               input_log=json.dumps(log_input), 
+                                               attack_type=attack_type, 
+                                               actual_type=log_input['eventid'],
+                                               probability = probability)
                 record.save()
 
         else:
@@ -51,7 +55,7 @@ def attack_suggestion_view(request):
 
     return render(request, 'your_help_coach/attack_suggestion.html', {
         'attack_type': attack_type,
-        'log_input': ""  # Clear the input block after successful submission
+        'log_input': ""
     })
     
 def help_coach_view(request):
@@ -59,19 +63,18 @@ def help_coach_view(request):
     affected = None
     mitigation = None 
     solutions = None 
-    learn_more_links = []  # Updated to hold links
+    learn_more_links = [] 
 
     if request.method == 'POST':
         attack_type = request.POST.get('encounteredAttack')
 
-        # Query for the attack type
         try:
-            attack = CowrieLogAttack.objects.get(attack_name__iexact=attack_type)  # Case-insensitive search
+            attack = CowrieLogAttack.objects.get(attack_name__iexact=attack_type)  
             description = attack.description
             affected = attack.affected
             mitigation = attack.mitigation
             solutions = attack.solutions
-            learn_more_links = attack.get_learn_more_links()  # Get list of learn more links
+            learn_more_links = attack.get_learn_more_links()  
         except CowrieLogAttack.DoesNotExist:
             logging.error(f'Attack type {attack_type} not found in the database.')
             description = "No descriptions for this attack type."
@@ -86,5 +89,5 @@ def help_coach_view(request):
         'affected': affected, 
         'mitigation': mitigation, 
         'solutions': solutions, 
-        'learn_more_links': learn_more_links  # Pass the links to the template
+        'learn_more_links': learn_more_links  
     })

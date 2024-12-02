@@ -23,6 +23,7 @@ class ClassificationHistory(models.Model):
     input_log = models.TextField(default = "None")
     attack_type = models.CharField(max_length = 128)
     actual_type = models.CharField(max_length = 128)
+    probability = models.TextField(default = "None")
 
 
 class QAHistory(models.Model):

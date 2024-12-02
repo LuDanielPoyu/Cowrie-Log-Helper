@@ -52,8 +52,13 @@ def classification_view(request):
         if response.status_code == 200:
             result = response.json()
             attack_type = result.get('attack_type')
+            probability = result.get('probabilities')
             if request.user.is_authenticated:
-                record = ClassificationHistory(user=request.user, input_log=json.dumps(log_input), attack_type=attack_type, actual_type=log_input['eventid'])
+                record = ClassificationHistory(user=request.user,
+                                               input_log=json.dumps(log_input), 
+                                               attack_type=attack_type, 
+                                               actual_type=log_input['eventid'],
+                                               probability = probability)
                 record.save()
             try:
                 attack_type_entry = AttackType.objects.get(attack_type=attack_type)

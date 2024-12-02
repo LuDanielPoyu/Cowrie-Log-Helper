@@ -13,7 +13,7 @@ class TipsAdmin(admin.ModelAdmin):
     
 @admin.register(ClassificationHistory)
 class ClassificationHistory(admin.ModelAdmin):
-    list_display = ('id', 'user', 'timestamp', 'input_log', 'attack_type', 'actual_type')
+    list_display = ('id', 'user', 'timestamp', 'input_log', 'attack_type', 'actual_type', 'probability')
     search_fields = ('id',)
     
 @admin.register(QAHistory)
