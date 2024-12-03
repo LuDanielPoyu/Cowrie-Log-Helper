@@ -36,6 +36,12 @@ h1 {
     font-weight: bold;
 }
 
+h3 {
+    font-size: 1.8em;
+    color: #333;
+    margin: 0;
+}
+
 /* Layout for QA page */
 .question-block {
     display: flex;
@@ -200,7 +206,7 @@ textarea:focus {
     background-color: transparent; /* Make the background transparent */
     position: fixed; /* Make it overlay the page */
     top: 0;
-    left: 0;
+    left: 225px;
     right: 0;
     bottom: 0;
     z-index: 9999; /* Ensures it's above all other content */
@@ -229,6 +235,29 @@ textarea:focus {
       l20-2 1.6s infinite linear;
 }
 
+/* Loading message (with dots) */
+.loading-top {
+    margin-bottom: 20px;
+}
+
+#loading-dots {
+    font-size: 1.5em;
+    color: #3498db;
+    animation: blink 1s infinite; /* Dots will blink */
+}
+
+/* General loading text styling */
+.loading-container h3 {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.loading-container p {
+    font-size: 1.2em;
+    color: #333;
+    font-style: italic;
+}
+
 /* Keyframes for loader animation */
 @keyframes l20-1 {
      0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
@@ -245,23 +274,6 @@ textarea:focus {
     49.99%{transform:scaleY(1)  rotate(135deg)}
     50%   {transform:scaleY(-1) rotate(0deg)}
     100%  {transform:scaleY(-1) rotate(-135deg)}
-}
-
-/* Loading message (with dots) */
-.loading-top {
-    margin-bottom: 20px;
-}
-
-h3 {
-    font-size: 1.8em;
-    color: #333;
-    margin: 0;
-}
-
-#loading-dots {
-    font-size: 1.5em;
-    color: #3498db;
-    animation: blink 1s infinite; /* Dots will blink */
 }
 
 /* Animation for blinking dots */
@@ -289,18 +301,6 @@ h3 {
 #tip-text {
     font-size: 1.2em;
     color: #555;
-}
-
-/* General loading text styling */
-.loading-container h3 {
-    font-size: 1.5em;
-    color: #333;
-}
-
-.loading-container p {
-    font-size: 1.2em;
-    color: #333;
-    font-style: italic;
 }
 
 .errorlist {
@@ -331,6 +331,3 @@ h3 {
     display: inline-block;
     text-align: center;
 }
-
-
-

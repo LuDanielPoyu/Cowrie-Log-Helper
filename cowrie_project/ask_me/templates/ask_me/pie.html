@@ -1,11 +1,11 @@
 {% extends "layout2.html" %}
-{% block title %}Pie Chart{% endblock %}
+{% block title %}Probability Pie Chart{% endblock %}
 
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
-<h1>Pie Chart of probability of 16 classes</h1>
+<h1>Pie Chart of 16 class probabilities</h1>
 
 <div class="chart-container">
     <div class="pie-chart">
@@ -30,11 +30,9 @@
 
 <style>
     .chart-container {
-        max-width: 1200px;
-        max-height: 500px;
+        width: auto;
         height: 86%;
         margin: -10px auto 20px;
-        padding: 24px 36px 24px 0px;
         box-sizing: border-box;
         background-color: #fff;
         border-radius: 10px;
@@ -43,29 +41,29 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        gap: 20px;
     }
 
     .pie-chart {
-        height: 90%;
+        height: 80%;
         width: 65%;
         display: flex;
-        flex: 7;
         align-items: center;
         justify-content: center;
-        padding-left: 40px;
-        padding-right: 70px;
+        box-sizing: border-box;
+        overflow: auto;
+        padding-right: 7.5%;
+        padding-left: 2.5%;
     }
 
     .top5-table {
-        width: 100%;
+        width: 35%;
         display: flex;
-        flex: 3;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
-        padding-right: 16px;
+        padding-right: 4%;
+        white-space: nowrap;
     }
 
     .top5-title {
@@ -81,7 +79,7 @@
 
     th, td {
         border: 1px solid #ddd;
-        padding: 14px 12px;
+        padding: 14px 10px;
         text-align: center;
     }
 
@@ -145,11 +143,10 @@
                         }
                     }
                 },
-                // 如果會太花我再來改 //
-                datalabels: {
+                datalabels: {    // 圓餅圖上的百分比標籤
                     formatter: (value, ctx) => {
                         const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                        const percentage = ((value / total) * 100).toFixed(2);
+                        const percentage = ((value / total) * 100).toFixed(0);
                         return `${percentage}%`;
                     },
                     color: '#fff',
@@ -162,8 +159,11 @@
                     position: 'left',
                     align: 'center',
                     labels: {
+                        font: {
+                            size: 12 // 設定字體大小
+                        },
                         boxWidth: 12, // 調整圖例框大小
-                        padding: 10   // 增加間距
+                        padding: 8   // 增加間距
                     }
                 }
             }

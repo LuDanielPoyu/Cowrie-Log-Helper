@@ -68,7 +68,6 @@ def verify_view(request):
                     user.set_password(request.session['password'])
                     user.save()
                     cache.clear()
-                    # alert("Verification success, welcome to Loglytics!");
                     
                     login(request, user, backend = 'django.contrib.auth.backends.ModelBackend')
                     return redirect('homepage_view')

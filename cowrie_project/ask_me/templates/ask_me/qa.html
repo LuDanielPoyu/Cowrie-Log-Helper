@@ -85,13 +85,14 @@
     }, 500);
 
     function displayAnswerAnimated(answer) {
-        const words = answer.split(' ');
-        answerText.textContent = ''; 
+        const formattedAnswer = answer.replace(/\\n/g, '<br>');
+        const words = formattedAnswer.split(' ');
+        answerText.innerHTML = '';
         let index = 0;
 
         const interval = setInterval(() => {
             if (index < words.length) {
-                answerText.textContent += (index > 0 ? ' ' : '') + words[index];
+                answerText.innerHTML += (index > 0 ? ' ' : '') + words[index];
                 index++;
             } else {
                 clearInterval(interval); 
@@ -110,7 +111,7 @@
         }, 15000); 
     });
 
-    const answer = `{{ answer|escapejs }}`;
+    const answer = `{{ answer|linebreaksbr }}`;
     if (answer) {
         displayAnswerAnimated(answer);
     }
