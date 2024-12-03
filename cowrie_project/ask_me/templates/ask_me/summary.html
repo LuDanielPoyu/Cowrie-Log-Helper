@@ -26,11 +26,13 @@
 {% if summary %}
     <hr><br>
     <h3>Generated Summary:</h3>
-    <div class="response-block">
-        <p id="summary-text"></p>
-    </div>
     <form method="POST" action="{% url 'ask_me:summary' %}">
         {% csrf_token %}
+
+        <div class="response-block">
+            <p id="summary-text"></p>
+        </div>
+        
         <input type="hidden" name="paragraph" value="{{ paragraph }}">
         <button type="submit" class="btn btn-secondary">Generate Summary Again</button>
     </form><br>

@@ -6,7 +6,7 @@ from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationH
 import requests
 import json
 import pandas as pd
-import matplotlib  
+import matplotlib
 import matplotlib.pyplot as plt
 import io
 import base64
@@ -50,13 +50,17 @@ def classification_view(request):
             result = response.json()
             attack_type = result.get('attack_type')
             probability = result.get('probabilities')
+
             if request.user.is_authenticated:
-                record = ClassificationHistory(user=request.user,
-                                               input_log=json.dumps(log_input), 
-                                               attack_type=attack_type, 
-                                               actual_type=log_input['eventid'],
-                                               probability = json.dumps(probability))
+                record = ClassificationHistory(
+                    user=request.user,
+                    input_log=json.dumps(log_input), 
+                    attack_type=attack_type, 
+                    actual_type=log_input['eventid'],
+                    probability=json.dumps(probability)
+                )
                 record.save()
+
             try:
                 attack_type_entry = AttackType.objects.get(attack_type=attack_type)
                 description = attack_type_entry.description
@@ -103,7 +107,8 @@ def classification_view(request):
         'chart_data': chart_data,
         'log_input': log_input
     })
-    
+
+
 def qa_view(request):
     answer = None
     question = None
@@ -129,6 +134,7 @@ def qa_view(request):
         'tips': json.dumps(tips_data)  
     })
 
+
 def summary_view(request):
     summary = None
     paragraph = None
@@ -152,7 +158,6 @@ def summary_view(request):
             summary = "An error occurred while generating the summary. Please try again."
 
     return render(request, 'ask_me/summary.html', {'summary': summary, 'paragraph': paragraph})
-
 
 
 def cHistory_view(request):

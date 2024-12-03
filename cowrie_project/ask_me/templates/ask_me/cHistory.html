@@ -150,9 +150,7 @@
         <!-- Attack Types Cards Section -->
         <div id="cards-container" class="hidden">
             {% for attack in attack_data %}
-                <div class="attack-category">
-                    {{ attack.attack_type }}
-                </div>
+                <br>
                 <div class="attack-card">
                     <h2>{{ attack.attack_type }}</h2>
                     <div class="details">
@@ -208,7 +206,6 @@
 
         function drawHeatmap() {
             const heatmapDiv = document.getElementById('heatmap');
-            //heatmapDiv.innerHTML = "<div style='background-color: #3498db; color: white; padding: 20px; border-radius: 8px;'>Sample Heatmap</div>";
 
             // 熱點圖中的每一個資料項目加入換行樣式
             let heatmapContent = '<p>Time-based Heatmap</p>';
