@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.conf import settings
 from django.db.models import Count
 from django.db.models.functions import TruncDate
 from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationHistory
