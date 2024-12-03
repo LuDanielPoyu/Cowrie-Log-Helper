@@ -1,13 +1,9 @@
 from django.shortcuts import render
-from django.conf import settings
 from django.db.models import Count
 from django.db.models.functions import TruncDate
 from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationHistory
-from django.contrib.auth.models import User
-from django.http import JsonResponse
 
-import ast
-import requests, random
+import requests
 import json
 import pandas as pd
 import matplotlib  
