@@ -12,7 +12,7 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
             try:
                 user = User.objects.get(email = email)
                 sociallogin.connect(request, user)
-                login(request, user, backend ='allauth.account.auth_backends.AuthenticationBackend')
+                login(request, user, backend = 'allauth.account.auth_backends.AuthenticationBackend')
 
             except User.DoesNotExist:
                 pass
