@@ -211,7 +211,7 @@ def cHistory_view(request):
 
             records_list = [{
                 'id': record['id'], 
-                'time': localtime(record['timestamp']).strftime("%Y.%m.%d %I:%M %p"), 
+                'time': localtime(record['timestamp']).strftime("%Y.%m.%d  %I:%M %p"), 
                 'input_log': record['input_log']
             } for record in records]
 
@@ -227,7 +227,7 @@ def cHistory_view(request):
     .annotate(count=Count('id')) \
     .order_by('timestamp')
     
-    time_data = [{'id': entry['id'], 'time': localtime(entry['timestamp']).strftime("%Y.%m.%d %I:%M %p"), 'count': entry['count']} for entry in timeset]
+    time_data = [{'id': entry['id'], 'time': localtime(entry['timestamp']).strftime("%Y.%m.%d  %I:%M %p"), 'count': entry['count']} for entry in timeset]
         
     return render(request, 'ask_me/cHistory.html', {
         'attackType': attackType,
