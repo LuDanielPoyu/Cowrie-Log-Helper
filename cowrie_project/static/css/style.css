@@ -327,7 +327,7 @@ textarea:focus {
     padding: 5px 10px;            /* 添加內邊距讓錯誤訊息更突出 */
     border: none;
     border-radius: 4px;           /* 圓角邊框 */
-    margin-top: 5px;
+    margin: 5px 20px 0px 20px;
     display: inline-block;
     text-align: center;
 }

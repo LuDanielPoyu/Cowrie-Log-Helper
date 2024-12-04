@@ -43,11 +43,10 @@
     {% else %}
         <p>No chart data available.</p>
     {% endif %}
+
 {% elif error %}
-    <hr>
-    <div class="alert alert-danger">
-        <p>{{ error }}</p>
-    </div>
+    <hr><br>
+    <div class="error-class">{{ error }}</div>
 {% endif %}
 
 <script>

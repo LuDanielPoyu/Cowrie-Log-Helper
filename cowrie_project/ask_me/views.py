@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.db.models import Count
 from django.db.models.functions import TruncDate
+from django.utils.timezone import localtime
 from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationHistory
-
 import requests
 import json
 import pandas as pd
@@ -32,7 +32,7 @@ def classification_view(request):
         except json.JSONDecodeError:
             return render(request, 'ask_me/classification.html', {
                 'attack_type': "Error: Invalid input format.",
-                'description': "Please provide a valid JSON-formatted cowrie log row.",
+                'description': "Please provide a valid JSON-formatted cowrie log.",
                 'log_input': log_input
             })
             
@@ -48,24 +48,33 @@ def classification_view(request):
         
         if response.status_code == 200:
             result = response.json()
-            attack_type = result.get('attack_type')
-            probability = result.get('probabilities')
+            
+            if result["status"] == "success":
+                attack_type = result.get('attack_type')
+                probability = result.get('probabilities')
 
-            if request.user.is_authenticated:
-                record = ClassificationHistory(
-                    user=request.user,
-                    input_log=json.dumps(log_input), 
-                    attack_type=attack_type, 
-                    actual_type=log_input['eventid'],
-                    probability=json.dumps(probability)
-                )
-                record.save()
+                if request.user.is_authenticated:
+                    record = ClassificationHistory(
+                        user=request.user,
+                        input_log=json.dumps(log_input), 
+                        attack_type=attack_type, 
+                        actual_type=log_input['eventid'],
+                        probability=json.dumps(probability)
+                    )
+                    record.save()
 
-            try:
-                attack_type_entry = AttackType.objects.get(attack_type=attack_type)
-                description = attack_type_entry.description
-            except AttackType.DoesNotExist:
-                description = "No description available for this attack type."
+                try:
+                    attack_type_entry = AttackType.objects.get(attack_type=attack_type)
+                    description = attack_type_entry.description
+                except AttackType.DoesNotExist:
+                    description = "No description available for this attack type."
+
+            # backend exception        
+            else:
+                print("backend exception:", result["attack_type"])  # print exception
+                return render(request, 'ask_me/classification.html', {
+                    'error': "An unexpected error occurred. Please try again later."
+                })
         else:
             attack_type = "Error retrieving attack type from backend."
             description = "Please check the input or try again later."
@@ -161,68 +170,76 @@ def summary_view(request):
 
 
 def cHistory_view(request):
-    history_bar_data = ClassificationHistory.objects.filter(user=request.user) \
-    .values('attack_type') \
-    .annotate(count=Count('attack_type'))
-    
-    history_bar = pd.Series({item['attack_type']: item['count'] for item in history_bar_data}).sort_values(ascending=False)
-    fig, ax = plt.subplots(figsize=(10, 5))
-    history_bar.plot(kind='bar', ax=ax, color='skyblue', alpha=0.7)
-    for i, v in enumerate(history_bar):
-        ax.text(i, v + 0.5, str(v), ha='center')
+    # bar chart data
+    attackType = [
+        'cowrie.session.connect',
+        'cowrie.client.version',
+        'cowrie.client.kex',
+        'cowrie.login.failed',
+        'cowrie.session.closed',
+        'cowrie.login.success',
+        'cowrie.session.params',
+        'cowrie.command.input',
+        'cowrie.session.file_download',
+        'cowrie.direct-tcpip.request',
+        'cowrie.direct-tcpip.data',
+        'cowrie.log.closed',
+        'cowrie.command.failed',
+        'cowrie.client.size',
+        'cowrie.session.file_upload',
+        'cowrie.session.file_download.failed'
+    ]
 
-    ax.set_xticklabels(history_bar.index, rotation=45, ha='right')
-    ax.set_xlabel('Attack_type')
-    ax.set_ylabel('Count')
-    
-    buffer = io.BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    image_png = buffer.getvalue()
-    buffer.close()
-    chart_data = base64.b64encode(image_png).decode('utf-8')
-    
-    history_data = ClassificationHistory.objects \
-    .filter(user=request.user) \
-    .values('attack_type') \
-    .annotate(count=Count('attack_type')) \
-    .order_by('attack_type')
-    
+    frequency = []
     attack_data = []
-    for item in history_data:
-        records = ClassificationHistory.objects \
+
+    for atkType in attackType:
+        freq = ClassificationHistory.objects \
         .filter(user=request.user) \
-        .filter(attack_type=item['attack_type']) \
-        .values('id', 'timestamp', 'input_log') \
-        .order_by('timestamp') 
+        .filter(attack_type=atkType) \
+        .count()
 
-        records_list = [{'id': record['id'], 'time': record['timestamp'], 'input_log': record['input_log']} for record in records]
+        frequency.append(freq)
 
-        attack_data.append({
-            "attack_type": item['attack_type'],
-            "count": item['count'],
-            "records": records_list
-        })
-        
+        # table data
+        if freq != 0:
+            records = ClassificationHistory.objects \
+            .filter(user=request.user) \
+            .filter(attack_type=atkType) \
+            .values('id', 'timestamp', 'input_log') \
+            .order_by('timestamp') 
+
+            records_list = [{
+                'id': record['id'], 
+                'time': localtime(record['timestamp']).strftime("%Y.%m.%d %I:%M %p"), 
+                'input_log': record['input_log']
+            } for record in records]
+
+            attack_data.append({
+                "attack_type": atkType,
+                "count": freq,
+                "records": records_list
+            })
+      
     timeset = ClassificationHistory.objects.annotate(date=TruncDate('timestamp')) \
     .filter(user=request.user) \
     .values('id', 'timestamp') \
     .annotate(count=Count('id')) \
     .order_by('timestamp')
     
-    time_data = [{'id': entry['id'], 'time': entry['timestamp'].strftime('%Y-%m-%d'), 'count': entry['count']} for entry in timeset]
+    time_data = [{'id': entry['id'], 'time': localtime(entry['timestamp']).strftime("%Y.%m.%d %I:%M %p"), 'count': entry['count']} for entry in timeset]
         
     return render(request, 'ask_me/cHistory.html', {
+        'attackType': attackType,
+        'frequency': frequency,
         'attack_data': attack_data,
-        'chart_data': chart_data,
         'time_data': time_data
     })
 
 
 def pie_chart_view(request):
     id = request.GET.get('id')
-    probability = ClassificationHistory.objects.filter(user=request.user, id = id) \
-    .values('probability')
+    probability = ClassificationHistory.objects.filter(user=request.user, id=id).values('probability')
     
     test = eval(str([prob for prob in probability.values_list('probability', flat=True)])[2:-2])
     
