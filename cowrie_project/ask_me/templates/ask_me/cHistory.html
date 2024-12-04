@@ -48,11 +48,15 @@
 
     #content {
         padding: 20px;
-        max-width: 1000px;
-        margin: 0 auto;
+        max-width: 1100px;
+        margin: 0 auto 20px;
         background: white;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #attackChart {
+        padding-right: 30px;
     }
 
     /* 時間視覺化 */
@@ -114,7 +118,7 @@
     <div id="content">
         <!-- Attack Frequency Bar Chart Section -->
         <div id="visualization">
-            <img src="data:image/png;base64,{{ chart_data }}" alt="Attack Type Chart">
+            <canvas id="attackChart"></canvas>
         </div>
 
         <!-- Time-based Heatmap Section -->
@@ -182,6 +186,41 @@
     <!-- Chart.js Script -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Bar chart
+        const attackType = {{ attackType|safe }};
+        const frequency = {{ frequency|safe }};
+
+        const ctx = document.getElementById('attackChart').getContext('2d');
+        const attackChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: attackType,
+                datasets: [{
+                    label: 'Attack Frequency',
+                    data: frequency,
+                    backgroundColor: 'rgba(52, 73, 94, 0.2)',
+                    borderColor: 'rgba(52, 73, 94, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            callback: function(value) {
+                                if (Number.isInteger(value)) {
+                                    return value; // 只顯示整數
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         // Function to switch between "Attack Type" and "Time" views
         document.getElementById("btn-attack").addEventListener("click", function() {
             document.getElementById("visualization").style.display = "block";
