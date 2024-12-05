@@ -1,7 +1,6 @@
 from django.shortcuts import render
 import requests
 import logging
-import re
 import json
 from .models import CowrieLogAttack
 from ask_me.models import ClassificationHistory
