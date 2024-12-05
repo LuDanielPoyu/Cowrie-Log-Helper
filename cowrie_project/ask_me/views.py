@@ -151,12 +151,13 @@ def summary_view(request):
     if request.method == 'POST':
         paragraph = request.POST.get('paragraph')
 
-        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/summarize"  
+        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/translate"  
         
         try:
             response = requests.post(backend_url, json={'paragraph': paragraph})
             response.raise_for_status()
             summary = response.json().get('summary')
+            translated_summary = response.json().get('translated_summary')
 
             if request.user.is_authenticated:
                 record = SummaryHistory(user=request.user, paragraph=paragraph, summary=summary)
@@ -166,11 +167,10 @@ def summary_view(request):
             print(f"Request failed: {e}")
             summary = "An error occurred while generating the summary. Please try again."
 
-    return render(request, 'ask_me/summary.html', {'summary': summary, 'paragraph': paragraph})
+    return render(request, 'ask_me/summary.html', {'paragraph': paragraph, 'summary': summary, 'translated_summary': translated_summary})
 
 
 def cHistory_view(request):
-    # bar chart data
     attackType = [
         'cowrie.session.connect',
         'cowrie.client.version',
