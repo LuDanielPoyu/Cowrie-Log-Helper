@@ -34,9 +34,34 @@
         </div>
         
         <input type="hidden" name="paragraph" value="{{ paragraph }}">
-        <button type="submit" class="btn btn-secondary">Generate Summary Again</button>
+        
+        <!-- Button Container -->
+        <div class="button-wrapper">
+            <button type="submit" class="btn btn-secondary">Generate Summary Again</button>
+            <button type="button" class="btn btn-success" id="translate-btn">Translate into Chinese</button>
+        </div>
     </form><br>
 {% endif %}
+
+<style>
+    /* 通用 Flexbox 佈局 */
+    .button-wrapper {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    /* 在視窗小於 768px 時，按鈕上下排列 */
+    @media (max-width: 768px) {
+        .button-wrapper {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .button-wrapper button {
+            margin-bottom: 10px; /* 讓按鈕之間有間距 */
+        }
+    }
+</style>
 
 <script>
     const form = document.getElementById('summary-form');
@@ -72,4 +97,3 @@
     });
 </script>
 {% endblock %}
-
