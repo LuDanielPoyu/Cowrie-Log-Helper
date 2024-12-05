@@ -152,7 +152,7 @@ def summary_view(request):
     if request.method == 'POST':
         paragraph = request.POST.get('paragraph')
 
-        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/translate"  
+        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/summary"  
         
         try:
             response = requests.post(backend_url, json={'paragraph': paragraph})
