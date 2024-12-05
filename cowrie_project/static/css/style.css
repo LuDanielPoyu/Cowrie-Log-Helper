@@ -170,9 +170,9 @@ textarea:focus {
 
 .form-control-class {
     width: 100%;
-    max-width: 800px;
+    max-width: 840px;
     text-align: left;
-    margin: 0px auto 15px;
+    margin: -5px auto 10px;
     padding: 10px;
     font-size: 16px;
     border-radius: 8px;

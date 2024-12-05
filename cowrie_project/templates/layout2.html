@@ -173,17 +173,16 @@
         
         /* Button styling */
         button {
-            margin: 0 auto;
+            margin: 0 auto 16px;
             display: inline-block;
             width: auto;
             font-size: 18px;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             border-radius: 8px;
             background-color: #6A8DB1;
             color: #fff;
             cursor: pointer;
-            margin-bottom: 20px;
             transition: background-color 0.3s ease;
             white-space: nowrap;
         }
@@ -229,6 +228,26 @@
             display: inline-block;
             text-align: center;
         }
+
+        .history-btn {
+            margin: 16px auto 14px;
+            display: inline-block;
+            width: auto;
+            font-size: 18px;
+            padding: 8px 24px;
+            border: none;
+            border-radius: 8px;
+            background-color: #7496bb;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .history-btn:hover {
+            background-color: #4074a0;
+        }
     </style>
 </head> 
 
@@ -250,7 +269,6 @@
         </div>
         <ul class="nav-links" id="nav-links-1">
             <li><a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">Classification</a></li>
-            <li><a href="{% url 'ask_me:cHistory' %}" class="{% if request.path == '/ask_me/cHistory/' %}active{% endif %}">► History</a></li>
             <li><a href="{% url 'ask_me:qa' %}" class="{% if request.path == '/ask_me/qa/' %}active{% endif %}">QA</a></li>
             <li><a href="{% url 'ask_me:summary' %}" class="{% if request.path == '/ask_me/summary/' %}active{% endif %}">Summarization</a></li>
         </ul>
