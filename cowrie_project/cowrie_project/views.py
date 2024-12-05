@@ -18,7 +18,3 @@ def homepage_view(request):
     marquee_right = marquee_left[::-1]
     
     return render(request, 'home.html', {'marquee_left': marquee_left, 'marquee_right': marquee_right})
-
-
-def about_view(request):
-    return render(request, 'about.html')

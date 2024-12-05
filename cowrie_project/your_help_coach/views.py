@@ -1,7 +1,6 @@
 from django.shortcuts import render
 import requests
 import logging
-import re
 import json
 from .models import CowrieLogAttack
 from ask_me.models import ClassificationHistory
@@ -84,7 +83,8 @@ def help_coach_view(request):
             solutions = "No solutions available."
             learn_more_links = []
 
-    if request.method == 'GET':
+    else:
+        # request.method = GET => from detail.html
         attack_type = request.GET.get('type')
 
         try:
