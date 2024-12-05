@@ -74,7 +74,27 @@ def help_coach_view(request):
             affected = attack.affected
             mitigation = attack.mitigation
             solutions = attack.solutions
-            learn_more_links = attack.get_learn_more_links()  
+            learn_more_links = attack.get_learn_more_links()
+            
+        except CowrieLogAttack.DoesNotExist:
+            logging.error(f'Attack type {attack_type} not found in the database.')
+            description = "No descriptions for this attack type."
+            affected = "No data available for this attack type."
+            mitigation = "No mitigation available."
+            solutions = "No solutions available."
+            learn_more_links = []
+
+    if request.method == 'GET':
+        attack_type = request.GET.get('type')
+
+        try:
+            attack = CowrieLogAttack.objects.get(attack_name__iexact=attack_type)  
+            description = attack.description
+            affected = attack.affected
+            mitigation = attack.mitigation
+            solutions = attack.solutions
+            learn_more_links = attack.get_learn_more_links()
+
         except CowrieLogAttack.DoesNotExist:
             logging.error(f'Attack type {attack_type} not found in the database.')
             description = "No descriptions for this attack type."

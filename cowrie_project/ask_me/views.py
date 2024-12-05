@@ -237,12 +237,15 @@ def cHistory_view(request):
     })
 
 
-def pie_chart_view(request):
+def detail_view(request):
     id = request.GET.get('id')
-    probability = ClassificationHistory.objects.filter(user=request.user, id=id).values('probability')
-    
-    test = eval(str([prob for prob in probability.values_list('probability', flat=True)])[2:-2])
-    
+
+    entry = ClassificationHistory.objects.filter(user=request.user, id=id) \
+    .values('probability', 'timestamp', 'attack_type', 'input_log').first()
+
+    probs = list(eval(entry['probability'][1:-1]))
+    time = localtime(entry['timestamp']).strftime("%Y.%m.%d  %I:%M %p")
+
     categories = [
         'cowrie.session.connect',
         'cowrie.client.version',
@@ -262,18 +265,34 @@ def pie_chart_view(request):
         'cowrie.session.file_download.failed'
     ]
 
-    combined = list(zip(categories, test))
+    combined = list(zip(categories, probs))
     combined_sorted = sorted(combined, key = lambda x: x[1], reverse = True)
     top_5 = combined_sorted[:5]
     top_5_cat, top_5_prob = zip(*top_5)
     top_5_cat = list(top_5_cat)
     top_5_prob = list(top_5_prob)
 
+    highest = max(probs)
+    if highest > 0.8:
+        conf = "Very High"
+    elif highest > 0.6:
+        conf = "High"
+    elif highest > 0.4:
+        conf = "Medium"
+    elif highest > 0.2:
+        conf = "Low"
+    else:
+        conf = "Very Low"
+
     data = {
         "categories": categories,
-        "probabilities": test,
+        "probabilities": probs,
         "top_5_cat": top_5_cat,
-        "top_5_prob": top_5_prob
+        "top_5_prob": top_5_prob, 
+        "time": time,
+        "attack_type": entry["attack_type"],
+        "input_log": entry["input_log"], 
+        "conf": conf
     }
 
-    return render(request, 'ask_me/pie.html', data)
+    return render(request, 'ask_me/detail.html', data)

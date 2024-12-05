@@ -1,13 +1,30 @@
 {% extends "layout2.html" %}
-{% block title %}Probability Pie Chart{% endblock %}
+{% block title %}Detailed Information{% endblock %}
 
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
-<h1>Pie Chart of 16 class probabilities</h1>
+<h1>Detailed Information</h1>
+{% comment %} <h1></h1> {% endcomment %}
 
 <div class="main-panel">
+    <label for="time" class="label-title">Time:</label>
+    <div class="detail-info">
+        <p>{{ time }}</p>
+    </div>
+
+    <label for="input_log" class="label-title">Input Cowrie Log:</label>
+    <div class="detail-info-log">
+        <p>{{ input_log }}</p>
+    </div>
+
+    <label for="attack_type" class="label-title">Attack Type:</label>
+    <div class="detail-info">
+        <p><a href="{% url 'your_help_coach:help_coach' %}?type={{ attack_type }}">{{ attack_type }}</a></p>
+    </div><br>
+
+    <label for="chart" class="label-chart">Pie Chart of 16 class probabilities</label>
     <div class="chart-container">
         <div class="pie-chart">
             <canvas id="pieChart"></canvas>
@@ -28,24 +45,72 @@
             </table>
         </div>
     </div>
-
+    <span class="conf">Overall Prediction Confidence: {{ conf }}</span>
+    <br><br><br>
     <a href="{% url 'ask_me:cHistory' %}" class="back-btn">Back To Previous Page</a>
 </div>
 
 <style>
     .main-panel {
         width: auto;
-        height: 86%;
-        margin: -10px auto 20px;
+        height: auto;
+        min-height: 1000px;
+        margin: -10px 10px 20px;
+        padding-top: 20px;
         box-sizing: border-box;
         background-color: #fff;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
+    .label-title {
+        color: #323232;
+        font-size: 19px;
+        font-weight: bold;
+        cursor: text;
+    }
+
+    .label-chart {
+        color: #323232;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: text;
+    }
+
+    .detail-info {
+        color: #323232;
+        background-color: #f1f3f5;
+        text-align: center;
+        padding: 15px;
+        margin: 10px 80px 50px;
+        font-family:"Calibri", sans-serif;
+        font-size: 18px;
+        border-radius: 8px;
+    }
+
+    .detail-info a {
+        text-decoration: none;
+        color: #323232;
+    }
+
+    .detail-info a:hover {
+        text-decoration: underline;
+    }
+
+    .detail-info-log {
+        color: #323232;
+        background-color: #f1f3f5;
+        text-align: left;
+        padding: 15px 25px;
+        margin: 10px 80px 50px;
+        font-family:"Calibri", sans-serif;
+        font-size: 18px;
+        border-radius: 8px;
+    }
+
     .chart-container {
         width: 100%;
-        height: 100%;
+        height: 500px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -79,6 +144,7 @@
         font-size: 16px;
         font-weight: bold;
         margin-bottom: 20px;
+        color: #000;
     }
 
     table {
@@ -91,6 +157,7 @@
         border: 1px solid #ddd;
         padding: 14px 10px;
         text-align: center;
+        color: #323232;
     }
 
     th {
@@ -98,8 +165,36 @@
         font-weight: bold;
     }
 
-    .back-btn {
+    .conf {
+        color: #323232;
+        background-color: #f1f3f5;
+        font-size: 18px;
+        font-family:"Calibri", sans-serif;
+        width: auto;
+        text-align: center;
+        padding: 12px;
+        margin: 5px auto 0px;
+        border-radius: 8px;
+    }
 
+    .back-btn {
+        margin: 20px auto;
+        display: inline-block;
+        width: auto;
+        font-size: 18px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background-color: #6A8DB1;
+        color: #fff;
+        cursor: pointer;
+        margin-bottom: 30px;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .back-btn:hover {
+        background-color: #386C91;
     }
 </style>
 
@@ -200,7 +295,6 @@
         row.appendChild(probabilityCell);
         tableBody.appendChild(row);
     });
-
 </script>
 
 {% endblock %}
