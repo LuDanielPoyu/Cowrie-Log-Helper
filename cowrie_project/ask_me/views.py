@@ -152,7 +152,7 @@ def summary_view(request):
     if request.method == 'POST':
         paragraph = request.POST.get('paragraph')
 
-        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/summary"  
+        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/summarize"  
         
         try:
             response = requests.post(backend_url, json={'paragraph': paragraph})
@@ -168,6 +168,7 @@ def summary_view(request):
             print(f"Request failed: {e}")
             summary = "An error occurred while generating the summary. Please try again."
 
+    # print("translated summary:", translated_summary)
     return render(request, 'ask_me/summary.html', {'paragraph': paragraph, 'summary': summary, 'translated_summary': translated_summary})
 
 

@@ -38,7 +38,7 @@
         <!-- Button Container -->
         <div class="button-wrapper">
             <button type="submit" class="btn btn-secondary">Generate Summary Again</button>
-            <button type="button" class="btn btn-success" id="translate-btn">Translate into Chinese</button>
+            <button type="button" class="btn btn-success" id="translate-btn">Translate Into Chinese</button>
         </div>
     </form><br>
 {% endif %}
@@ -48,7 +48,7 @@
     .button-wrapper {
         display: flex;
         justify-content: space-between;
-        gap: 10px;
+        gap: 40px;
     }
 
     /* 在視窗小於 768px 時，按鈕上下排列 */
@@ -67,6 +67,7 @@
     const form = document.getElementById('summary-form');
     const loadingSection = document.getElementById('loading-section');
     const summaryText = document.getElementById('summary-text');
+    const translateBtn = document.getElementById('translate-btn');
 
     form.addEventListener('submit', function() {
         loadingSection.style.display = 'flex';
@@ -93,6 +94,13 @@
         const summary = "{{ summary|escapejs }}";
         if (summary) {
             displayWordByWord(summary, "summary-text");
+        }
+    });
+
+    translateBtn.addEventListener("click", function () {
+        const chineseSummary = "{{ translated_summary|escapejs }}";
+        if (chineseSummary) {
+            displayWordByWord(chineseSummary, "summary-text");
         }
     });
 </script>

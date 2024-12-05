@@ -72,8 +72,7 @@ h3 {
 
 /* Summary and QA block specific styling */
 .response-block {
-    background-color: #f1f3f5;
-    min-height: 200px;
+    background-color: #f3f3f5;
     text-align: left;
     padding: 15px 20px;
     margin: 30px 60px 40px;
