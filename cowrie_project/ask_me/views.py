@@ -146,6 +146,7 @@ def qa_view(request):
 
 def summary_view(request):
     summary = None
+    translated_summary = None
     paragraph = None
 
     if request.method == 'POST':
