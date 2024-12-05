@@ -6,7 +6,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 <h1>Detailed Information</h1>
-{% comment %} <h1></h1> {% endcomment %}
 
 <div class="main-panel">
     <label for="time" class="label-title">Time:</label>
@@ -24,7 +23,7 @@
         <p><a href="{% url 'your_help_coach:help_coach' %}?type={{ attack_type }}">{{ attack_type }}</a></p>
     </div><br>
 
-    <label for="chart" class="label-chart">Pie Chart of 16 class probabilities</label>
+    <label for="chart" class="label-title">Pie Chart of 16 class probabilities</label>
     <div class="chart-container">
         <div class="pie-chart">
             <canvas id="pieChart"></canvas>
@@ -65,14 +64,7 @@
 
     .label-title {
         color: #323232;
-        font-size: 19px;
-        font-weight: bold;
-        cursor: text;
-    }
-
-    .label-chart {
-        color: #323232;
-        font-size: 20px;
+        font-size: 22px;
         font-weight: bold;
         cursor: text;
     }
@@ -167,8 +159,8 @@
 
     .conf {
         color: #323232;
-        background-color: #f1f3f5;
-        font-size: 18px;
+        background-color: #f5f5f5;
+        font-size: 20px;
         font-family:"Calibri", sans-serif;
         width: auto;
         text-align: center;
