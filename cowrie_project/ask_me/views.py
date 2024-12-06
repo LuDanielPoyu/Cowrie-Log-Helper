@@ -168,7 +168,6 @@ def summary_view(request):
             print(f"Request failed: {e}")
             summary = "An error occurred while generating the summary. Please try again."
 
-    # print("translated summary:", translated_summary)
     return render(request, 'ask_me/summary.html', {'paragraph': paragraph, 'summary': summary, 'translated_summary': translated_summary})
 
 
