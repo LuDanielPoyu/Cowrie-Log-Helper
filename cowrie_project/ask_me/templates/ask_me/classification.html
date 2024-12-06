@@ -34,7 +34,12 @@
     <h3>Description:</h3>
     <div class="result">
         <p id="description"></p>
-    </div><br>
+    </div>
+
+    {%if attack_percentage%}
+    <h3>This attack has also affected {{attack_percentage}}% of users.</h3>
+    <br>
+    {% endif %}
 
     <!-- Display the chart -->
     <h3>Attack Type Proportion Chart</h3>

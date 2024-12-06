@@ -17,6 +17,7 @@ def classification_view(request):
     attack_type = None
     description = None
     chart_data = None
+    type_percentage = None
     log_input = ""
 
     if request.method == 'POST':
@@ -71,7 +72,7 @@ def classification_view(request):
 
             # backend exception        
             else:
-                print("backend exception:", result["attack_type"])  # print exception
+                print("backend exception:", result["attack_type"])
                 return render(request, 'ask_me/classification.html', {
                     'error': "An unexpected error occurred. Please try again later."
                 })
@@ -83,6 +84,7 @@ def classification_view(request):
         .annotate(count=Count('attack_type'))
         
         type_counts = pd.Series({item['attack_type']: item['count'] for item in type_data}).sort_values(ascending=False)
+        type_percentage = round((type_counts[attack_type] / type_counts.sum()) * 100, 2)
         try:
             fig, ax = plt.subplots(figsize=(10, 6))
             type_counts.plot(kind='bar', ax=ax, color='skyblue', alpha=0.7)
@@ -112,6 +114,7 @@ def classification_view(request):
 
     return render(request, 'ask_me/classification.html', {
         'attack_type': attack_type,
+        'attack_percentage': type_percentage,
         'description': description,
         'chart_data': chart_data,
         'log_input': log_input
@@ -202,7 +205,6 @@ def cHistory_view(request):
 
         frequency.append(freq)
 
-        # table data
         if freq != 0:
             records = ClassificationHistory.objects \
             .filter(user=request.user) \
@@ -243,6 +245,10 @@ def detail_view(request):
 
     entry = ClassificationHistory.objects.filter(user=request.user, id=id) \
     .values('probability', 'timestamp', 'attack_type', 'input_log').first()
+    
+    attack_type_count = ClassificationHistory.objects.filter(attack_type=entry["attack_type"]).count()
+    total = ClassificationHistory.objects.count()
+    attack_percentage = round((attack_type_count * 100 / total), 2)
 
     probs = list(eval(entry['probability'][1:-1]))
     time = localtime(entry['timestamp']).strftime("%Y.%m.%d  %I:%M %p")
@@ -292,7 +298,8 @@ def detail_view(request):
         "top_5_prob": top_5_prob, 
         "time": time,
         "attack_type": entry["attack_type"],
-        "input_log": entry["input_log"], 
+        "input_log": entry["input_log"],
+        "attack_percentage": attack_percentage, 
         "conf": conf
     }
 

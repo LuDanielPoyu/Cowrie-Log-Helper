@@ -21,7 +21,10 @@
     <label for="attack_type" class="label-title">Attack Type:</label>
     <div class="detail-info">
         <p><a href="{% url 'your_help_coach:help_coach' %}?type={{ attack_type }}">{{ attack_type }}</a></p>
-    </div><br>
+    </div>
+
+    <label for="attack_percentage" class="label-title">This attack has also affected {{attack_percentage}}% of users.</label>
+    <br><br>
 
     <label for="chart" class="label-title">Pie Chart of 16 class probabilities</label>
     <div class="chart-container">
