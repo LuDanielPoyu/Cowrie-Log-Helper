@@ -149,7 +149,6 @@ def qa_view(request):
 
 def summary_view(request):
     summary = None
-    translated_summary = None
     paragraph = None
 
     if request.method == 'POST':
@@ -161,7 +160,6 @@ def summary_view(request):
             response = requests.post(backend_url, json={'paragraph': paragraph})
             response.raise_for_status()
             summary = response.json().get('summary')
-            translated_summary = response.json().get('translated_summary')
 
             if request.user.is_authenticated:
                 record = SummaryHistory(user=request.user, paragraph=paragraph, summary=summary)
@@ -171,7 +169,7 @@ def summary_view(request):
             print(f"Request failed: {e}")
             summary = "An error occurred while generating the summary. Please try again."
 
-    return render(request, 'ask_me/summary.html', {'paragraph': paragraph, 'summary': summary, 'translated_summary': translated_summary})
+    return render(request, 'ask_me/summary.html', {'paragraph': paragraph, 'summary': summary})
 
 
 def cHistory_view(request):

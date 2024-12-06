@@ -30,7 +30,7 @@
 
 {% if answer %}
     <hr><br>
-    <form method="POST" action="{% url 'ask_me:qa' %}">
+    <form id="qa-form" method="POST" action="{% url 'ask_me:qa' %}">
         {% csrf_token %}
         <h3>Answer:</h3>
         <div class="response-block">

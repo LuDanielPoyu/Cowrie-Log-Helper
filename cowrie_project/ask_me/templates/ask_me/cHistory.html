@@ -237,24 +237,24 @@
 
     // Function to switch between "Attack Type" and "Time" views
     document.getElementById("btn-attack").addEventListener("click", function() {
+        this.classList.add("active");
         document.getElementById("visualization").style.display = "block";
         document.getElementById("time-visualization").style.display = "none";
-        this.classList.add("active");
         document.getElementById("btn-time").classList.remove("active");
         document.getElementById("cards-container").classList.remove("hidden");
     });
 
     document.getElementById("btn-time").addEventListener("click", function() {
+        this.classList.add("active");
         document.getElementById("visualization").style.display = "none";
         document.getElementById("time-visualization").style.display = "block";
-        this.classList.add("active");
         document.getElementById("btn-attack").classList.remove("active");
         document.getElementById("cards-container").classList.add("hidden");
+
         // Draw the time-based heatmap here
         drawHeatmap();
     });
 
-    // Sample data for the heatmap (could be replaced with real data)
     const timeData = {{ time_data|safe }};
 
     function drawHeatmap() {
@@ -269,11 +269,13 @@
                     padding: 5px; color: white;">${item.count}</span>
             </div>`;
         });
-
-        heatmapDiv.innerHTML += heatmapContent;
+        
+        heatmapDiv.innerHTML = heatmapContent;
         
         // Populate the history table with time-based data
         const tableBody = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = "";
+
         timeData.forEach(record => {
             const row = document.createElement("tr");
             const timeCell = document.createElement("td");
