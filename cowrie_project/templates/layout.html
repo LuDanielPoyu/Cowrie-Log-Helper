@@ -644,7 +644,7 @@
             {% if user.is_authenticated %}
                 <form action="{% url 'users:logout' %}" method="post" class="logout-form">
                     {% csrf_token %}
-                    <button>Logout</button>
+                    <button id="logoutButton">Logout</button>
                 </form>
             {% else %}
                 <a href="{% url 'users:login' %}">Login</a>
@@ -654,6 +654,7 @@
             {% endif %}
         </div>
     </nav>
+    <script src="{% static 'js/clear.js' %}"></script>
 
     <div class="container">
         {% block content %}

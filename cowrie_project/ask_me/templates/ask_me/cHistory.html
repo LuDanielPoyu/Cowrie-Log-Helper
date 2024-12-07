@@ -59,13 +59,58 @@
         align-items: center;
     }
 
-    table {
+    /* type table */
+    #type {
         width: 96%;
         border-collapse: collapse;
         margin: 10px auto;
         table-layout: fixed;
     }
 
+    #type th:nth-child(1),
+    #type td:nth-child(1) {
+        width: 20%; /* Time欄寬度為 20% */
+    }
+
+    #type th:nth-child(2),
+    #type td:nth-child(2) {
+        width: 68%; /* Log欄寬度為 68% */
+    }
+
+    #type th:nth-child(3),
+    #type td:nth-child(3) {
+        width: 12%; /* Detail欄寬度為 12% */
+    }
+
+    /* time table */
+    #historyTable {
+        width: 96%;
+        border-collapse: collapse;
+        margin: 10px auto;
+        table-layout: fixed;
+    }
+
+    #historyTable th:nth-child(1),
+    #historyTable td:nth-child(1) {
+        width: 18%; /* Time欄寬度為 18% */
+    }
+
+    #historyTable th:nth-child(2),
+    #historyTable td:nth-child(2) {
+        width: 46%; /* Log欄寬度為 46% */
+    }
+
+    #historyTable th:nth-child(3),
+    #historyTable td:nth-child(3) {
+        width: 28%; /* Type欄寬度為 28% */
+    }
+
+    #historyTable th:nth-child(4),
+    #historyTable td:nth-child(4) {
+        width: 8%; /* Detail欄寬度為 8% */
+    }
+
+    /* table common setting */
     table, th, td {
         border: 1px solid #ddd;
     }
@@ -84,21 +129,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-    }
-
-    th:nth-child(1),
-    td:nth-child(1) {
-        width: 20%; /* Time欄寬度為 20% */
-    }
-
-    th:nth-child(2),
-    td:nth-child(2) {
-        width: 68%; /* Log欄寬度為 68% */
-    }
-
-    th:nth-child(3),
-    td:nth-child(3) {
-        width: 12%; /* Detail欄寬度為 12% */
     }
 
     tr:nth-child(even) {
@@ -144,7 +174,7 @@
                 <div class="details">
                     <p><strong>You have encountered this attack type {{ attack.count }} times</strong></p>
                 </div>
-                <table>
+                <table id="type">
                     <thead>
                         <tr>
                             <th>Time</th>
@@ -180,6 +210,7 @@
 
         <!-- Heatmap -->
         <div class="heatmap" id="heatmap"></div>
+        <br>
 
         <!-- Time-based History Records Table -->
         <table id="historyTable">
@@ -187,6 +218,7 @@
                 <tr>
                     <th>Time</th>
                     <th>Input Cowrie Log</th>
+                    <th>Attack Type</th>
                     <th>Details</th>
                 </tr>
             </thead>
@@ -196,6 +228,8 @@
         </table>
     </div>
 </div>
+
+<a href="{% url 'ask_me:classification' %}" class="back-btn">Back To Classification Page</a>
 
 <!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -242,6 +276,8 @@
         document.getElementById("time-visualization").style.display = "none";
         document.getElementById("btn-time").classList.remove("active");
         document.getElementById("cards-container").classList.remove("hidden");
+
+        sessionStorage.setItem("histState", "type");
     });
 
     document.getElementById("btn-time").addEventListener("click", function() {
@@ -253,6 +289,8 @@
 
         // Draw the time-based heatmap here
         drawHeatmap();
+
+        sessionStorage.setItem("histState", "time");
     });
 
     const timeData = {{ time_data|safe }};
@@ -282,17 +320,26 @@
             timeCell.textContent = record.time;
             const logCell = document.createElement("td");
             logCell.textContent = record.input_log;
+            const typeCell = document.createElement("td");
+            typeCell.textContent = record.attack_type;
             const detailCell = document.createElement("td");
             detailCell.innerHTML = `<a href="{% url 'ask_me:detail' %}?id=${ record.id }" class="detail-link">Detail</a>`;
             row.appendChild(timeCell);
             row.appendChild(logCell);
+            row.appendChild(typeCell)
             row.appendChild(detailCell);
             tableBody.appendChild(row);
         });
     }
 
-    // Initial setup: "Attack Type" page should be active by default
-    document.getElementById("btn-attack").click();
+    state = sessionStorage.getItem("histState");
+    if (state === "type") {
+        document.getElementById("btn-attack").click();
+    } else if (state === "time") {
+        document.getElementById("btn-time").click();
+    } else {
+        document.getElementById("btn-attack").click();
+    }
 </script>
 
 {% endblock %}

@@ -35,11 +35,18 @@
 
         <h3>Attack Type:</h3>
         <div class="result">
-            <p>{{ attack_type }}</p>
+            <p id="attack-type">{{ attack_type }}</p>
         </div>
 
         <input type="hidden" name="encounteredAttack" value="{{ attack_type }}">
         <button type="submit" class="btn btn-success">Get Personal Diagnosis</button>
     </form><br>
 {% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    });
+</script>
+
 {% endblock %}

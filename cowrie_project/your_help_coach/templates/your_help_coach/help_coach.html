@@ -47,5 +47,12 @@
             <p>No additional information available.</p>
         {% endif %}
     </div>
+    <br>
+    <button id="goBackButton" class="back-btn">Back To Previous Page</button>
 
+    <script>
+        document.getElementById('goBackButton').addEventListener('click', function () {
+            window.location.href = document.referrer;
+        });
+    </script>
 {% endblock %}

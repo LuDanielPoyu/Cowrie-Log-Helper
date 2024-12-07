@@ -203,6 +203,7 @@ def cHistory_view(request):
     attack_data = []
 
     for atkType in attackType:
+        # bar chart data
         freq = ClassificationHistory.objects \
         .filter(user=request.user) \
         .filter(attack_type=atkType) \
@@ -210,12 +211,13 @@ def cHistory_view(request):
 
         frequency.append(freq)
 
+        # attack type table data
         if freq != 0:
             records = ClassificationHistory.objects \
             .filter(user=request.user) \
             .filter(attack_type=atkType) \
             .values('id', 'timestamp', 'input_log') \
-            .order_by('timestamp') 
+            .order_by('-timestamp')  # DESC order
 
             records_list = [{
                 'id': record['id'], 
@@ -228,17 +230,19 @@ def cHistory_view(request):
                 "count": freq,
                 "records": records_list
             })
-      
+
+    # time table data
     timeset = ClassificationHistory.objects \
     .filter(user=request.user) \
-    .values('id', 'timestamp', 'input_log') \
+    .values('id', 'timestamp', 'input_log', 'attack_type') \
     .annotate(count=Count('id')) \
-    .order_by('timestamp')
+    .order_by('-timestamp')
     
     time_data = [{
         'id': entry['id'], 
         'time': localtime(entry['timestamp']).strftime("%Y.%m.%d  %I:%M %p"), 
         'input_log': entry['input_log'],
+        'attack_type': entry['attack_type'],
         'count': entry['count']
     } for entry in timeset]
         

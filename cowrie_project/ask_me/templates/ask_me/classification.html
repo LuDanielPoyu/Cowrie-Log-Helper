@@ -37,13 +37,15 @@
     </div>
 
     {%if attack_percentage%}
-        <h3>This attack has also affected {{attack_percentage}}% of users.</h3>
-        <br>
+        <h3>Proportion of Users Affected:</h3>
+        <div class="result">
+            <p>This attack type has also affected {{ attack_percentage }}% of all our users.</p>
+        </div>
     {% endif %}
 
     <!-- Display the chart -->
-    <h3>Attack Type Proportion Chart</h3>
     {% if chart_data %}
+        <h3>Attack Type Proportion Chart:</h3>
         <div class="chart-container">
             <img src="data:image/png;base64,{{ chart_data }}" alt="Attack Type Chart">
         </div>
@@ -81,7 +83,7 @@
         const attackTypeBlock = document.getElementById("attack-type");
 
         if (attackType) {
-            window.scrollTo({ top: 610, behavior: 'smooth' });
+            window.scrollTo({ top: 560, behavior: 'smooth' });
             displayWordByWord(attackType, "attack-type");
         }
         if (description) {

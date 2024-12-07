@@ -9,24 +9,27 @@
 
 <div class="main-panel">
     <label for="time" class="label-title">Time:</label>
-    <div class="detail-info">
+    <div class="detail-time">
         <p>{{ time }}</p>
     </div>
 
     <label for="input_log" class="label-title">Input Cowrie Log:</label>
-    <div class="detail-info-log">
+    <div class="detail-log">
         <p>{{ input_log }}</p>
     </div>
 
     <label for="attack_type" class="label-title">Attack Type:</label>
-    <div class="detail-info">
+    <div class="detail">
         <p><a href="{% url 'your_help_coach:help_coach' %}?type={{ attack_type }}">{{ attack_type }}</a></p>
     </div>
 
-    <label for="attack_percentage" class="label-title">This attack type has also affected {{ attack_percentage }}% of all our users.</label>
-    <br><br><br>
+    <label for="proportion" class="label-title">Proportion of Users Affected:</label>
+    <div class="detail">
+        <p>This attack type has also affected {{ attack_percentage }}% of all our users.</p>
+    </div>
+    <br>
 
-    <label for="chart" class="label-title">Pie Chart of 16 class probabilities</label>
+    <label for="chart" class="label-title">Pie Chart of Predicted 16 Class Probabilities:</label>
     <div class="chart-container">
         <div class="pie-chart">
             <canvas id="pieChart"></canvas>
@@ -49,7 +52,7 @@
     </div>
     <span class="conf">Overall Prediction Confidence: {{ conf }}</span>
     <br><br><br>
-    <a href="{% url 'ask_me:cHistory' %}" class="back-btn">Back To Previous Page</a>
+    <a href="{% url 'ask_me:cHistory' %}" class="back-btn">Back To History Records</a>
 </div>
 
 <style>
@@ -72,35 +75,46 @@
         cursor: text;
     }
 
-    .detail-info {
+    .detail-time {
         color: #323232;
         background-color: #f1f3f5;
         text-align: center;
         padding: 15px;
-        margin: 10px 80px 50px;
+        margin: 10px 80px 45px;
         font-family:"Calibri", sans-serif;
         font-size: 18px;
         border-radius: 8px;
     }
 
-    .detail-info a {
-        text-decoration: none;
-        color: #323232;
-    }
-
-    .detail-info a:hover {
-        text-decoration: underline;
-    }
-
-    .detail-info-log {
+    .detail-log {
         color: #323232;
         background-color: #f1f3f5;
         text-align: left;
         padding: 15px 25px;
-        margin: 10px 80px 50px;
+        margin: 10px 80px 45px;
         font-family:"Calibri", sans-serif;
         font-size: 18px;
         border-radius: 8px;
+    }
+
+    .detail {
+        color: #323232;
+        background-color: #f1f3f5;
+        text-align: center;
+        padding: 15px;
+        margin: 10px 80px 45px;
+        font-family:"Calibri", sans-serif;
+        font-size: 20px;
+        border-radius: 8px;
+    }
+
+    .detail a {
+        text-decoration: none;
+        color: #323232;
+    }
+
+    .detail a:hover {
+        text-decoration: underline;
     }
 
     .chart-container {
@@ -169,26 +183,6 @@
         padding: 12px;
         margin: 5px auto 0px;
         border-radius: 8px;
-    }
-
-    .back-btn {
-        margin: 20px auto;
-        display: inline-block;
-        width: auto;
-        font-size: 18px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 8px;
-        background-color: #6A8DB1;
-        color: #fff;
-        cursor: pointer;
-        margin-bottom: 30px;
-        transition: background-color 0.3s ease;
-        text-decoration: none;
-    }
-    
-    .back-btn:hover {
-        background-color: #386C91;
     }
 </style>
 

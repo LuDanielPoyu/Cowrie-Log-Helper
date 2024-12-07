@@ -70,18 +70,6 @@ h3 {
     margin-right: 0;
 }
 
-/* Summary and QA block specific styling */
-.response-block {
-    background-color: #f3f3f5;
-    text-align: left;
-    padding: 15px 20px;
-    margin: 30px 60px 40px;
-    color: #323232;
-    font-family:"Calibri", sans-serif;
-    font-size: 18px;
-    border-radius: 8px;
-}
-
 textarea, .result-block {
     width: 100%;
     min-height: 150px;
