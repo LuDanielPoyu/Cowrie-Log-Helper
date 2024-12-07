@@ -70,19 +70,6 @@ h3 {
     margin-right: 0;
 }
 
-/* Summary and QA block specific styling */
-.response-block {
-    background-color: #f1f3f5;
-    min-height: 200px;
-    text-align: left;
-    padding: 15px 20px;
-    margin: 30px 60px 40px;
-    color: #323232;
-    font-family:"Calibri", sans-serif;
-    font-size: 18px;
-    border-radius: 8px;
-}
-
 textarea, .result-block {
     width: 100%;
     min-height: 150px;
@@ -170,9 +157,9 @@ textarea:focus {
 
 .form-control-class {
     width: 100%;
-    max-width: 800px;
+    max-width: 840px;
     text-align: left;
-    margin: 0px auto 15px;
+    margin: -5px auto 10px;
     padding: 10px;
     font-size: 16px;
     border-radius: 8px;

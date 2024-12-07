@@ -3,8 +3,7 @@
 
 {% block content %}
 <h1>Cowrie Log Attack Type Classification</h1>
-
-<p class="comment">Please check your Cowrie Log data and enter!</p>
+<p class="comment">Please check your Cowrie Log data and enter !</p>
 
 <!-- Form to input parameters -->
 <form method="POST" action="{% url 'ask_me:classification' %}" id="classification-form">
@@ -20,6 +19,9 @@
     </div>
     <button type="submit" class="btn btn-primary">Get Cowrie Log Attack Type</button>
     <br>
+    {% if user.is_authenticated %}
+        <a href="{% url 'ask_me:cHistory' %}" class="history-btn">View My History Records</a>
+    {% endif %}
 </form>
 <br>
 
@@ -30,18 +32,23 @@
         <p id="attack-type"></p> 
     </div>
     <h3>Description:</h3>
-    <div class="description-block">
+    <div class="result">
         <p id="description"></p>
-    </div><br>
+    </div>
+
+    {% if attack_percentage %}
+        <h3>Proportion of Users Affected:</h3>
+        <div class="result">
+            <p id="attack-percentage"></p>
+        </div>
+    {% endif %}
 
     <!-- Display the chart -->
-    <h3>Attack Type Proportion Chart</h3>
     {% if chart_data %}
+        <h3>Attack Type Proportion Chart:</h3>
         <div class="chart-container">
             <img src="data:image/png;base64,{{ chart_data }}" alt="Attack Type Chart">
         </div>
-    {% else %}
-        <p>No chart data available.</p>
     {% endif %}
 
 {% elif error %}
@@ -65,18 +72,24 @@
             } else {
                 clearInterval(interval); 
             }
-        }, 200); 
+        }, 160); 
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         const attackType = "{{ attack_type|escapejs }}";
         const description = "{{ description|escapejs }}";
+        const attackPercentage = "{{ attack_percentage|escapejs }}"
+        const attackTypeBlock = document.getElementById("attack-type");
 
         if (attackType) {
+            window.scrollTo({ top: 560, behavior: 'smooth' });
             displayWordByWord(attackType, "attack-type");
         }
         if (description) {
             displayWordByWord(description, "description");
+        }
+        if (attackPercentage) {
+            displayWordByWord("This attack type has also affected {{ attack_percentage }}% of all our users.", "attack-percentage");
         }
     });
 </script>

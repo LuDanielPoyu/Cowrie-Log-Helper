@@ -17,6 +17,7 @@ def classification_view(request):
     attack_type = None
     description = None
     chart_data = None
+    type_percentage = None
     log_input = ""
 
     if request.method == 'POST':
@@ -71,7 +72,7 @@ def classification_view(request):
 
             # backend exception        
             else:
-                print("backend exception:", result["attack_type"])  # print exception
+                print("backend exception:", result["attack_type"])
                 return render(request, 'ask_me/classification.html', {
                     'error': "An unexpected error occurred. Please try again later."
                 })
@@ -83,6 +84,7 @@ def classification_view(request):
         .annotate(count=Count('attack_type'))
         
         type_counts = pd.Series({item['attack_type']: item['count'] for item in type_data}).sort_values(ascending=False)
+        type_percentage = round((type_counts[attack_type] / type_counts.sum()) * 100, 2)
         try:
             fig, ax = plt.subplots(figsize=(10, 6))
             type_counts.plot(kind='bar', ax=ax, color='skyblue', alpha=0.7)
@@ -112,6 +114,7 @@ def classification_view(request):
 
     return render(request, 'ask_me/classification.html', {
         'attack_type': attack_type,
+        'attack_percentage': type_percentage,
         'description': description,
         'chart_data': chart_data,
         'log_input': log_input
@@ -132,6 +135,10 @@ def qa_view(request):
 
         if response.status_code == 200:
             answer = response.json().get('answer')
+
+            # 避免出現斷尾文字
+            if not answer.endswith("."):
+                answer = " ".join(answer.split(".")[:-1])
 
             if request.user.is_authenticated:
                 record = QAHistory(user=request.user, question=question, answer=answer)
@@ -158,6 +165,9 @@ def summary_view(request):
             response.raise_for_status()
             summary = response.json().get('summary')
 
+            if not summary.endswith("."):
+                summary = summary + "."
+
             if request.user.is_authenticated:
                 record = SummaryHistory(user=request.user, paragraph=paragraph, summary=summary)
                 record.save()
@@ -166,11 +176,10 @@ def summary_view(request):
             print(f"Request failed: {e}")
             summary = "An error occurred while generating the summary. Please try again."
 
-    return render(request, 'ask_me/summary.html', {'summary': summary, 'paragraph': paragraph})
+    return render(request, 'ask_me/summary.html', {'paragraph': paragraph, 'summary': summary})
 
 
 def cHistory_view(request):
-    # bar chart data
     attackType = [
         'cowrie.session.connect',
         'cowrie.client.version',
@@ -194,6 +203,7 @@ def cHistory_view(request):
     attack_data = []
 
     for atkType in attackType:
+        # bar chart data
         freq = ClassificationHistory.objects \
         .filter(user=request.user) \
         .filter(attack_type=atkType) \
@@ -201,13 +211,13 @@ def cHistory_view(request):
 
         frequency.append(freq)
 
-        # table data
+        # attack type table data
         if freq != 0:
             records = ClassificationHistory.objects \
             .filter(user=request.user) \
             .filter(attack_type=atkType) \
             .values('id', 'timestamp', 'input_log') \
-            .order_by('timestamp') 
+            .order_by('-timestamp')  # DESC order
 
             records_list = [{
                 'id': record['id'], 
@@ -220,14 +230,21 @@ def cHistory_view(request):
                 "count": freq,
                 "records": records_list
             })
-      
-    timeset = ClassificationHistory.objects.annotate(date=TruncDate('timestamp')) \
+
+    # time table data
+    timeset = ClassificationHistory.objects \
     .filter(user=request.user) \
-    .values('id', 'timestamp') \
+    .values('id', 'timestamp', 'input_log', 'attack_type') \
     .annotate(count=Count('id')) \
-    .order_by('timestamp')
+    .order_by('-timestamp')
     
-    time_data = [{'id': entry['id'], 'time': localtime(entry['timestamp']).strftime("%Y.%m.%d  %I:%M %p"), 'count': entry['count']} for entry in timeset]
+    time_data = [{
+        'id': entry['id'], 
+        'time': localtime(entry['timestamp']).strftime("%Y.%m.%d  %I:%M %p"), 
+        'input_log': entry['input_log'],
+        'attack_type': entry['attack_type'],
+        'count': entry['count']
+    } for entry in timeset]
         
     return render(request, 'ask_me/cHistory.html', {
         'attackType': attackType,
@@ -237,12 +254,19 @@ def cHistory_view(request):
     })
 
 
-def pie_chart_view(request):
+def detail_view(request):
     id = request.GET.get('id')
-    probability = ClassificationHistory.objects.filter(user=request.user, id=id).values('probability')
+
+    entry = ClassificationHistory.objects.filter(user=request.user, id=id) \
+    .values('probability', 'timestamp', 'attack_type', 'input_log').first()
     
-    test = eval(str([prob for prob in probability.values_list('probability', flat=True)])[2:-2])
-    
+    attack_type_count = ClassificationHistory.objects.filter(attack_type=entry["attack_type"]).count()
+    total = ClassificationHistory.objects.count()
+    attack_percentage = round((attack_type_count * 100 / total), 2)
+
+    probs = list(eval(entry['probability'][1:-1]))
+    time = localtime(entry['timestamp']).strftime("%Y.%m.%d  %I:%M %p")
+
     categories = [
         'cowrie.session.connect',
         'cowrie.client.version',
@@ -262,18 +286,35 @@ def pie_chart_view(request):
         'cowrie.session.file_download.failed'
     ]
 
-    combined = list(zip(categories, test))
+    combined = list(zip(categories, probs))
     combined_sorted = sorted(combined, key = lambda x: x[1], reverse = True)
     top_5 = combined_sorted[:5]
     top_5_cat, top_5_prob = zip(*top_5)
     top_5_cat = list(top_5_cat)
     top_5_prob = list(top_5_prob)
 
+    highest = max(probs)
+    if highest > 0.8:
+        conf = "Very High"
+    elif highest > 0.6:
+        conf = "High"
+    elif highest > 0.4:
+        conf = "Medium"
+    elif highest > 0.2:
+        conf = "Low"
+    else:
+        conf = "Very Low"
+
     data = {
         "categories": categories,
-        "probabilities": test,
+        "probabilities": probs,
         "top_5_cat": top_5_cat,
-        "top_5_prob": top_5_prob
+        "top_5_prob": top_5_prob, 
+        "time": time,
+        "attack_type": entry["attack_type"],
+        "input_log": entry["input_log"],
+        "attack_percentage": attack_percentage, 
+        "conf": conf
     }
 
-    return render(request, 'ask_me/pie.html', data)
+    return render(request, 'ask_me/detail.html', data)

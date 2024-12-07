@@ -8,65 +8,69 @@ const toggleImg_2 = document.querySelector('#toggle-img-2');
 const expandIcon = '/static/images/minus.png'; // 展開時的圖示
 const collapseIcon = '/static/images/plus.png'; // 收合時的圖示
 
-let url_list = ["http://127.0.0.1:8000/", "http://127.0.0.1:8000/about/", 
-                "http://127.0.0.1:8000/users/login/", "http://127.0.0.1:8000/users/register/"]
+function expand(navLink, img) {
+    navLink.classList.remove('hide');
+    navLink.style.height = navLink.scrollHeight + 'px';
+    img.src = expandIcon;
+}
 
+function collapse(navLink, img) {
+    navLink.classList.add('hide');
+    navLink.style.height = '0';
+    navLink.style.overflow = 'hidden';
+    img.src = collapseIcon;
+}
+
+function collapseWithAnimation(navLink, img) {
+    navLink.classList.add('hide');
+    navLink.style.height = navLink.scrollHeight + 'px'; // 設置高度為當前高度（觸發動畫）
+    requestAnimationFrame(() => {
+        navLink.style.height = '0'; // 收合為 0
+    });
+    img.src = collapseIcon;
+}
+
+let url_list = [
+    "http://127.0.0.1:8000/", 
+    "http://127.0.0.1:8000/users/login/", 
+    "http://127.0.0.1:8000/users/register/"
+]
+
+// 非來自上面三個頁面就依之前的狀態
 if (!url_list.includes(document.referrer)) {
-    stored_session_state_1 = sessionStorage.getItem('navState_1')
+    stored_session_state_1 = sessionStorage.getItem('navState_1');
     if (stored_session_state_1 === 'collapsed') {
-        // 如果之前收合，則直接設置為隱藏
-        navLinks_1.classList.add('hide');
-        navLinks_1.style.height = '0';
-        navLinks_1.style.overflow = 'hidden';
-        toggleImg_1.src = collapseIcon;
+        // 如果之前收合，設置為隱藏
+        collapse(navLinks_1, toggleImg_1);
     } else {
-        // 否則，設置為展開狀態
-        navLinks_1.classList.remove('hide');
-        navLinks_1.style.height = navLinks_1.scrollHeight + 'px';
-        toggleImg_1.src = expandIcon;
+        // 如果之前展開，設置為展開
+        expand(navLinks_1, toggleImg_1);
     }
 
-    stored_session_state_2 = sessionStorage.getItem('navState_2')
+    stored_session_state_2 = sessionStorage.getItem('navState_2');
     if (stored_session_state_2 === 'collapsed') {
-        // 如果之前收合，則直接設置為隱藏
-        navLinks_2.classList.add('hide');
-        navLinks_2.style.height = '0';
-        navLinks_2.style.overflow = 'hidden';
-        toggleImg_2.src = collapseIcon;
+        collapse(navLinks_2, toggleImg_2);
     } else {
-        // 否則，設置為展開狀態
-        navLinks_2.classList.remove('hide');
-        navLinks_2.style.height = navLinks_2.scrollHeight + 'px';
-        toggleImg_2.src = expandIcon;
+        expand(navLinks_2, toggleImg_2);
     }
     
 } else {
-    navLinks_1.classList.remove('hide');
-    navLinks_1.style.height = navLinks_1.scrollHeight + 'px';
-    toggleImg_1.src = expandIcon;
+    // 來自上面三個頁面就一律展開
+    expand(navLinks_1, toggleImg_1);
     sessionStorage.setItem('navState_1', 'expanded');
 
-    navLinks_2.classList.remove('hide');
-    navLinks_2.style.height = navLinks_2.scrollHeight + 'px';
-    toggleImg_2.src = expandIcon;
+    expand(navLinks_2, toggleImg_2);
     sessionStorage.setItem('navState_2', 'expanded');
 }
 
 toggleBtn_1.addEventListener('click', () => {
     if (navLinks_1.classList.contains('hide')) {
         // 展開
-        navLinks_1.classList.remove('hide');
-        navLinks_1.style.height = navLinks_1.scrollHeight + 'px'; // 設置為自動高度
-        toggleImg_1.src = expandIcon;
+        expand(navLinks_1, toggleImg_1);
         sessionStorage.setItem('navState_1', 'expanded');
     } else {
         // 收合
-        navLinks_1.style.height = navLinks_1.scrollHeight + 'px'; // 設置高度為當前高度（觸發動畫）
-        requestAnimationFrame(() => {
-            navLinks_1.style.height = '0'; // 收合為 0
-        });
-        navLinks_1.classList.add('hide');
-        toggleImg_1.src = collapseIcon;
+        collapseWithAnimation(navLinks_1, toggleImg_1);
         sessionStorage.setItem('navState_1', 'collapsed');
     } 
 });
@@ -74,30 +78,11 @@ toggleBtn_1.addEventListener('click', () => {
 toggleBtn_2.addEventListener('click', () => {
     if (navLinks_2.classList.contains('hide')) {
         // 展開
-        navLinks_2.classList.remove('hide');
-        navLinks_2.style.height = navLinks_2.scrollHeight + 'px'; // 設置為自動高度
-        toggleImg_2.src = expandIcon;
+        expand(navLinks_2, toggleImg_2);
         sessionStorage.setItem('navState_2', 'expanded');
     } else {
         // 收合
-        navLinks_2.style.height = navLinks_2.scrollHeight + 'px'; // 設置高度為當前高度（觸發動畫）
-        requestAnimationFrame(() => {
-            navLinks_2.style.height = '0'; // 收合為 0
-        });
-        navLinks_2.classList.add('hide');
-        toggleImg_2.src = collapseIcon;
+        collapseWithAnimation(navLinks_2, toggleImg_2);
         sessionStorage.setItem('navState_2', 'collapsed');
-    }
-});
-
-navLinks_1.addEventListener('transitionend', () => {
-    if (!navLinks_1.classList.contains('hide')) {
-        navLinks_1.style.height = 'auto';
-    }
-});
-
-navLinks_2.addEventListener('transitionend', () => {
-    if (!navLinks_2.classList.contains('hide')) {
-        navLinks_2.style.height = 'auto';
     }
 });

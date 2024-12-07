@@ -51,7 +51,6 @@ def register_view(request):
     return render(request, 'users/register.html', {"form": form})
 
 
-# 有任何 error 都用 render(request, "users/verify.html", {"error": "錯誤訊息"})  
 def verify_view(request):
     if request.method == "POST":
         email = request.session['email']
@@ -77,7 +76,8 @@ def verify_view(request):
             else:
                 return render(request, "users/verify.html", {"error": "Invalid verification code! Please try again."})
         
-        else:  # resend code
+        else:  
+            # resend code
             try:
                 code = generate_verification_code()
                 send_verification_email(email, code)

@@ -3,8 +3,7 @@
 
 {% block content %}
 <h1>Personal Attack Diagnosis Coach</h1>
-
-<p class="comment">Please check your Cowrie Log data and enter!</p>
+<p class="comment">Please check your Cowrie Log data and enter !</p>
 
 <!-- Form to input the Cowrie log data -->
 <form method="POST" action="{% url 'your_help_coach:attack_suggestion' %}">
@@ -20,6 +19,9 @@
     </div>
     <button type="submit" class="btn btn-primary">Get Personal Attack Diagnosis</button>
     <br>
+    {% if user.is_authenticated %}
+        <a href="{% url 'ask_me:cHistory' %}" class="history-btn">View My History Records</a>
+    {% endif %}
 </form>
 <br>
 
@@ -33,11 +35,18 @@
 
         <h3>Attack Type:</h3>
         <div class="result">
-            <p>{{ attack_type }}</p>
+            <p id="attack-type">{{ attack_type }}</p>
         </div>
 
         <input type="hidden" name="encounteredAttack" value="{{ attack_type }}">
         <button type="submit" class="btn btn-success">Get Personal Diagnosis</button>
     </form><br>
 {% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    });
+</script>
+
 {% endblock %}

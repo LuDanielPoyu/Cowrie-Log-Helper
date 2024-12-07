@@ -49,6 +49,8 @@
             align-items: center;
             padding-left: 10px;
             padding-right: 12px;
+            margin-left: 10px;
+            margin-right: 24px;
         }
 
         .logo img {
@@ -61,6 +63,7 @@
             align-items: center;
             position: relative;
             margin-right: auto; /* Move nav links to the left */
+            gap: 16px;
         }
 
         .nav-links a {
@@ -76,6 +79,8 @@
         .nav-right {
             display: flex; /* Align Login and Register to the right */
             align-items: center;
+            gap: 14px;
+            margin-right: 10px;
         }
 
         .nav-right a {
@@ -89,7 +94,7 @@
         }
 
         .nav-right button {
-            background-color: #000; /* 按鈕背景顏色 */
+            background-color: #000038; /* 按鈕背景顏色 */
             color: #ffffff; /* 按鈕文字顏色 */
             border: 0px; /* 去掉邊框 */
             width: auto;
@@ -143,7 +148,6 @@
             margin-top: 50px;
         }
        
-        
         .about-section {
             flex: 1;
             padding: 20px;
@@ -173,7 +177,7 @@
             grid-template-columns: repeat(3, 1fr); /* 3 columns */
             row-gap: 40px; /* 控制區塊之間的行距 */
             column-gap: 20px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         .team-member {
@@ -305,7 +309,7 @@
         
         .start-button {
             display: inline-block;
-            width: 90%; /* 增加寬度 */
+            width: 80%; /* 增加寬度 */
             font-size: 24px; /* 增加字體大小 */
             padding: 16px 32px; /* 增加上下、左右的內邊距 */
             border: none;
@@ -459,6 +463,11 @@
             margin: -15px auto 10px;
             text-decoration: none;
             color: #000;
+            transition: background-color 0.5s ease;
+        }
+
+        .google-login-btn:hover {
+            background-color: #f9f9f9;
         }
         
         .google-login-btn img {
@@ -478,6 +487,11 @@
             margin: 10px auto;
             text-decoration: none;
             color: #000;
+            transition: background-color 0.5s ease;
+        }
+
+        .google-login-btn-register:hover {
+            background-color: #f9f9f9;
         }
         
         .google-login-btn-register img {
@@ -608,8 +622,6 @@
             </a>
         </div>
         <div class="nav-links">
-            
-            
             <!-- Dropdown Menu for "Ask Me" -->
             <div class="dropdown">
                 <a href="#">Ask Me</a>
@@ -632,7 +644,7 @@
             {% if user.is_authenticated %}
                 <form action="{% url 'users:logout' %}" method="post" class="logout-form">
                     {% csrf_token %}
-                    <button>Logout</button>
+                    <button id="logoutButton">Logout</button>
                 </form>
             {% else %}
                 <a href="{% url 'users:login' %}">Login</a>
@@ -642,6 +654,7 @@
             {% endif %}
         </div>
     </nav>
+    <script src="{% static 'js/clear.js' %}"></script>
 
     <div class="container">
         {% block content %}

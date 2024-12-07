@@ -26,7 +26,7 @@
 {% if summary %}
     <hr><br>
     <h3>Generated Summary:</h3>
-    <form method="POST" action="{% url 'ask_me:summary' %}">
+    <form id="summary-form-again" method="POST" action="{% url 'ask_me:summary' %}">
         {% csrf_token %}
 
         <div class="response-block">
@@ -40,16 +40,33 @@
 
 <script>
     const form = document.getElementById('summary-form');
+    const formAgain = document.getElementById('summary-form-again');
     const loadingSection = document.getElementById('loading-section');
     const summaryText = document.getElementById('summary-text');
 
     form.addEventListener('submit', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         loadingSection.style.display = 'flex';
     });
 
+    formAgain.addEventListener('submit', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        loadingSection.style.display = 'flex';
+    });
+
+    function capitalizeSentences(text) {
+        const sentences = text.split(/([.!?]\s*)/);
+        return sentences
+            .map(sentence => {
+                return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+            })
+            .join("");
+    }
+
     function displayWordByWord(text, elementId) {
         const element = document.getElementById(elementId);
-        const words = text.split(" ");
+        const correctedText = capitalizeSentences(text);
+        const words = correctedText.split(" ");
         let index = 0;
 
         element.textContent = "";
@@ -58,18 +75,21 @@
             if (index < words.length) {
                 element.textContent += words[index] + " ";
                 index++;
+                if (index % 5 === 0 || index === characters.length) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
             } else {
                 clearInterval(interval); 
             }
-        }, 200); 
+        }, 160); 
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         const summary = "{{ summary|escapejs }}";
         if (summary) {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             displayWordByWord(summary, "summary-text");
         }
     });
 </script>
 {% endblock %}
-
