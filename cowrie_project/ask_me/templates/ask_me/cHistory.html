@@ -457,7 +457,7 @@
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // 顏色範圍
-    var colorScale = d3.scaleSequential(d3.interpolateInferno).domain([0, 10]); // 根據攻擊數量調整
+    //var colorScale = d3.scaleSequential(d3.interpolateInferno).domain([0, 10]); // 根據攻擊數量調整
 
     // // 篩選器變更事件
     // d3.select("#apply-filter").on("change", function() {
@@ -538,7 +538,8 @@
             .attr("y", d => y(d.count)) // 設置條形圖的 Y 軸位置（對應攻擊數量）
             .attr("width", x.bandwidth()) // 條形的寬度，使用 x.bandwidth()
             .attr("height", d => height - y(d.count)) // 條形的高度，根據攻擊數量計算
-            .style("fill", d => colorScale(d.count))  // 條形顏色
+            //.style("fill", d => colorScale(d.count))  // 條形顏色
+            .style("fill", "#6A8DB1")
             .style("opacity", 0.7)
             .on("mouseover", function(event, d) {
                 d3.select(this).style("opacity", 1);
@@ -551,17 +552,17 @@
     }
 
     // 顯示提示框
-    function showTooltip(event, classification) {
-        var tooltip = d3.select("#tooltip");
-        tooltip.style("visibility", "visible")
-            .text("Attack Type: " + classification)
-            .style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY + 10) + "px");
-    }
+    // function showTooltip(event, classification) {
+    //     var tooltip = d3.select("#tooltip");
+    //     tooltip.style("visibility", "visible")
+    //         .text("Attack Type: " + classification)
+    //         .style("left", (event.pageX + 10) + "px")
+    //         .style("top", (event.pageY + 10) + "px");
+    // }
 
-    function hideTooltip() {
-        d3.select("#tooltip").style("visibility", "hidden");
-    }
+    // function hideTooltip() {
+    //     d3.select("#tooltip").style("visibility", "hidden");
+    // }
 
     // 提示框元素
     d3.select("body").append("div")
