@@ -227,10 +227,10 @@
 
         <!-- Time-based History Records Table -->
         <div id="monthTimeTable" class="hidden">
-            {% for attack in attack_data %}
+            {% for attack in month_data %}
             <br>
             <div class="attack-card">
-                <h2>{{ attack.attack_type }}</h2>
+                <h2>{{ attack.month }}</h2>
                 <table id="historyTable">
                     <thead>
                         <tr>
@@ -241,11 +241,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for record in attack.records %}
+                        {% for record in attack.record %}
                             <tr>
-                                <td>month</td>
-                                <td>month</td>
-                                <td>month</td>
+                                <td>{{record.time}}</td>
+                                <td>{{record.input_log}}</td>
+                                <td>{{record.attack_type}}</td>
                                 <td><a href="{% url 'ask_me:detail' %}?id={{ record.id }}" class="detail-link">Detail</a></td>
                             </tr>
                         {% endfor %}
@@ -256,10 +256,10 @@
         </div>
 
         <div id="weekTimeTable" class="hidden">
-            {% for attack in attack_data %}
+            {% for attack in week_data %}
             <br>
             <div class="attack-card">
-                <h2>{{ attack.attack_type }}</h2>
+                <h2>{{ attack.week }}</h2>
                 <table id="historyTable">
                     <thead>
                         <tr>
@@ -270,11 +270,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for record in attack.records %}
+                        {% for record in attack.record %}
                             <tr>
-                                <td>week</td>
-                                <td>week</td>
-                                <td>week</td>
+                                <td>{{record.time}}</td>
+                                <td>{{record.input_log}}</td>
+                                <td>{{record.attack_type}}</td>
                                 <td><a href="{% url 'ask_me:detail' %}?id={{ record.id }}" class="detail-link">Detail</a></td>
                             </tr>
                         {% endfor %}
@@ -285,10 +285,10 @@
         </div>
 
         <div id="dayTimeTable" class="hidden">
-            {% for attack in attack_data %}
+            {% for attack in day_data %}
             <br>
             <div class="attack-card">
-                <h2>{{ attack.attack_type }}</h2>
+                <h2>{{ attack.date }}</h2>
                 <table id="historyTable">
                     <thead>
                         <tr>
@@ -299,11 +299,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for record in attack.records %}
+                        {% for record in attack.record %}
                             <tr>
-                                <td>day</td>
-                                <td>day</td>
-                                <td>day</td>
+                                <td>{{record.time}}</td>
+                                <td>{{record.input_log}}</td>
+                                <td>{{record.attack_type}}</td>
                                 <td><a href="{% url 'ask_me:detail' %}?id={{ record.id }}" class="detail-link">Detail</a></td>
                             </tr>
                         {% endfor %}
