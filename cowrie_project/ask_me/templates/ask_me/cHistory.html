@@ -147,6 +147,18 @@
     .detail-link {
         color: #000080;
     }
+
+    #monthTimeTable.hidden {
+        display: none;
+    }
+
+    #weekTimeTable.hidden {
+        display: none;
+    }
+
+    #dayTimeTable.hidden {
+        display: none;
+    }
 </style>
 
 <!-- HTML part -->
@@ -202,10 +214,11 @@
         <div class="time-filter">
             <label for="time-filter">Filter By:</label>
             <select id="time-filter">
-                <option value="quarter">Quarter</option>
                 <option value="month">Month</option>
                 <option value="week">Week</option>
+                <option value="day">Day</option>
             </select>
+            <button id="apply-filter" class="button">Apply Filter</button>
         </div>
 
         <!-- Heatmap -->
@@ -213,19 +226,93 @@
         <br>
 
         <!-- Time-based History Records Table -->
-        <table id="historyTable">
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Input Cowrie Log</th>
-                    <th>Attack Type</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Historical records will appear here -->
-            </tbody>
-        </table>
+        <div id="monthTimeTable" class="hidden">
+            {% for attack in attack_data %}
+            <br>
+            <div class="attack-card">
+                <h2>{{ attack.attack_type }}</h2>
+                <table id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Input Cowrie Log</th>
+                            <th>Attack Type</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in attack.records %}
+                            <tr>
+                                <td>month</td>
+                                <td>month</td>
+                                <td>month</td>
+                                <td><a href="{% url 'ask_me:detail' %}?id={{ record.id }}" class="detail-link">Detail</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="weekTimeTable" class="hidden">
+            {% for attack in attack_data %}
+            <br>
+            <div class="attack-card">
+                <h2>{{ attack.attack_type }}</h2>
+                <table id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Input Cowrie Log</th>
+                            <th>Attack Type</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in attack.records %}
+                            <tr>
+                                <td>week</td>
+                                <td>week</td>
+                                <td>week</td>
+                                <td><a href="{% url 'ask_me:detail' %}?id={{ record.id }}" class="detail-link">Detail</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="dayTimeTable" class="hidden">
+            {% for attack in attack_data %}
+            <br>
+            <div class="attack-card">
+                <h2>{{ attack.attack_type }}</h2>
+                <table id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Input Cowrie Log</th>
+                            <th>Attack Type</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in attack.records %}
+                            <tr>
+                                <td>day</td>
+                                <td>day</td>
+                                <td>day</td>
+                                <td><a href="{% url 'ask_me:detail' %}?id={{ record.id }}" class="detail-link">Detail</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+
     </div>
 </div>
 
@@ -288,7 +375,7 @@
         document.getElementById("cards-container").classList.add("hidden");
 
         // Draw the time-based heatmap here
-        drawHeatmap();
+        // drawHeatmap();
 
         sessionStorage.setItem("histState", "time");
     });
@@ -309,28 +396,28 @@
         });
         
         heatmapDiv.innerHTML = heatmapContent;
-        
-        // Populate the history table with time-based data
-        const tableBody = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
-        tableBody.innerHTML = "";
-
-        timeData.forEach(record => {
-            const row = document.createElement("tr");
-            const timeCell = document.createElement("td");
-            timeCell.textContent = record.time;
-            const logCell = document.createElement("td");
-            logCell.textContent = record.input_log;
-            const typeCell = document.createElement("td");
-            typeCell.textContent = record.attack_type;
-            const detailCell = document.createElement("td");
-            detailCell.innerHTML = `<a href="{% url 'ask_me:detail' %}?id=${ record.id }" class="detail-link">Detail</a>`;
-            row.appendChild(timeCell);
-            row.appendChild(logCell);
-            row.appendChild(typeCell)
-            row.appendChild(detailCell);
-            tableBody.appendChild(row);
-        });
     }
+
+    document.getElementById("apply-filter").addEventListener("click", function() {
+        const filter = document.getElementById("time-filter").value; // 取得篩選器的選擇
+
+        document.getElementById("visualization").style.display = "none";
+        document.getElementById("cards-container").classList.add("hidden");
+
+        if (filter === "month") {
+            document.getElementById('monthTimeTable').classList.remove('hidden');
+            document.getElementById('weekTimeTable').classList.add('hidden');
+            document.getElementById('dayTimeTable').classList.add('hidden');
+        } else if (filter === "week") {
+            document.getElementById('monthTimeTable').classList.add('hidden');
+            document.getElementById('weekTimeTable').classList.remove('hidden');
+            document.getElementById('dayTimeTable').classList.add('hidden');
+        } else {
+            document.getElementById('monthTimeTable').classList.add('hidden');
+            document.getElementById('weekTimeTable').classList.add('hidden');
+            document.getElementById('dayTimeTable').classList.remove('hidden');
+        }
+    });
 
     state = sessionStorage.getItem("histState");
     if (state === "type") {
