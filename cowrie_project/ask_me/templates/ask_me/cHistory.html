@@ -375,12 +375,11 @@
         document.getElementById("btn-attack").classList.remove("active");
         document.getElementById("cards-container").classList.add("hidden");
 
-        // Draw the time-based heatmap here
-        // drawHeatmap();
-
         document.getElementById('monthTimeTable').classList.remove('hidden');
         document.getElementById('weekTimeTable').classList.add('hidden');
         document.getElementById('dayTimeTable').classList.add('hidden');
+
+        updateChart("month");
 
         sessionStorage.setItem("histState", "time");
     });
@@ -422,6 +421,8 @@
             document.getElementById('weekTimeTable').classList.add('hidden');
             document.getElementById('dayTimeTable').classList.remove('hidden');
         }
+
+        updateChart(filter);
     });
 
     state = sessionStorage.getItem("histState");
@@ -458,11 +459,11 @@
     // 顏色範圍
     var colorScale = d3.scaleSequential(d3.interpolateInferno).domain([0, 10]); // 根據攻擊數量調整
 
-    // 篩選器變更事件
-    d3.select("#apply-filter").on("change", function() {
-        var filterType = d3.select(this).property("value");
-        updateChart(filterType);
-    });
+    // // 篩選器變更事件
+    // d3.select("#apply-filter").on("change", function() {
+    //     var filterType = d3.select(this).property("value");
+    //     updateChart(filterType);
+    // });
 
     function updateChart(filterType) {
         console.log(filterType);
@@ -479,17 +480,19 @@
         var xAxis;
         
         if (filterType === "month") {
-            // 當篩選器選擇當季（例如 Q4），X 軸顯示當季的月份
             var currentDate = new Date();
-            var currentMonth = currentDate.getMonth(); // 0-11
-            var quarterStartMonth = Math.floor(currentMonth / 3) * 3; // 當季的起始月
-            var quarterMonths = [quarterStartMonth, quarterStartMonth + 1, quarterStartMonth + 2]; // 當季的三個月
+            var currentYear = currentDate.getFullYear();
+
+            // 設定 x 軸顯示 1-12 月的資料
+            var months = d3.range(0, 12); // 0-11 對應於 1 月到 12 月
+
             x = d3.scaleBand()
-                .domain(quarterMonths.map(m => d3.timeMonth.offset(new Date(currentDate.getFullYear(), m, 1), 0)))
+                .domain(months.map(m => d3.timeMonth.offset(new Date(currentYear, m, 1), 0)))
                 .range([0, width])
                 .padding(0.1);
+
             xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%m-%d"));
-        } else if (filterType === "week") {
+        } else if (filterType === "day") {
             // 當篩選器選擇當月，X 軸顯示當月的每一天
             var currentMonthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
             var currentMonthEnd = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
@@ -502,7 +505,7 @@
                 .range([0, width])
                 .padding(0.1);
             xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%d"));
-        } else if (filterType === "day") {
+        } else if (filterType === "week") {
             // 當篩選器選擇當周，X 軸顯示周次
             var weeks = ["Week 1", "Week 2", "Week 3", "Week 4"]; // 假設每個月最多 4 周
             x = d3.scaleBand()
@@ -570,8 +573,8 @@
         .style("border-radius", "4px")
         .style("padding", "5px");
 
-    // 執行圖表
-    updateChart("day");
+    // // 執行圖表
+    // updateChart("day");
 </script>
 
 {% endblock%}
