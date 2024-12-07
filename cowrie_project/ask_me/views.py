@@ -136,6 +136,10 @@ def qa_view(request):
         if response.status_code == 200:
             answer = response.json().get('answer')
 
+            # 避免出現斷尾文字
+            if not answer.endswith("."):
+                answer = " ".join(answer.split(".")[:-1])
+
             if request.user.is_authenticated:
                 record = QAHistory(user=request.user, question=question, answer=answer)
                 record.save()
@@ -160,6 +164,9 @@ def summary_view(request):
             response = requests.post(backend_url, json={'paragraph': paragraph})
             response.raise_for_status()
             summary = response.json().get('summary')
+
+            if not summary.endswith("."):
+                summary = summary + "."
 
             if request.user.is_authenticated:
                 record = SummaryHistory(user=request.user, paragraph=paragraph, summary=summary)
@@ -222,13 +229,18 @@ def cHistory_view(request):
                 "records": records_list
             })
       
-    timeset = ClassificationHistory.objects.annotate(date=TruncDate('timestamp')) \
+    timeset = ClassificationHistory.objects \
     .filter(user=request.user) \
-    .values('id', 'timestamp') \
+    .values('id', 'timestamp', 'input_log') \
     .annotate(count=Count('id')) \
     .order_by('timestamp')
     
-    time_data = [{'id': entry['id'], 'time': localtime(entry['timestamp']).strftime("%Y.%m.%d  %I:%M %p"), 'count': entry['count']} for entry in timeset]
+    time_data = [{
+        'id': entry['id'], 
+        'time': localtime(entry['timestamp']).strftime("%Y.%m.%d  %I:%M %p"), 
+        'input_log': entry['input_log'],
+        'count': entry['count']
+    } for entry in timeset]
         
     return render(request, 'ask_me/cHistory.html', {
         'attackType': attackType,

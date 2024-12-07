@@ -142,7 +142,7 @@
             <div class="attack-card">
                 <h2>{{ attack.attack_type }}</h2>
                 <div class="details">
-                    <p><strong>Frequency:</strong> {{ attack.count }}</p>
+                    <p><strong>You have encountered this attack type {{ attack.count }} times</strong></p>
                 </div>
                 <table>
                     <thead>
@@ -281,9 +281,9 @@
             const timeCell = document.createElement("td");
             timeCell.textContent = record.time;
             const logCell = document.createElement("td");
-            logCell.textContent = `Log data for ${record.time}`;
+            logCell.textContent = record.input_log;
             const detailCell = document.createElement("td");
-            detailCell.innerHTML = `<a href="{% url 'ask_me:detail' %}?id={ ${record.id} }">Detail</a>`;
+            detailCell.innerHTML = `<a href="{% url 'ask_me:detail' %}?id=${ record.id }" class="detail-link">Detail</a>`;
             row.appendChild(timeCell);
             row.appendChild(logCell);
             row.appendChild(detailCell);

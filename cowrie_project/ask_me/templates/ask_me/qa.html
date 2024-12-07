@@ -30,7 +30,7 @@
 
 {% if answer %}
     <hr><br>
-    <form id="qa-form" method="POST" action="{% url 'ask_me:qa' %}">
+    <form id="qa-form-again" method="POST" action="{% url 'ask_me:qa' %}">
         {% csrf_token %}
         <h3>Answer:</h3>
         <div class="response-block">
@@ -42,6 +42,7 @@
 
 <script>
     const form = document.getElementById('qa-form');
+    const formAgain = document.getElementById('qa-form-again');
     const loadingSection = document.getElementById('loading-section');
     const tipText = document.getElementById('dynamic-tip');
     const loadingDots = document.getElementById('loading-dots');
@@ -94,6 +95,9 @@
             if (index < words.length) {
                 answerText.innerHTML += (index > 0 ? ' ' : '') + words[index];
                 index++;
+                if (index % 4 === 0 || index === characters.length) {
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                }
             } else {
                 clearInterval(interval); 
             }
@@ -102,6 +106,19 @@
 
     form.addEventListener('submit', function (event) {
         event.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        loadingSection.style.display = 'flex'; 
+        startTipCycling(); 
+
+        setTimeout(() => {
+            stopTipCycling(); 
+            form.submit(); 
+        }, 15000); 
+    });
+
+    formAgain.addEventListener('submit', function (event) {
+        event.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         loadingSection.style.display = 'flex'; 
         startTipCycling(); 
 
@@ -113,6 +130,7 @@
 
     const answer = `{{ answer|linebreaksbr }}`;
     if (answer) {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         displayAnswerAnimated(answer);
     }
 </script>

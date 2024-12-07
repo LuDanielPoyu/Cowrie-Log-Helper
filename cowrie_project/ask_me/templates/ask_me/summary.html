@@ -26,7 +26,7 @@
 {% if summary %}
     <hr><br>
     <h3>Generated Summary:</h3>
-    <form id="summary-form" method="POST" action="{% url 'ask_me:summary' %}">
+    <form id="summary-form-again" method="POST" action="{% url 'ask_me:summary' %}">
         {% csrf_token %}
 
         <div class="response-block">
@@ -40,14 +40,20 @@
 
 <script>
     const form = document.getElementById('summary-form');
+    const formAgain = document.getElementById('summary-form-again');
     const loadingSection = document.getElementById('loading-section');
     const summaryText = document.getElementById('summary-text');
 
     form.addEventListener('submit', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         loadingSection.style.display = 'flex';
     });
 
-    // 將每個句子首字母轉為大寫
+    formAgain.addEventListener('submit', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        loadingSection.style.display = 'flex';
+    });
+
     function capitalizeSentences(text) {
         const sentences = text.split(/([.!?]\s*)/);
         return sentences
@@ -69,6 +75,9 @@
             if (index < words.length) {
                 element.textContent += words[index] + " ";
                 index++;
+                if (index % 5 === 0 || index === characters.length) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
             } else {
                 clearInterval(interval); 
             }
@@ -78,6 +87,7 @@
     document.addEventListener("DOMContentLoaded", () => {
         const summary = "{{ summary|escapejs }}";
         if (summary) {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             displayWordByWord(summary, "summary-text");
         }
     });

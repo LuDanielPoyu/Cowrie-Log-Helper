@@ -37,8 +37,8 @@
     </div>
 
     {%if attack_percentage%}
-    <h3>This attack has also affected {{attack_percentage}}% of users.</h3>
-    <br>
+        <h3>This attack has also affected {{attack_percentage}}% of users.</h3>
+        <br>
     {% endif %}
 
     <!-- Display the chart -->
@@ -78,8 +78,10 @@
     document.addEventListener("DOMContentLoaded", () => {
         const attackType = "{{ attack_type|escapejs }}";
         const description = "{{ description|escapejs }}";
+        const attackTypeBlock = document.getElementById("attack-type");
 
         if (attackType) {
+            window.scrollTo({ top: 610, behavior: 'smooth' });
             displayWordByWord(attackType, "attack-type");
         }
         if (description) {
