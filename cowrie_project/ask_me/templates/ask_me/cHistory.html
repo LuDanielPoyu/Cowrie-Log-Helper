@@ -377,6 +377,10 @@
         // Draw the time-based heatmap here
         // drawHeatmap();
 
+        document.getElementById('monthTimeTable').classList.remove('hidden');
+        document.getElementById('weekTimeTable').classList.add('hidden');
+        document.getElementById('dayTimeTable').classList.add('hidden');
+
         sessionStorage.setItem("histState", "time");
     });
 
