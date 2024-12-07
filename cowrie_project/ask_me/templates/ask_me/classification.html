@@ -36,10 +36,10 @@
         <p id="description"></p>
     </div>
 
-    {%if attack_percentage%}
+    {% if attack_percentage %}
         <h3>Proportion of Users Affected:</h3>
         <div class="result">
-            <p>This attack type has also affected {{ attack_percentage }}% of all our users.</p>
+            <p id="attack-percentage"></p>
         </div>
     {% endif %}
 
@@ -49,8 +49,6 @@
         <div class="chart-container">
             <img src="data:image/png;base64,{{ chart_data }}" alt="Attack Type Chart">
         </div>
-    {% else %}
-        <p>No chart data available.</p>
     {% endif %}
 
 {% elif error %}
@@ -74,12 +72,13 @@
             } else {
                 clearInterval(interval); 
             }
-        }, 200); 
+        }, 160); 
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         const attackType = "{{ attack_type|escapejs }}";
         const description = "{{ description|escapejs }}";
+        const attackPercentage = "{{ attack_percentage|escapejs }}"
         const attackTypeBlock = document.getElementById("attack-type");
 
         if (attackType) {
@@ -88,6 +87,9 @@
         }
         if (description) {
             displayWordByWord(description, "description");
+        }
+        if (attackPercentage) {
+            displayWordByWord("This attack type has also affected {{ attack_percentage }}% of all our users.", "attack-percentage");
         }
     });
 </script>
