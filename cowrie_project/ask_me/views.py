@@ -130,19 +130,29 @@ def qa_view(request):
     
     if request.method == 'POST':
         question = request.POST.get('question')
-        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/qa" 
-        response = requests.post(backend_url, json={'question': question})
+        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/qa"
 
-        if response.status_code == 200:
-            answer = response.json().get('answer')
+        try:
+            response = requests.post(backend_url, json={'question': question})
 
-            # 避免出現斷尾文字
-            if not answer.endswith("."):
-                answer = " ".join(answer.split(".")[:-1])
+            if response.status_code == 200:
+                answer = response.json().get('answer')
 
-            if request.user.is_authenticated:
-                record = QAHistory(user=request.user, question=question, answer=answer)
-                record.save()
+                # 避免出現斷尾文字
+                if not answer.endswith("."):
+                    answer = " ".join(answer.split(".")[:-1])
+                    answer = answer.strip()
+
+                    if answer[-2].isdigit():
+                        answer = answer[:-2].strip()
+
+                if request.user.is_authenticated:
+                    record = QAHistory(user=request.user, question=question, answer=answer)
+                    record.save()
+
+        except Exception as e:
+            print(f"Exception occurred: {e}")
+            answer = "An error occurred while generating the answer. Please try again."
 
     return render(request, 'ask_me/qa.html', {
         'answer': answer, 
