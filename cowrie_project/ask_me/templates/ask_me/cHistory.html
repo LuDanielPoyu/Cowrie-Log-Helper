@@ -28,6 +28,27 @@
         background-color: #34495e;
     }
 
+    .filter-button {
+        margin: 0 0 0 20px;
+        display: inline-block;
+        width: auto;
+        font-size: 15px;
+        padding: 8px 10px;
+        border: none;
+        border-radius: 8px;
+        background-color: #6A8DB1;
+        color: #fff;
+        cursor: pointer;
+        margin-bottom: 30px;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+
+    .filter-label {
+        font-size: 17px;
+        color: #323232;
+    }
+
     #content {
         padding: 20px;
         max-width: 1100px;
@@ -212,13 +233,13 @@
     <div id="time-visualization">
         <!-- Time Filter -->
         <div class="time-filter">
-            <label for="time-filter">Filter By:</label>
+            <label for="time-filter" class="filter-label">Filter By:</label>
             <select id="time-filter">
                 <option value="month">Month</option>
                 <option value="week">Week</option>
                 <option value="day">Day</option>
             </select>
-            <button id="apply-filter" class="button">Apply Filter</button>
+            <button id="apply-filter" class="filter-button">Apply Filter</button>
         </div>
 
         <!-- Heatmap -->
