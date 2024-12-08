@@ -70,7 +70,7 @@ def help_coach_view(request):
         attack_type = request.POST.get('encounteredAttack')
 
         try:
-            attack = CowrieLogAttack.objects.get(attack_name__iexact=attack_type)  
+            attack = CowrieLogAttack.objects.filter(attack_name__iexact=attack_type).first()
             description = attack.description
             affected = attack.affected
             mitigation = attack.mitigation
@@ -90,7 +90,7 @@ def help_coach_view(request):
         attack_type = request.GET.get('type')
 
         try:
-            attack = CowrieLogAttack.objects.get(attack_name__iexact=attack_type)  
+            attack = CowrieLogAttack.objects.filter(attack_name__iexact=attack_type).first()
             description = attack.description
             affected = attack.affected
             mitigation = attack.mitigation
