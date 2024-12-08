@@ -42,11 +42,13 @@ def attack_suggestion_view(request):
             probability = result.get('probabilities')
             
             if request.user.is_authenticated:
-                record = ClassificationHistory(user=request.user,
-                                               input_log=json.dumps(log_input), 
-                                               attack_type=attack_type, 
-                                               actual_type=log_input['eventid'],
-                                               probability = json.dumps(probability))
+                record = ClassificationHistory(
+                    user=request.user,
+                    input_log=json.dumps(log_input), 
+                    attack_type=attack_type, 
+                    actual_type=log_input['eventid'],
+                    probability=json.dumps(probability)
+                )
                 record.save()
 
         else:
