@@ -17,6 +17,7 @@
             rows="3" 
             placeholder="Paste your cowrie log row here...">{{ request.POST.log_input }}</textarea>
     </div>
+    <span>The model may make a mistake, please use with caution.</span>
     <button type="submit" class="btn btn-primary">Get Cowrie Log Attack Type</button>
     <br>
     {% if user.is_authenticated %}
