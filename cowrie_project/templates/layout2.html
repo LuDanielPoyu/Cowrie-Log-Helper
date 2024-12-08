@@ -74,7 +74,7 @@
         .nav-links {
             display: flex;
             flex-direction: column;
-            margin-left: 12px;
+            {% comment %} margin-left: 2px; {% endcomment %}
             text-align: left;
             overflow: hidden; /* 隱藏內容的超出部分 */
             height: auto; /* 初始展開狀態 */
@@ -289,6 +289,25 @@
         .back-btn:hover {
             background-color: #386C91;
         }
+
+        .nav-links img {
+            width: 12px;
+            height: 12px;
+            vertical-align: middle;
+            margin-right: 3px;
+            margin-left: -8px;
+        }
+
+        .nav-links-hist {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            overflow: hidden; /* 隱藏內容的超出部分 */
+            height: auto; /* 初始展開狀態 */
+            transition: height 0.5s ease; /* 添加過渡效果 */
+            white-space: nowrap;
+            font-size: 15.8px;
+        }
     </style>
 </head> 
 
@@ -309,18 +328,34 @@
             <span>Ask Me</span>
         </div>
         <ul class="nav-links" id="nav-links-1">
-            <li><a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">Classification</a>
-                <ul class="nav-links sub-links" id="classification-history-links">
+            <li>
+                <a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">
+                    <img src="{% static 'images/triangle.png' %}" id="toggle-btn-hist" alt="Toggle History">
+                    Classification
+                </a> 
+            </li>
+            {% if user.is_authenticated %}
+                <ul class="nav-links-hist" id="hist-link">
                     <li>
-                        <a href="{% url 'ask_me:cHistory' %}" 
-                           class="{% if request.path == '/ask_me/cHistory/' %}active{% endif %}">
-                            Classif. History
+                        <a href="{% url 'ask_me:cHistory' %}" class="{% if request.path == '/ask_me/cHistory/' %}active{% endif %}">
+                            <img src="{% static 'images/transparent.jpg' %}" style="opacity: 0;">
+                            History Records
                         </a>
                     </li>
                 </ul>
+            {% endif %}
+            <li>
+                <a href="{% url 'ask_me:qa' %}" class="{% if request.path == '/ask_me/qa/' %}active{% endif %}">
+                    <img src="{% static 'images/transparent.jpg' %}" style="opacity: 0;">
+                    QA
+                </a>
             </li>
-            <li><a href="{% url 'ask_me:qa' %}" class="{% if request.path == '/ask_me/qa/' %}active{% endif %}">QA</a></li>
-            <li><a href="{% url 'ask_me:summary' %}" class="{% if request.path == '/ask_me/summary/' %}active{% endif %}">Summarization</a></li>
+            <li>
+                <a href="{% url 'ask_me:summary' %}" class="{% if request.path == '/ask_me/summary/' %}active{% endif %}">
+                    <img src="{% static 'images/transparent.jpg' %}" style="opacity: 0;">
+                    Summarization
+                </a>
+            </li>
         </ul>
 
         <div class="toggle-btn" id="toggle-btn-2">
@@ -328,15 +363,19 @@
             <span>Help Coach</span>
         </div>
         <ul class="nav-links" id="nav-links-2">
-            <li><a href="{% url 'your_help_coach:attack_suggestion' %}" class="{% if request.path == '/your_help_coach/attack_suggestion/' %}active{% endif %}">Detailed Suggestion</a></li>
+            <li>
+                <a href="{% url 'your_help_coach:attack_suggestion' %}" class="{% if request.path == '/your_help_coach/attack_suggestion/' %}active{% endif %}">
+                    <img src="{% static 'images/transparent.jpg' %}" style="opacity: 0;">
+                    Detailed Suggestion
+                </a>
+            </li>
         </ul>
-
     </nav>
-    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/toggle.js' %}"></script>
 
     <div class="container">
         {% block content %}
-        <!-- Content from child templates will be injected here -->
+            <!-- Content from child templates will be injected here -->
         {% endblock content %}
     </div>
 
