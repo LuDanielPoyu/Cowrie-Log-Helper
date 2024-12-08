@@ -540,15 +540,15 @@
             .attr("height", d => height - y(d.count)) // 條形的高度，根據攻擊數量計算
             //.style("fill", d => colorScale(d.count))  // 條形顏色
             .style("fill", "#6A8DB1")
-            .style("opacity", 0.7)
-            .on("mouseover", function(event, d) {
-                d3.select(this).style("opacity", 1);
-                showTooltip(event, d.classification);
-            })
-            .on("mouseout", function() {
-                d3.select(this).style("opacity", 0.7);
-                hideTooltip();
-            });
+            //.style("opacity", 0.7)
+            //.on("mouseover", function(event, d) {
+              //  d3.select(this).style("opacity", 1);
+              //  showTooltip(event, d.classification);
+            //})
+            //.on("mouseout", function() {
+              //  d3.select(this).style("opacity", 0.7);
+               // hideTooltip();
+           // });
     }
 
     // 顯示提示框
