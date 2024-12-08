@@ -438,15 +438,7 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <div id="heatmap"></div>
 <script>
-    // 篩選後的攻擊分類數據，假設是以日期為基礎的
-    var attackData = [
-        { date: "2024-12-01", classification: "DDoS", count: 5 },
-        { date: "2024-12-02", classification: "Phishing", count: 2 },
-        { date: "2024-12-03", classification: "Malware", count: 10 },
-        { date: "2024-12-04", classification: "Ransomware", count: 7 },
-        { date: "2024-12-05", classification: "DDoS", count: 3 },
-        { date: "2024-12-06", classification: "Phishing", count: 8 }
-    ];
+    var attackData = {{ heat_map_data|safe }};
 
     var width = 800, height = 400, margin = { top: 20, right: 30, bottom: 50, left: 50 };
     var svg = d3.select("#heatmap")
@@ -456,26 +448,14 @@
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // 顏色範圍
-    //var colorScale = d3.scaleSequential(d3.interpolateInferno).domain([0, 10]); // 根據攻擊數量調整
-
-    // // 篩選器變更事件
-    // d3.select("#apply-filter").on("change", function() {
-    //     var filterType = d3.select(this).property("value");
-    //     updateChart(filterType);
-    // });
-
     function updateChart(filterType) {
         console.log(filterType);
 
-        // 根據篩選器選擇，定義時間範圍
         var filteredData = attackData;
 
-        // 解析日期格式
         var parseDate = d3.timeParse("%Y-%m-%d");
         var data = filteredData.map(d => ({ ...d, date: parseDate(d.date) }));
 
-        // 根據篩選器選擇來調整 X 軸的顯示
         var x;
         var xAxis;
         
@@ -540,29 +520,14 @@
             .attr("height", d => height - y(d.count)) // 條形的高度，根據攻擊數量計算
             //.style("fill", d => colorScale(d.count))  // 條形顏色
             .style("fill", "#6A8DB1")
-            //.style("opacity", 0.7)
-            //.on("mouseover", function(event, d) {
-              //  d3.select(this).style("opacity", 1);
-              //  showTooltip(event, d.classification);
-            //})
-            //.on("mouseout", function() {
-              //  d3.select(this).style("opacity", 0.7);
-               // hideTooltip();
-           // });
+            .style("opacity", 0.7)
+            .on("mouseover", function(event, d) {
+                d3.select(this).style("opacity", 1);
+            })
+            .on("mouseout", function() {
+                d3.select(this).style("opacity", 0.7);
+            });
     }
-
-    // 顯示提示框
-    // function showTooltip(event, classification) {
-    //     var tooltip = d3.select("#tooltip");
-    //     tooltip.style("visibility", "visible")
-    //         .text("Attack Type: " + classification)
-    //         .style("left", (event.pageX + 10) + "px")
-    //         .style("top", (event.pageY + 10) + "px");
-    // }
-
-    // function hideTooltip() {
-    //     d3.select("#tooltip").style("visibility", "hidden");
-    // }
 
     // 提示框元素
     d3.select("body").append("div")
@@ -574,8 +539,6 @@
         .style("border-radius", "4px")
         .style("padding", "5px");
 
-    // // 執行圖表
-    // updateChart("day");
 </script>
 
 {% endblock%}

@@ -362,7 +362,12 @@ def cHistory_view(request):
         "record": data['record']  
     }
         for day_key, data in result.items()
-]
+    ]
+    
+    heat_map_data = [
+        {"date": day["date"], "count": day["count"]} 
+        for day in day_data
+    ]
         
     return render(request, 'ask_me/cHistory.html', {
         'attackType': attackType,
@@ -371,7 +376,8 @@ def cHistory_view(request):
         'time_data': time_data,
         'month_data': month_data,
         'week_data': week_data,
-        'day_data': day_data
+        'day_data': day_data,
+        'heat_map_data': heat_map_data
     })
 
 
