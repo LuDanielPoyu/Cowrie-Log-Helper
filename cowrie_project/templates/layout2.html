@@ -338,12 +338,19 @@
                     <a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">
                         <img src="{% static 'images/triangle-rotate.png' %}" id="toggle-btn-hist" alt="Toggle History">
                         Classification
-                    </a> 
+                    </a>
                 </li>
                 <li id="nav-links-hist">
                     <a href="{% url 'ask_me:cHistory' %}" class="{% if request.path == '/ask_me/cHistory/' %}active{% endif %}">
                         <img src="{% static 'images/transparent.jpg' %}" style="opacity: 0;">
                         History Records
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">
+                        <img src="{% static 'images/transparent.jpg' %}" style="opacity: 0;">
+                        Classification
                     </a>
                 </li>
             {% endif %}
