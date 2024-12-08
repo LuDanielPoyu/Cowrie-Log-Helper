@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Count
-from django.db.models.functions import TruncDate
+from django.db.models.functions import ExtractWeek, ExtractMonth, ExtractYear, TruncDate
 from django.utils.timezone import localtime
 from .models import AttackType, Tips, SummaryHistory, QAHistory, ClassificationHistory
 import requests
@@ -10,6 +10,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import io
 import base64
+from datetime import datetime, timedelta
 
 def classification_view(request):
     matplotlib.use('Agg') 
@@ -255,12 +256,128 @@ def cHistory_view(request):
         'attack_type': entry['attack_type'],
         'count': entry['count']
     } for entry in timeset]
+    
+    # Order by month
+    month_logs = ClassificationHistory.objects\
+    .filter(user=request.user)\
+    .annotate(
+        year=ExtractYear('timestamp'),
+        month=ExtractMonth('timestamp')
+    ).values('year', 'month', 'id', 'input_log', 'timestamp', 'attack_type')
+    
+    month_result = {}
+    
+    for log in month_logs:
+        month = f"{log['year']}-{log['month']:02d}"
+
+        if month not in month_result:
+            month_result[month] = {
+                'count': 0,
+                'record': []
+            }
+
+        month_result[month]['count'] += 1
+        month_result[month]['record'].append({
+            'time': log['timestamp'],
+            'input_log': log['input_log'],
+            'attack_type': log['attack_type'],
+            'id': log['id']
+        })
+    
+    month_data = [
+    {
+        "month": month,  
+        "count": data['count'],  
+        "record": data['record']  
+    }
+    for month, data in month_result.items()
+    ]
+    
+    # Order by week
+    week_logs = ClassificationHistory.objects\
+    .filter(user=request.user)\
+    .annotate(
+        year=ExtractYear('timestamp'),
+        week=ExtractWeek('timestamp')
+    ).values('year', 'week', 'id', 'input_log', 'timestamp', 'attack_type')
+    
+    week_result = {}
+    
+    for log in week_logs:
+        year, week = log['year'], log['week']
+        week_start = datetime.strptime(f'{year}-W{week - 1}-1', "%Y-W%U-%w").date()
+        
+        if week_start not in week_result:
+            week_result[week_start] = {
+                'count': 0,
+                'record': []
+            }
+        
+        week_result[week_start]['count'] += 1
+        week_result[week_start]['record'].append({
+            'time': log['timestamp'],
+            'input_log': log['input_log'],
+            'attack_type': log['attack_type'],
+            'id': log['id']
+        })
+    
+    week_data = [
+    {
+        "week": week_start.strftime("%Y-%m-%d"),
+        "count": data['count'],
+        "record": data['record']
+    }
+        for week_start, data in week_result.items()
+    ]
+    
+    #Order by day
+    day_logs = ClassificationHistory.objects\
+    .filter(user=request.user)\
+    .annotate(
+        date=TruncDate('timestamp')  
+    ).values('date', 'id', 'input_log', 'timestamp', 'attack_type')
+    
+    result = {}
+    for log in day_logs:
+        day_key = log['date'].strftime("%Y-%m-%d")
+        
+        if day_key not in result:
+            result[day_key] = {
+                'count': 0,
+                'record': []
+        }
+            
+        result[day_key]['count'] += 1
+        result[day_key]['record'].append({
+            'time': log['timestamp'],
+            'input_log': log['input_log'],
+            'attack_type': log['attack_type'],
+            'id': log['id'],
+        })
+        
+    day_data = [
+    {
+        "date": day_key, 
+        "count": data['count'],  
+        "record": data['record']  
+    }
+        for day_key, data in result.items()
+    ]
+    
+    heat_map_data = [
+        {"date": day["date"], "count": day["count"]} 
+        for day in day_data
+    ]
         
     return render(request, 'ask_me/cHistory.html', {
         'attackType': attackType,
         'frequency': frequency,
         'attack_data': attack_data,
-        'time_data': time_data
+        'time_data': time_data,
+        'month_data': month_data,
+        'week_data': week_data,
+        'day_data': day_data,
+        'heat_map_data': heat_map_data
     })
 
 
