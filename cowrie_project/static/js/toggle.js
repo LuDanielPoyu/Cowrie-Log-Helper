@@ -100,7 +100,12 @@ if (histBtn && histLink) {
         if (hist_session_state === 'expanded') {
             expandHist(navLinks_1, histLink, histBtn, histExpandIcon);
         } else {
-            collapseHist(navLinks_1, histLink, histBtn, histCollapseIcon);
+            const currentUrl = window.location.href;
+            if (currentUrl === "http://127.0.0.1:8000/ask_me/cHistory/" || currentUrl === "https://loglytics.ddns.net/ask_me/cHistory/") {
+                expandHist(navLinks_1, histLink, histBtn, histExpandIcon);
+            } else {
+                collapseHist(navLinks_1, histLink, histBtn, histCollapseIcon);
+            }
         }
     }
 
