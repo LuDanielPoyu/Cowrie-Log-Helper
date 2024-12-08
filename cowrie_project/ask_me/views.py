@@ -83,6 +83,7 @@ def classification_view(request):
 
         type_data = ClassificationHistory.objects.values('attack_type') \
         .annotate(count=Count('attack_type'))
+        print(type_data)
         
         type_counts = pd.Series({item['attack_type']: item['count'] for item in type_data}).sort_values(ascending=False)
         type_percentage = round((type_counts[attack_type] / type_counts.sum()) * 100, 2)
