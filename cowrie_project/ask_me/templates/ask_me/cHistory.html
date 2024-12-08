@@ -376,9 +376,7 @@
         document.getElementById('monthTimeTable').classList.remove('hidden');
         document.getElementById('weekTimeTable').classList.add('hidden');
         document.getElementById('dayTimeTable').classList.add('hidden');
-
         updateChart("month");
-
         sessionStorage.setItem("histState", "time");
     });
 
@@ -419,7 +417,6 @@
             document.getElementById('weekTimeTable').classList.add('hidden');
             document.getElementById('dayTimeTable').classList.remove('hidden');
         }
-
         updateChart(filter);
     });
 
@@ -446,10 +443,10 @@
 
     function updateChart(filterType) {
         var filteredData = attackData;
+        //var filteredData = document.getElementById("time-filter"); // 取得篩選器的選擇
 
         var parseDate = d3.timeParse("%Y-%m-%d");
         var data = filteredData.map(d => ({ ...d, date: parseDate(d.date) }));
-
         var x;
         var xAxis;
         
@@ -461,7 +458,8 @@
             var months = d3.range(0, 12); // 0-11 對應於 1 月到 12 月
 
             x = d3.scaleBand()
-                .domain(months.map(m => d3.timeMonth.offset(new Date(currentYear, m, 1), 0)))
+                //.domain(months.map(m => d3.timeMonth.offset(new Date(currentYear, m-1, 1), 0)))
+                .domain(months.map(m => new Date(currentYear, m-1, 1)))
                 .range([0, width])
                 .padding(0.1);
 
@@ -513,13 +511,13 @@
             .attr("width", x.bandwidth()) // 條形的寬度，使用 x.bandwidth()
             .attr("height", d => height - y(d.count)) // 條形的高度，根據攻擊數量計算
             .style("fill", "#6A8DB1")
-            .style("opacity", 0.7)
-            .on("mouseover", function(event, d) {
-                d3.select(this).style("opacity", 1);
-            })
-            .on("mouseout", function() {
-                d3.select(this).style("opacity", 0.7);
-            });
+            // .style("opacity", 0.7)
+            // .on("mouseover", function(event, d) {
+            //     d3.select(this).style("opacity", 1);
+            // })
+            // .on("mouseout", function() {
+            //     d3.select(this).style("opacity", 0.7);
+            // });
     }
 
     // 提示框元素
