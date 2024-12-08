@@ -60,7 +60,7 @@ def classification_view(request):
                         user=request.user,
                         input_log=json.dumps(log_input), 
                         attack_type=attack_type, 
-                        actual_type=log_input['eventid'],
+                        # actual_type=log_input['eventid'],
                         probability=json.dumps(probability)
                     )
                     record.save()
@@ -279,7 +279,7 @@ def cHistory_view(request):
 
         month_result[month]['count'] += 1
         month_result[month]['record'].append({
-            'time': log['timestamp'],
+            'time': localtime(log['timestamp']).strftime("%Y.%m.%d  %I:%M %p"),
             'input_log': log['input_log'],
             'attack_type': log['attack_type'],
             'id': log['id']
@@ -316,7 +316,7 @@ def cHistory_view(request):
         
         week_result[week_start]['count'] += 1
         week_result[week_start]['record'].append({
-            'time': log['timestamp'],
+            'time': localtime(log['timestamp']).strftime("%Y.%m.%d  %I:%M %p"),
             'input_log': log['input_log'],
             'attack_type': log['attack_type'],
             'id': log['id']
@@ -331,7 +331,7 @@ def cHistory_view(request):
         for week_start, data in week_result.items()
     ]
     
-    #Order by day
+    # Order by day
     day_logs = ClassificationHistory.objects\
     .filter(user=request.user)\
     .annotate(
@@ -350,7 +350,7 @@ def cHistory_view(request):
             
         result[day_key]['count'] += 1
         result[day_key]['record'].append({
-            'time': log['timestamp'],
+            'time': localtime(log['timestamp']).strftime("%Y.%m.%d  %I:%M %p"),
             'input_log': log['input_log'],
             'attack_type': log['attack_type'],
             'id': log['id'],

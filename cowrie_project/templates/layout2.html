@@ -74,7 +74,7 @@
         .nav-links {
             display: flex;
             flex-direction: column;
-            {% comment %} margin-left: 2px; {% endcomment %}
+            margin-left: -2px;
             text-align: left;
             overflow: hidden; /* 隱藏內容的超出部分 */
             height: auto; /* 初始展開狀態 */
@@ -295,10 +295,10 @@
             height: 12px;
             vertical-align: middle;
             margin-right: 3px;
-            margin-left: -8px;
+            margin-left: -6px;
         }
 
-        .nav-links-hist {
+        #nav-links-hist {
             display: flex;
             flex-direction: column;
             text-align: left;
@@ -307,6 +307,11 @@
             transition: height 0.5s ease; /* 添加過渡效果 */
             white-space: nowrap;
             font-size: 15.8px;
+            gap: 3px;
+        }
+
+        #nav-links-hist.hide {
+            height: 0;
         }
     </style>
 </head> 
@@ -328,21 +333,26 @@
             <span>Ask Me</span>
         </div>
         <ul class="nav-links" id="nav-links-1">
-            <li>
-                <a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">
-                    <img src="{% static 'images/triangle.png' %}" id="toggle-btn-hist" alt="Toggle History">
-                    Classification
-                </a> 
-            </li>
             {% if user.is_authenticated %}
-                <ul class="nav-links-hist" id="hist-link">
-                    <li>
-                        <a href="{% url 'ask_me:cHistory' %}" class="{% if request.path == '/ask_me/cHistory/' %}active{% endif %}">
-                            <img src="{% static 'images/transparent.jpg' %}" style="opacity: 0;">
-                            History Records
-                        </a>
-                    </li>
-                </ul>
+                <li>
+                    <a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">
+                        <img src="{% static 'images/triangle-rotate.png' %}" id="toggle-btn-hist" alt="Toggle History">
+                        Classification
+                    </a>
+                </li>
+                <li id="nav-links-hist">
+                    <a href="{% url 'ask_me:cHistory' %}" class="{% if request.path == '/ask_me/cHistory/' %}active{% endif %}">
+                        <img src="{% static 'images/transparent.jpg' %}" style="opacity: 0;">
+                        History Records
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{% url 'ask_me:classification' %}" class="{% if request.path == '/ask_me/classification/' %}active{% endif %}">
+                        <img src="{% static 'images/transparent.jpg' %}" style="opacity: 0;">
+                        Classification
+                    </a>
+                </li>
             {% endif %}
             <li>
                 <a href="{% url 'ask_me:qa' %}" class="{% if request.path == '/ask_me/qa/' %}active{% endif %}">
