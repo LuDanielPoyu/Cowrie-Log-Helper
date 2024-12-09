@@ -63,10 +63,8 @@ if (histBtn && histLink) {
         navLinkHist.classList.add('hide'); // 使用 hide 類名，應用 display: none
         navLinkHist.classList.add('hidden'); // 確保高度為 0
         navLinkHist.style.height = '0px'; // 明確設置 height 為 0
-        navLinkHist.style.padding = '0px'; // 確保內部填充為 0
-        navLinkHist.style.margin = '0px'; // 確保外部填充為 0
+        navLinkHist.style.paddingBottom = '0px'; // 確保底部填充為 0
         navLinkHist.style.overflow = 'hidden'; // 確保無法看到內容
-        navLinkHist.style.transition = 'none'; // 禁止動畫，確保立即生效
         navLink.style.height = `${askmeHeight - histHeight}px`;
         img.src = icon;
     }
