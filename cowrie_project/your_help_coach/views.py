@@ -33,7 +33,7 @@ def attack_suggestion_view(request):
                 'log_input': log_input
             })
 
-        backend_url = "https://stunning-silkworm-brave.ngrok-free.app/classify" 
+        backend_url = "https://ewe-happy-centrally.ngrok-free.app/classify" 
         response = requests.post(backend_url, json=log_input)
 
         if response.status_code == 200:
